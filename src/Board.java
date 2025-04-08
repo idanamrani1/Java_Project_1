@@ -10,6 +10,9 @@ public class Board {
         setManagerBoard(managerBoard);
     }
 
+    public void CreateMangaer(){
+
+    }
 
 
     public String getName() {

@@ -39,7 +39,9 @@ public class OperatingSystem {
         } else {
             System.out.println("Lecture already exists.");
         }
-        return new Lecture(name, id, degree,nameDegree, department, salary);
+        checkManager(degree);
+        return new Lecture(name, id, degree, nameDegree, department, salary);
+
     }
 
     public Board addBoard(){
@@ -47,9 +49,21 @@ public class OperatingSystem {
         String name = input.nextLine();
         System.out.println("Enter Board manager:");
         String boardManager = input.nextLine();
-
-        //dadadad
     }
+
+    public Lecture checkLectureForManger(){
+        for(int i =0;i<arrLecture.length;i++){
+            if(arrLecture[i])
+        }
+    }
+    public static boolean checkManager(String degree) {
+        if (degree.equals("Doctor") || degree.equals("Professor")) {
+            return true;
+        }
+        return false;
+    }
+
+
 
     public  String[] addArrayName(String[] arr,int size,String name) {
         String newName = name;
