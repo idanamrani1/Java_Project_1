@@ -48,7 +48,7 @@ public class OperatingSystem {
         System.out.println("Enter Board manager:");
         String boardManager = input.nextLine();
 
-        if()
+        //dadadad
     }
 
     public  String[] addArrayName(String[] arr,int size,String name) {
