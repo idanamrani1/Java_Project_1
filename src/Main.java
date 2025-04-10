@@ -17,8 +17,7 @@ public class Main {
                     isRunning = false;
                     break;
                 case '1':
-                    op1.addLecture();
-
+                    op1.insertLectureDetails();
                     break;
                 case '2':
                     break;

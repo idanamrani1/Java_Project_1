@@ -2,12 +2,8 @@ import java.util.Scanner;
 
 public class OperatingSystem {
     private Scanner input = new Scanner(System.in);
-    private String[] arrLecture = new String[1];
-    private String[] arrBoard = new String[1];
-    private String[] arrStudyDepartment = new String[1];
-    private int lectureSize = 0;
-    private int arrBoardSize = 0;
-    private int arrStudyDepartmentSize = 0;
+    private static Lecture[] arrLecture = new Lecture[1];
+    private static Department[] arrDepartment = new Department[1];
 
     public void printWelcome() {
         System.out.println("Welcome to our system! 🎓");
@@ -15,101 +11,110 @@ public class OperatingSystem {
         input.nextLine();
     }
 
-    public Lecture addLecture() {
+    public void insertLectureDetails() {
         System.out.println("Enter Lecture name: ");
         String name = input.nextLine();
-        System.out.println("Enter Lecture id: ");
+
+        System.out.println("Enter Lecture ID: ");
         String id = input.nextLine();
-        System.out.println("Enter Lecture degree (First/Second/Doctor/Professor): ");
+
+        if (existLecture(id)) {
+            System.out.println("Lecture with this ID already exists.");
+            return;
+        }
+
+        System.out.println("Enter Lecture degree: ");
         String degree = input.nextLine();
-        System.out.println("Enter name of your degree:");
+
+        System.out.println("Enter name of the degree: ");
         String nameDegree = input.nextLine();
-        System.out.println("Enter Lecture department: ");
-        String department = input.nextLine();
+
         System.out.println("Enter Lecture salary: ");
         double salary = input.nextDouble();
         input.nextLine();
 
-        if (existArr(arrLecture, name)) {
-            if (lectureSize >= arrLecture.length) {
-                arrLecture = extendArr(arrLecture, lectureSize);
+        Lecture newLecture = new Lecture(name, id, degree, nameDegree, salary);
+
+        if (lectureIsFull()) {
+            arrLecture = extendLectureArray(arrLecture);
+        }
+        addLectureToArray(newLecture);
+
+        System.out.println("Enter Department name to assign this lecture: ");
+        String depName = input.nextLine();
+
+        Department dep = findOrCreateDepartment(depName);
+        boolean added = dep.addLecturer(newLecture);
+
+        if (added) {
+            System.out.println("Lecture successfully assigned to department.");
+        }
+        else {
+            System.out.println("Failed to assign lecture to department.");
+        }
+    }
+
+    private void addLectureToArray(Lecture newLecture) {
+        for (int i = 0; i < arrLecture.length; i++) {
+            if (arrLecture[i] == null) {
+                arrLecture[i] = newLecture;
+                return;
             }
-            arrLecture[lectureSize] = name;
-            lectureSize++;
-        } else {
-            System.out.println("Lecture already exists.");
-        }
-        checkManager(degree);
-        return new Lecture(name, id, degree, nameDegree, department, salary);
-
-    }
-
-    public Board addBoard(){
-        System.out.println("Enter board name:");
-        String name = input.nextLine();
-        System.out.println("Enter Board manager:");
-        String boardManager = input.nextLine();
-    }
-
-    public Lecture checkLectureForManger(){
-        for(int i =0;i<arrLecture.length;i++){
-            if(arrLecture[i])
         }
     }
-    public static boolean checkManager(String degree) {
-        if (degree.equals("Doctor") || degree.equals("Professor")) {
-            return true;
+
+    private boolean lectureIsFull() {
+        for (Lecture lecture : arrLecture) {
+            if (lecture == null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean existLecture(String id) {
+        for (Lecture lecture : arrLecture) {
+            if (lecture != null && lecture.getId().equals(id)) {
+                return true;
+            }
         }
         return false;
     }
 
-
-
-    public  String[] addArrayName(String[] arr,int size,String name) {
-        String newName = name;
-        existArr(arr, newName);
-        if (existArr(arr, newName)) {
-            if (size >= arr.length) {
-                arr = extendArr(arr, size);
-                arr[size] = newName;
-            } else {
-                arr[size] = newName;
-            }
+    private Lecture[] extendLectureArray(Lecture[] oldArr) {
+        Lecture[] newArr = new Lecture[oldArr.length * 2];
+        for (int i = 0; i < oldArr.length; i++) {
+            newArr[i] = oldArr[i];
         }
-        else {
-            arr = addArrayName(arr,size,name);
-        }
-        return arr;
-    }
-
-    public  boolean existArr(String[] arr,String name) {
-        for (int i = 0; i < arr.length; i++) {
-            if (arr[i] != null){
-                if (arr[i].equals(name)) {
-                    return false;
-                }
-            }}
-        return true;
-    }
-
-    public  String[] extendArr(String[] oldArr ,int size) {
-        String[] newArr = new String[size * 2];
-        copyArr(newArr,oldArr);
         return newArr;
     }
 
-    public  void copyArr(String[] newArr,String[] oldArr){
-        for (int i = 0 ; i < oldArr.length; i++) {
-            newArr[i] = oldArr[i];
+    private Department findOrCreateDepartment(String name) {
+        for (Department dep : arrDepartment) {
+            if (dep != null && dep.getDepName().equals(name)) {
+                return dep;
+            }
         }
+        Lecture[] newDepLectures = new Lecture[5];
+        Department newDep = new Department(name, 0,newDepLectures);
+
+        for (int i = 0; i < arrDepartment.length; i++) {
+            if (arrDepartment[i] == null) {
+                arrDepartment[i] = newDep;
+                return newDep;
+            }
+        }
+
+        arrDepartment = extendDepartmentArray(arrDepartment);
+        arrDepartment[arrDepartment.length / 2] = newDep;
+        return newDep;
     }
 
-    public  void printArray(String[] arr){
-        for (int i = 0; i <arr.length;i++){
-            if (arr[i] == null){
-                continue;}
-            System.out.print(arr[i] + "  ");
+    private Department[] extendDepartmentArray(Department[] oldArr) {
+        Department[] newArr = new Department[oldArr.length * 2];
+        for (int i = 0; i < oldArr.length; i++) {
+            newArr[i] = oldArr[i];
         }
-        System.out.println();
+        return newArr;
     }
 }

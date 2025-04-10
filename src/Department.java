@@ -9,6 +9,22 @@ public class Department {
         setNumOfStudents(numOfStudents);
     }
 
+    public boolean addLecturer(Lecture lecture){
+        if(lecture.isAssignedToDepartment()){
+            System.out.println("already assigned to department");
+            return false;
+        }
+        for (int i = 0; i < numOfLecture.length; i++) {
+            if (numOfLecture[i] == null) {
+                numOfLecture[i] = lecture;
+                lecture.setDepartment(this);
+                return true;
+            }
+        }
+        System.out.println("department is full");
+        return false;
+    }
+
     public String getDepName() {
         return depName;
     }

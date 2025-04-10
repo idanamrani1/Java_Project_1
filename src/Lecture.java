@@ -1,32 +1,32 @@
-import java.util.Scanner;
+import java.util.Objects;
 
 public class Lecture {
-    private Scanner input = new Scanner(System.in);
     private String name;
     private String id;
     private String degree;
     private String nameDegree;
     private double salary;
-    private String belongDep;
-    private Department department;
+    private Department belongDepartment;
 
     public void setDepartment(Department department) {
-        if (this.department != null) {
+        if (this.belongDepartment != null) {
             System.out.println("Lecture is already assigned to a department!");
         } else {
-            this.department = department;
+            this.belongDepartment = department;
         }
     }
+
     public boolean isAssignedToDepartment() {
-        return department != null;
+        return belongDepartment != null;
     }
-    public Lecture(String name,String id,String degree,String nameDegree,String belongDep,double salary) {
+
+    public Lecture(String name, String id, String degree, String nameDegree, double salary) {
         setName(name);
         setId(id);
         setDegree(degree);
         setNameDegree(nameDegree);
         setSalary(salary);
-        setBelongDep(belongDep);
+        setBelongDep(belongDepartment);
     }
 
 
@@ -46,9 +46,6 @@ public class Lecture {
         return salary;
     }
 
-    public String getBelongDep() {
-        return belongDep;
-    }
 
     public String getId() {
         return id;
@@ -74,9 +71,8 @@ public class Lecture {
         this.salary = salary;
     }
 
-    public void setBelongDep(String belongDep) {
-        this.belongDep = belongDep;
+    public void setBelongDep(Department belongDepartment) {
+        this.belongDepartment = null;
     }
-
 
 }
