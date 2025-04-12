@@ -20,7 +20,7 @@ public class Main {
                     op1.insertLectureDetails();
                     break;
                 case '2':
-                    break;
+                    op1.insertBoard();
                 case '3':
                     break;
                 case '4':
