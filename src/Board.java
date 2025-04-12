@@ -10,10 +10,11 @@ public class Board {
         setManagerBoard(managerBoard);
     }
 
+    // public addBoardToArray()
+
     public void CreateMangaer(){
 
     }
-
 
     public String getName() {
         return name;

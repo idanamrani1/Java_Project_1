@@ -4,6 +4,7 @@ public class OperatingSystem {
     private Scanner input = new Scanner(System.in);
     private static Lecture[] arrLecture = new Lecture[1];
     private static Department[] arrDepartment = new Department[1];
+    private static Board[] arrBoard = new Board[1];
 
     public void printWelcome() {
         System.out.println("Welcome to our system! 🎓");
@@ -116,5 +117,50 @@ public class OperatingSystem {
             newArr[i] = oldArr[i];
         }
         return newArr;
+    }
+
+
+    public void insertBoard(){
+        System.out.println("Enter board name: ");
+        String boardName = input.nextLine();
+        if (existBoard(boardName)){
+            System.out.println("Board already exists.");
+            return;
+        }
+        System.out.println("Enter the name of the lecturer who will be the board manager:");
+        String managerName = input.nextLine();
+
+        Lecture manager = findLectureByName(managerName);
+
+        if (manager == null) {
+            System.out.println("That lecturer does not exist.");
+            return;
+        }
+        if (!(manager.getDegree().equals("Dr") || manager.getDegree().equals("Prof"))) {
+            System.out.println("The lecturer must be a Dr. or Prof. to be the board manager");
+            return;
+        }
+//        continue this part-
+//        Board newBoard = new Board(boardName,manager);
+//        addBoardToArray(newBoard);
+        System.out.println("Board" + boardName +"added successfully.");
+    }
+
+    private boolean existBoard(String boardName) {
+        for (Board board : arrBoard) {
+            if (boardName != null && board.getName().equals(boardName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private Lecture findLectureByName(String name) {
+        for (Lecture lecture : arrLecture) {
+            if (lecture != null && lecture.getName().equals(name)) {
+                return lecture;
+            }
+        }
+        return null;
     }
 }
