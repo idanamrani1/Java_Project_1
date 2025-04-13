@@ -26,7 +26,7 @@ public class Main {
                     op1.addLectureToBoard();
                     break;
                 case "4":
-                    break;
+                    op1.updateMan();
                 case "5":
                     break;
                 case "6":

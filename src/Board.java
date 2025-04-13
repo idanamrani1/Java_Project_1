@@ -7,10 +7,9 @@ public class Board {
     public Board(String name,Lecture[] lectures,Lecture managerBoard) {
         setName(name);
         setLectures(lectures);
-        setManagerBoard(managerBoard);
+        //setManagerBoard(managerBoard); - אין צורך בה
+        this.managerBoard = managerBoard;
     }
-
-
 
     public void CreateMangaer(){
 
@@ -83,6 +82,12 @@ public class Board {
     }
 
     public void setManagerBoard(Lecture managerBoard) {
+        if (!(managerBoard.checkIsValidManager())) {
+            System.out.println("The lecturer must be a Dr. or Prof. to be the board manager");
+            return;
+        }
+
+        System.out.println("Wrote new lecture manager!");
         this.managerBoard = managerBoard;
     }
 }

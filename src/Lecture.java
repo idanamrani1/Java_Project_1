@@ -75,4 +75,11 @@ public class Lecture {
         this.belongDepartment = null;
     }
 
+    public boolean checkIsValidManager() {
+        if (!(this.degree.equals("Dr") || this.degree.equals("Prof"))) {
+            System.out.println("The lecturer must be a Dr. or Prof. to be the board manager");
+            return false;
+        }
+        return true;
+    }
 }

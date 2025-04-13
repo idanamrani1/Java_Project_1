@@ -137,7 +137,7 @@ public class OperatingSystem {
             System.out.println("That lecturer does not exist.");
             return;
         }
-        if (!(manager.getDegree().equals("Dr") || manager.getDegree().equals("Prof"))) {
+        if (!manager.checkIsValidManager()) {
             System.out.println("The lecturer must be a Dr. or Prof. to be the board manager");
             return;
         }
@@ -226,6 +226,31 @@ public class OperatingSystem {
         }
         board.addLecture(lecture);
     }
+
+
+
+    public void updateMan(){
+        System.out.println("Enter name of the board: ");
+        String boardName = input.nextLine();
+
+        Board board = findBoardByName(boardName);
+
+        if (board == null) {
+            System.out.println("Board " + boardName + " does not exist.");
+            return;
+        }
+
+        System.out.println("Enter name of the lecture to be updated: ");
+        String lectureName = input.nextLine();
+        Lecture toUpdateManager = findLectureByName(lectureName);
+
+        if (toUpdateManager == null) {
+            System.out.println("Lecture " + lectureName + " does not exist.");
+            return;
+        }
+        board.setManagerBoard(toUpdateManager);
+    }
+
 
 
     public void printAllBoards(){
