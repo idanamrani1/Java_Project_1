@@ -21,8 +21,10 @@ public class Main {
                     break;
                 case "2":
                     op1.insertBoard();
+                    break;
                 case "3":
                     op1.addLectureToBoard();
+                    break;
                 case "4":
                     break;
                 case "5":
@@ -37,6 +39,7 @@ public class Main {
                     break;
                 case "10":
                     op1.printAllBoards();
+                    break;
                 default:
                     System.out.println("Wrong input");
             }

@@ -123,6 +123,7 @@ public class OperatingSystem {
     public void insertBoard(){
         System.out.println("Enter board name: ");
         String boardName = input.nextLine();
+
         if (existBoard(boardName)){
             System.out.println("Board already exists.");
             return;
@@ -141,15 +142,14 @@ public class OperatingSystem {
             return;
         }
 
-        Board newBoard = new Board(boardName,manager,arrBoard);
+        Board newBoard = new Board(boardName,new Lecture[1],manager);
         addBoardToArray(newBoard);
-        
-        System.out.println("Board" + boardName +"added successfully.");
+        System.out.println("Board " + boardName +" added successfully.");
     }
 
     private boolean existBoard(String boardName) {
-        for (Board board : arrBoard) {
-            if (boardName != null && board.getName().equals(boardName)) {
+        for (int i = 0; i < arrBoard.length; i++) {
+            if (arrBoard[i] != null && arrBoard[i].getName().equals(boardName)) {
                 return true;
             }
         }
@@ -196,51 +196,52 @@ public class OperatingSystem {
     }
 
 
-    public void addLectureToBoard(){
-        System.out.println("Enter the name of the board:");
-        String boardName = input.nextLine();
-
-        Board board = findBoardByName(boardName);
-        if (board == null) {
-            System.out.println("Board not found.");
-            return;
-        }
-
-        System.out.println("Enter the name of the lecturer to add:");
-        String lecturerName = input.nextLine();
-
-        Lecture lecture = findLectureByName(lecturerName);
-        if (lecture == null) {
-            System.out.println("Lecture not found.");
-            return;
-        }
-
-
-        boolean added = board.addMember(lecture);
-        if (!added) {
-            System.out.println("Lecture already exists.");
-            return;
-        }
-        else{
-            System.out.println("Lecture" + lecturerName + "added successfully to the board" + boardName + ".");
-            return;
-        }
-    }
 
     private Board findBoardByName(String boardName) {
-        for (Board board : arrBoard) {
-            if (board.getName().equals(boardName)) {
-                return board;
+        for (int i = 0; i < arrBoard.length; i++) {
+            if (arrBoard[i] != null && arrBoard[i].getName().equals(boardName)) {
+                return arrBoard[i];
             }
         }
         return null;
     }
 
+    public void addLectureToBoard(){
+        System.out.println("Enter name of the board: ");
+        String boardName = input.nextLine();
+
+        Board board = findBoardByName(boardName);
+        if (board == null) {
+            System.out.println("Board " + boardName + " does not found.");
+            return;
+        }
+
+        System.out.println("Enter name of the lecture to be added: ");
+        String lectureName = input.nextLine();
+
+        Lecture lecture = findLectureByName(lectureName);
+        if (lecture == null) {
+            System.out.println("Lecture " + lectureName + " does not exist.");
+            return;
+        }
+        board.addLecture(lecture);
+    }
+
 
     public void printAllBoards(){
-        for (int i=0; i<arrBoard.length; i++) {
-            if (arrBoard[i] != null) {
-                System.out.println(arrBoard[i].getDetails());
+        for (Board board : arrBoard) {
+            if (board != null) {
+                System.out.println("Board name: " + board.getName());
+
+                System.out.println("Name of the Manager: " + board.getManagerBoard().getName());
+
+                System.out.print("Members: ");
+                for (Lecture member : board.getLectures()){
+                    if (member != null && !member.getName().equals(board.getManagerBoard().getName())) {
+                        System.out.print(member.getName() + ", ");
+                    }
+                }
+                System.out.println();
             }
         }
     }
