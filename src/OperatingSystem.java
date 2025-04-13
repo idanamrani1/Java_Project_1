@@ -140,9 +140,10 @@ public class OperatingSystem {
             System.out.println("The lecturer must be a Dr. or Prof. to be the board manager");
             return;
         }
-//        continue this part-
-//        Board newBoard = new Board(boardName,manager);
-//        addBoardToArray(newBoard);
+
+        Board newBoard = new Board(boardName,manager,arrBoard);
+        addBoardToArray(newBoard);
+        
         System.out.println("Board" + boardName +"added successfully.");
     }
 
@@ -155,6 +156,36 @@ public class OperatingSystem {
         return false;
     }
 
+    private boolean isBoardArrayFull() {
+        for (Board board : arrBoard) {
+            if (board == null) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    private void addBoardToArray(Board newBoard) {
+        if (isBoardArrayFull()){
+            extendBoardsArray();
+        }
+        for (int i = 0; i < arrBoard.length; i++) {
+            if (arrBoard[i] == null) {
+                arrBoard[i] = newBoard;
+                return;
+            }
+        }
+    }
+
+    private void extendBoardsArray() {
+        Board[] newArr = new Board[arrBoard.length * 2];
+        for (int i = 0; i < arrBoard.length; i++) {
+            newArr[i] = arrBoard[i];
+        }
+        arrBoard = newArr;
+    }
+
+
     private Lecture findLectureByName(String name) {
         for (Lecture lecture : arrLecture) {
             if (lecture != null && lecture.getName().equals(name)) {
@@ -162,5 +193,55 @@ public class OperatingSystem {
             }
         }
         return null;
+    }
+
+
+    public void addLectureToBoard(){
+        System.out.println("Enter the name of the board:");
+        String boardName = input.nextLine();
+
+        Board board = findBoardByName(boardName);
+        if (board == null) {
+            System.out.println("Board not found.");
+            return;
+        }
+
+        System.out.println("Enter the name of the lecturer to add:");
+        String lecturerName = input.nextLine();
+
+        Lecture lecture = findLectureByName(lecturerName);
+        if (lecture == null) {
+            System.out.println("Lecture not found.");
+            return;
+        }
+
+
+        boolean added = board.addMember(lecture);
+        if (!added) {
+            System.out.println("Lecture already exists.");
+            return;
+        }
+        else{
+            System.out.println("Lecture" + lecturerName + "added successfully to the board" + boardName + ".");
+            return;
+        }
+    }
+
+    private Board findBoardByName(String boardName) {
+        for (Board board : arrBoard) {
+            if (board.getName().equals(boardName)) {
+                return board;
+            }
+        }
+        return null;
+    }
+
+
+    public void printAllBoards(){
+        for (int i=0; i<arrBoard.length; i++) {
+            if (arrBoard[i] != null) {
+                System.out.println(arrBoard[i].getDetails());
+            }
+        }
     }
 }

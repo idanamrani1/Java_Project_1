@@ -11,26 +11,32 @@ public class Main {
         boolean isRunning = true;
         while (isRunning) {
             printMenu();
-            char val = input.nextLine().charAt(0);
-            switch (val) {
-                case '0':
+            String choice = input.nextLine();
+            switch (choice) {
+                case "0":
                     isRunning = false;
                     break;
-                case '1':
+                case "1":
                     op1.insertLectureDetails();
                     break;
-                case '2':
+                case "2":
                     op1.insertBoard();
-                case '3':
+                case "3":
+                    op1.addLectureToBoard();
+                case "4":
                     break;
-                case '4':
+                case "5":
                     break;
-                case '7':
-
+                case "6":
                     break;
-                case '8':
-
+                case "7":
                     break;
+                case "8":
+                    break;
+                case "9":
+                    break;
+                case "10":
+                    op1.printAllBoards();
                 default:
                     System.out.println("Wrong input");
             }
