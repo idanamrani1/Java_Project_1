@@ -24,7 +24,7 @@ public class OperatingSystem {
             return;
         }
 
-        System.out.println("Enter Lecture degree: ");
+        System.out.println("Enter Lecture degree: (Prof/Dr)");
         String degree = input.nextLine();
 
         System.out.println("Enter name of the degree: ");
@@ -259,12 +259,12 @@ public class OperatingSystem {
             if (board != null) {
                 System.out.println("Board name: " + board.getName());
 
-                System.out.println("Name of the Manager: " + board.getManagerBoard().getName());
+                System.out.println("Name of the Manager: " + board.getManagerBoard());
 
                 System.out.print("Members: ");
                 for (Lecture member : board.getLectures()){
                     if (member != null && !member.getName().equals(board.getManagerBoard().getName())) {
-                        System.out.print(member.getName() + ", ");
+                        System.out.print(String.join(" , ", member.getName()));
                     }
                 }
                 System.out.println();

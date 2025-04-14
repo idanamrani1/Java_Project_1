@@ -82,10 +82,10 @@ public class Board {
     public void setManagerBoard(Lecture managerBoard) {
         if ((managerBoard.checkIsValidManager())) {
             System.out.println(managerBoard + " updated to be the manager board");
+            this.managerBoard = managerBoard;
         }
         else{
         System.out.println("An error occurred while updating the manager board");
-        this.managerBoard = managerBoard;
         }
     }
 
