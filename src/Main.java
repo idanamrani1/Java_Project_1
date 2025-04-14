@@ -20,6 +20,7 @@ public class Main {
                     op1.insertLectureDetails();
                     break;
                 case '2':
+
                     break;
                 case '3':
                     break;

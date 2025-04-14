@@ -5,6 +5,7 @@ public class OperatingSystem {
     private static Lecture[] arrLecture = new Lecture[1];
     private static Department[] arrDepartment = new Department[1];
 
+
     public void printWelcome() {
         System.out.println("Welcome to our system! 🎓");
         System.out.print("To get started, please enter the name of your college: ");
@@ -23,7 +24,7 @@ public class OperatingSystem {
             return;
         }
 
-        System.out.println("Enter Lecture degree: ");
+        System.out.println("Enter Lecture degree(First/Second/Doctor/Professor): ");
         String degree = input.nextLine();
 
         System.out.println("Enter name of the degree: ");
@@ -117,4 +118,33 @@ public class OperatingSystem {
         }
         return newArr;
     }
+
+    public boolean allowedManager(){
+        for(Lecture lecture: arrLecture){
+            if(lecture.getDegree()!= "Doctor" || lecture.getDegree()!= "Professor"){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void createMangaer(Lecture managerBoard){
+        if(allowedManager()){
+            System.out.println( managerBoard+ "successfully assigned to the board");
+
+        }
+        else{
+            System.out.println("Failed to assign" +managerBoard + "to the board");
+        }
+    }
+
+
+    public void createBoard(){
+        System.out.println("Enter board name:");
+        String name = input.nextLine();
+        System.out.println("Enter manager for board:");
+
+    }
+
+
 }

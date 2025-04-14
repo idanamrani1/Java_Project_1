@@ -3,17 +3,10 @@ public class Board {
     private Lecture[] lectures;
     private Lecture managerBoard;
 
-
-    public Board(String name,Lecture[] lectures,Lecture managerBoard) {
+    public Board(String name,Lecture managerBoard) {
         setName(name);
-        setLectures(lectures);
         setManagerBoard(managerBoard);
     }
-
-    public void CreateMangaer(){
-
-    }
-
 
     public String getName() {
         return name;
