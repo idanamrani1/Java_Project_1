@@ -3,10 +3,61 @@ public class Board {
     private Lecture[] lectures;
     private Lecture managerBoard;
 
-    public Board(String name,Lecture managerBoard) {
+
+    public Board(String name,Lecture[] lectures,Lecture managerBoard) {
         setName(name);
-        setManagerBoard(managerBoard);
+        setLectures(lectures);
+        this.managerBoard = managerBoard;
     }
+
+    public void addLecture(Lecture lecture){
+        if (lecture.getName().equals(managerBoard.getName())) {
+            System.out.println("Can't add the lecture. He is the board manager");
+            return ;
+        }
+        for (int i = 0; i < lectures.length; i++) {
+            if (lectures[i] != null && lectures[i].getName().equals(lecture.getName())) {
+                System.out.println("Lecture already exists.");
+                return ;
+            }
+        }
+        if (OperationsOnArrays.isFullArray(lectures)){
+            expandLecturesArray();
+        }
+        addLectureToBoard(lecture);
+
+        System.out.println("lecture " + lecture.getName() + " added to the board.");
+    }
+
+    private boolean isFullArray(){
+        for ( int i = 0 ; i < lectures.length ; i++){
+            if (lectures[i] == null){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /* צריך לבדוק אם אנחנו צריכים את פעולת ההרחבה רק על מרצים או על עוד דברים, אם זה לא ספציפי, זה יותר מסובך...,
+      ניתן לעשות cast, כדי להחזיר לאובייקט מסוג Lecture[] */
+
+    private void expandLecturesArray(){
+        Lecture[] newArray = new Lecture[lectures.length*2];
+        for ( int i = 0 ; i < lectures.length ; i++){
+            newArray[i] = lectures[i];
+        }
+        lectures = newArray;
+    }
+
+    private void addLectureToBoard(Lecture lecture){
+        for ( int i = 0 ; i < lectures.length ; i++){
+            if (lectures[i] == null){
+                lectures[i] = lecture;
+                break;
+            }
+        }
+    }
+
 
     public String getName() {
         return name;
@@ -29,6 +80,13 @@ public class Board {
     }
 
     public void setManagerBoard(Lecture managerBoard) {
+        if ((managerBoard.checkIsValidManager())) {
+            System.out.println(managerBoard + " updated to be the manager board");
+        }
+        else{
+        System.out.println("An error occurred while updating the manager board");
         this.managerBoard = managerBoard;
+        }
     }
+
 }

@@ -4,7 +4,7 @@ public class OperatingSystem {
     private Scanner input = new Scanner(System.in);
     private static Lecture[] arrLecture = new Lecture[1];
     private static Department[] arrDepartment = new Department[1];
-
+    private static Board[] arrBoard = new Board[1];
 
     public void printWelcome() {
         System.out.println("Welcome to our system! 🎓");
@@ -24,7 +24,7 @@ public class OperatingSystem {
             return;
         }
 
-        System.out.println("Enter Lecture degree(First/Second/Doctor/Professor): ");
+        System.out.println("Enter Lecture degree: ");
         String degree = input.nextLine();
 
         System.out.println("Enter name of the degree: ");
@@ -119,32 +119,156 @@ public class OperatingSystem {
         return newArr;
     }
 
-    public boolean allowedManager(){
-        for(Lecture lecture: arrLecture){
-            if(lecture.getDegree()!= "Doctor" || lecture.getDegree()!= "Professor"){
+
+    public void insertBoard(){
+        System.out.println("Enter board name: ");
+        String boardName = input.nextLine();
+
+        if (existBoard(boardName)){
+            System.out.println("Board already exists.");
+            return;
+        }
+        System.out.println("Enter the name of the lecturer that will be the board manager:");
+        String managerName = input.nextLine();
+
+        Lecture manager = findLectureByName(managerName);
+
+        if (manager == null) {
+            System.out.println("That lecturer does not exist.");
+            return;
+        }
+        if (manager.checkIsValidManager()) {
+            System.out.println(managerName + " is now the board manager");
+
+            Board newBoard = new Board(boardName, new Lecture[1], manager);
+            addBoardToArray(newBoard);
+            System.out.println("Board " + boardName + " added successfully.");
+            }
+            else {
+            System.out.println("The lecturer must be a Dr. or Prof. to be the board manager");
+        }
+    }
+
+    private boolean existBoard(String boardName) {
+        for (int i = 0; i < arrBoard.length; i++) {
+            if (arrBoard[i] != null && arrBoard[i].getName().equals(boardName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isBoardArrayFull() {
+        for (Board board : arrBoard) {
+            if (board == null) {
                 return false;
             }
         }
         return true;
     }
-
-    public void createMangaer(Lecture managerBoard){
-        if(allowedManager()){
-            System.out.println( managerBoard+ "successfully assigned to the board");
-
+    
+    private void addBoardToArray(Board newBoard) {
+        if (isBoardArrayFull()){
+            extendBoardsArray();
         }
-        else{
-            System.out.println("Failed to assign" +managerBoard + "to the board");
+        for (int i = 0; i < arrBoard.length; i++) {
+            if (arrBoard[i] == null) {
+                arrBoard[i] = newBoard;
+                return;
+            }
+        }
+    }
+
+    private void extendBoardsArray() {
+        Board[] newArr = new Board[arrBoard.length * 2];
+        for (int i = 0; i < arrBoard.length; i++) {
+            newArr[i] = arrBoard[i];
+        }
+        arrBoard = newArr;
+    }
+
+
+    private Lecture findLectureByName(String name) {
+        for (Lecture lecture : arrLecture) {
+            if (lecture != null && lecture.getName().equals(name)) {
+                return lecture;
+            }
+        }
+        return null;
+    }
+
+
+
+    private Board findBoardByName(String boardName) {
+        for (int i = 0; i < arrBoard.length; i++) {
+            if (arrBoard[i] != null && arrBoard[i].getName().equals(boardName)) {
+                return arrBoard[i];
+            }
+        }
+        return null;
+    }
+
+    public void addLectureToBoard(){
+        System.out.println("Enter name of the board: ");
+        String boardName = input.nextLine();
+
+        Board board = findBoardByName(boardName);
+        if (board == null) {
+            System.out.println("Board " + boardName + " does not found.");
+            return;
+        }
+
+        System.out.println("Enter name of the lecture to be added: ");
+        String lectureName = input.nextLine();
+
+        Lecture lecture = findLectureByName(lectureName);
+        if (lecture == null) {
+            System.out.println("Lecture " + lectureName + " does not exist.");
+            return;
+        }
+        board.addLecture(lecture);
+    }
+
+
+
+    public void updateMan() {
+        System.out.println("Enter name of the board: ");
+        String boardName = input.nextLine();
+
+        Board board = findBoardByName(boardName);
+
+        if (board == null) {
+            System.out.println("Board " + boardName + " does not exist.");
+            return;
+        }
+
+        System.out.println("Enter name of the lecture to be updated: ");
+        String lectureName = input.nextLine();
+        Lecture toUpdateManager = findLectureByName(lectureName);
+
+        if (toUpdateManager == null) {
+            System.out.println("Lecture " + lectureName + " does not exist.");
+        } else {
+            board.setManagerBoard(toUpdateManager);
         }
     }
 
 
-    public void createBoard(){
-        System.out.println("Enter board name:");
-        String name = input.nextLine();
-        System.out.println("Enter manager for board:");
+    public void printAllBoards(){
+        for (Board board : arrBoard) {
+            if (board != null) {
+                System.out.println("Board name: " + board.getName());
 
+                System.out.println("Name of the Manager: " + board.getManagerBoard().getName());
+
+                System.out.print("Members: ");
+                for (Lecture member : board.getLectures()){
+                    if (member != null && !member.getName().equals(board.getManagerBoard().getName())) {
+                        System.out.print(member.getName() + ", ");
+                    }
+                }
+                System.out.println();
+            }
+        }
     }
-
-
 }

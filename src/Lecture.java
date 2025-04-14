@@ -75,4 +75,17 @@ public class Lecture {
         this.belongDepartment = null;
     }
 
+    public boolean checkIsValidManager() {
+        if (((this.degree.equals("Dr")) || (this.degree.equals("Prof")))) {
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    @Override
+    public String toString() {
+        return name;
+    }
+
 }
