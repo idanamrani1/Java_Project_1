@@ -36,7 +36,7 @@ public class OperatingSystem {
 
         Lecture newLecture = new Lecture(name, id, degree, nameDegree, salary);
 
-        if (lectureIsFull()) {
+        if ((OperationsOnArrays.isFullArray(arrLecture))) {
             arrLecture = extendLectureArray(arrLecture);
         }
         addLectureToArray(newLecture);
@@ -64,14 +64,14 @@ public class OperatingSystem {
         }
     }
 
-    private boolean lectureIsFull() {
-        for (Lecture lecture : arrLecture) {
-            if (lecture == null) {
-                return false;
-            }
-        }
-        return true;
-    }
+//    private boolean lectureIsFull() {
+//        for (Lecture lecture : arrLecture) {
+//            if (lecture == null) {
+//                return false;
+//            }
+//        }
+//        return true;
+//    }
 
     private boolean existLecture(String id) {
         for (Lecture lecture : arrLecture) {
