@@ -1,3 +1,6 @@
+import java.util.Arrays;
+import java.util.Objects;
+
 public class Board {
     private String name;
     private Lecture[] lectures;
@@ -58,7 +61,6 @@ public class Board {
         }
     }
 
-
     public String getName() {
         return name;
     }
@@ -89,4 +91,15 @@ public class Board {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Board board = (Board) o;
+        return Objects.deepEquals(lectures, board.lectures);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(lectures);
+    }
 }

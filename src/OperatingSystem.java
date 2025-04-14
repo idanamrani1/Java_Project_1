@@ -119,7 +119,6 @@ public class OperatingSystem {
         return newArr;
     }
 
-
     public void insertBoard(){
         System.out.println("Enter board name: ");
         String boardName = input.nextLine();
@@ -187,7 +186,6 @@ public class OperatingSystem {
         arrBoard = newArr;
     }
 
-
     private Lecture findLectureByName(String name) {
         for (Lecture lecture : arrLecture) {
             if (lecture != null && lecture.getName().equals(name)) {
@@ -196,8 +194,6 @@ public class OperatingSystem {
         }
         return null;
     }
-
-
 
     private Board findBoardByName(String boardName) {
         for (int i = 0; i < arrBoard.length; i++) {
@@ -229,8 +225,6 @@ public class OperatingSystem {
         board.addLecture(lecture);
     }
 
-
-
     public void updateMan() {
         System.out.println("Enter name of the board: ");
         String boardName = input.nextLine();
@@ -253,7 +247,6 @@ public class OperatingSystem {
         }
     }
 
-
     public void printAllBoards(){
         for (Board board : arrBoard) {
             if (board != null) {
@@ -264,11 +257,36 @@ public class OperatingSystem {
                 System.out.print("Members: ");
                 for (Lecture member : board.getLectures()){
                     if (member != null && !member.getName().equals(board.getManagerBoard().getName())) {
-                        System.out.print(String.join(" , ", member.getName()));
+                        System.out.print(String.join(" , ", member.getName()) + " ");
                     }
                 }
                 System.out.println();
             }
+        }
+    }
+    public void removeFromBoard(){
+        System.out.println("Enter name of the board: ");
+        String boardName = input.nextLine();
+
+        Board board = findBoardByName(boardName);
+
+        if (board == null) {
+            System.out.println("Board " + boardName + " does not exist.");
+            return;
+        }
+        System.out.println("Enter the name you want to remove: ");
+        String memberName = input.nextLine();
+        if (findLectureByName(memberName) != null){
+            for(int i =0;i<board.getLectures().length;i++){
+                if(board.getLectures()[i] != null && board.getLectures()[i].getName().equals(memberName)){
+                    board.getLectures()[i] = null;
+                }
+            }
+            System.out.println(memberName + " deleted successfully");
+        }
+
+        else{
+            System.out.println("Lecture " +memberName + " does not exist");
         }
     }
 }
