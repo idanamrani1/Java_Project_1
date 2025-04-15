@@ -289,4 +289,35 @@ public class OperatingSystem {
             System.out.println("Lecture " +memberName + " does not exist");
         }
     }
+    public double getSalaryForAll(Department department){
+        // option 8
+        int counter = 0;
+        double sum = 0;
+    if(department != null){
+        for (int i =0; i <department.getNumOfLecture().length;i++){
+            if(department.getNumOfLecture()[i] != null){
+            sum += department.getNumOfLecture()[i].getSalary();
+            counter++;
+            }
+        }
+    }
+    else { // option 7
+        for(int i = 0;i < arrLecture.length;i++){
+            sum += arrLecture[i].getSalary();
+            counter ++;
+        }
+    }
+        return sum / counter;
+    }
+
+
+    public Department findDepartment(String department){
+        for (int i =0; i < arrDepartment.length;i++){
+            if(arrDepartment[i].getDepName().equals(department)){
+                return arrDepartment[i];
+            }
+        }
+        System.out.println("Department does not exist");
+        return null;
+    }
 }

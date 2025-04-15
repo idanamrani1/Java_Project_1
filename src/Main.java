@@ -33,8 +33,15 @@ public class Main {
                 case "6":
                     break;
                 case "7":
+                    System.out.println("The avg is: " +op1.getSalaryForAll(null));
                     break;
                 case "8":
+                    System.out.println("Enter name of department:");
+                    String name = input.nextLine();
+                    Department department = op1.findDepartment(name);
+                    if(department!= null){
+                        System.out.println("The avg is: " +op1.getSalaryForAll(department));
+                    }
                     break;
                 case "9":
                     break;
