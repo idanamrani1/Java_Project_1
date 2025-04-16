@@ -1,3 +1,4 @@
+import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class OperatingSystem {
@@ -49,8 +50,7 @@ public class OperatingSystem {
 
         if (added) {
             System.out.println("Lecture successfully assigned to department.");
-        }
-        else {
+        } else {
             System.out.println("Failed to assign lecture to department.");
         }
     }
@@ -97,7 +97,7 @@ public class OperatingSystem {
             }
         }
         Lecture[] newDepLectures = new Lecture[5];
-        Department newDep = new Department(name, 0,newDepLectures);
+        Department newDep = new Department(name, 0, newDepLectures);
 
         for (int i = 0; i < arrDepartment.length; i++) {
             if (arrDepartment[i] == null) {
@@ -119,11 +119,11 @@ public class OperatingSystem {
         return newArr;
     }
 
-    public void insertBoard(){
+    public void insertBoard() {
         System.out.println("Enter board name: ");
         String boardName = input.nextLine();
 
-        if (existBoard(boardName)){
+        if (existBoard(boardName)) {
             System.out.println("Board already exists.");
             return;
         }
@@ -142,8 +142,7 @@ public class OperatingSystem {
             Board newBoard = new Board(boardName, new Lecture[1], manager);
             addBoardToArray(newBoard);
             System.out.println("Board " + boardName + " added successfully.");
-            }
-            else {
+        } else {
             System.out.println("The lecturer must be a Dr. or Prof. to be the board manager");
         }
     }
@@ -165,9 +164,9 @@ public class OperatingSystem {
         }
         return true;
     }
-    
+
     private void addBoardToArray(Board newBoard) {
-        if (isBoardArrayFull()){
+        if (isBoardArrayFull()) {
             extendBoardsArray();
         }
         for (int i = 0; i < arrBoard.length; i++) {
@@ -204,7 +203,7 @@ public class OperatingSystem {
         return null;
     }
 
-    public void addLectureToBoard(){
+    public void addLectureToBoard() {
         System.out.println("Enter name of the board: ");
         String boardName = input.nextLine();
 
@@ -247,15 +246,15 @@ public class OperatingSystem {
         }
     }
 
-    public void printAllBoards(){
+    public void printAllBoards() {
         for (Board board : arrBoard) {
             if (board != null) {
                 System.out.println("Board name: " + board.getName());
 
-                System.out.println("Name of the Manager: " + board.getManagerBoard());
+                System.out.println("Name of the Manager: " + board.getManagerBoard().getName());
 
                 System.out.print("Members: ");
-                for (Lecture member : board.getLectures()){
+                for (Lecture member : board.getLectures()) {
                     if (member != null && !member.getName().equals(board.getManagerBoard().getName())) {
                         System.out.print(String.join(" , ", member.getName()) + " ");
                     }
@@ -263,8 +262,10 @@ public class OperatingSystem {
                 System.out.println();
             }
         }
+
     }
-    public void removeFromBoard(){
+
+    public void removeFromBoard() {
         System.out.println("Enter name of the board: ");
         String boardName = input.nextLine();
 
@@ -276,48 +277,54 @@ public class OperatingSystem {
         }
         System.out.println("Enter the name you want to remove: ");
         String memberName = input.nextLine();
-        if (findLectureByName(memberName) != null){
-            for(int i =0;i<board.getLectures().length;i++){
-                if(board.getLectures()[i] != null && board.getLectures()[i].getName().equals(memberName)){
+        if (findLectureByName(memberName) != null) {
+            for (int i = 0; i < board.getLectures().length; i++) {
+                if (board.getLectures()[i] != null && board.getLectures()[i].getName().equals(memberName)) {
                     board.getLectures()[i] = null;
                 }
             }
             System.out.println(memberName + " deleted successfully");
-        }
-
-        else{
-            System.out.println("Lecture " +memberName + " does not exist");
+        } else {
+            System.out.println("Lecture " + memberName + " does not exist");
         }
     }
-    public double getSalaryForAll(Department department){
+
+    public double getSalaryForAll(Department department) {
         // option 8
         int counter = 0;
         double sum = 0;
-    if(department != null){
-        for (int i =0; i <department.getNumOfLecture().length;i++){
-            if(department.getNumOfLecture()[i] != null){
-            sum += department.getNumOfLecture()[i].getSalary();
-            counter++;
+        if (department != null) {
+            for (int i = 0; i < department.getNumOfLecture().length; i++) {
+                if (department.getNumOfLecture()[i] != null) {
+                    sum += department.getNumOfLecture()[i].getSalary();
+                    counter++;
+                }
+            }
+        } else { // option 7
+            for (int i = 0; i < arrLecture.length; i++) {
+                sum += arrLecture[i].getSalary();
+                counter++;
             }
         }
-    }
-    else { // option 7
-        for(int i = 0;i < arrLecture.length;i++){
-            sum += arrLecture[i].getSalary();
-            counter ++;
-        }
-    }
         return sum / counter;
     }
 
 
-    public Department findDepartment(String department){
-        for (int i =0; i < arrDepartment.length;i++){
-            if(arrDepartment[i].getDepName().equals(department)){
+    public Department findDepartment(String department) {
+        for (int i = 0; i < arrDepartment.length; i++) {
+            if (arrDepartment[i].getDepName().equals(department)) {
                 return arrDepartment[i];
             }
         }
         System.out.println("Department does not exist");
         return null;
+    }
+
+    public void lectureDetails(){
+        for(Lecture lecture : arrLecture){
+            if(lecture != null){
+                System.out.println(lecture);
+            }
+        }
     }
 }

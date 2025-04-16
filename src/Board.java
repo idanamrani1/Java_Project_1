@@ -28,6 +28,12 @@ public class Board {
             expandLecturesArray();
         }
         addLectureToBoard(lecture);
+        Board[] boards = lecture.getBelongBoard();
+        if(boards == null){
+            boards = new Board[1];
+            boards[0] = this;
+            lecture.setBelongBoard(boards);
+        }
 
         System.out.println("lecture " + lecture.getName() + " added to the board.");
     }
@@ -83,13 +89,14 @@ public class Board {
 
     public void setManagerBoard(Lecture managerBoard) {
         if ((managerBoard.checkIsValidManager())) {
-            System.out.println(managerBoard + " updated to be the manager board");
+            System.out.println(managerBoard.getName() + " updated to be the manager board");
             this.managerBoard = managerBoard;
         }
         else{
         System.out.println("An error occurred while updating the manager board");
         }
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -102,4 +109,5 @@ public class Board {
     public int hashCode() {
         return Arrays.hashCode(lectures);
     }
+
 }

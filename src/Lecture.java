@@ -7,6 +7,7 @@ public class Lecture {
     private String nameDegree;
     private double salary;
     private Department belongDepartment;
+    private Board[] belongBoard;
 
     public void setDepartment(Department department) {
         if (this.belongDepartment != null) {
@@ -29,18 +30,18 @@ public class Lecture {
         setBelongDep(belongDepartment);
     }
 
+    public Board[] getBelongBoard() {
+        return belongBoard;
+    }
+
+    public void setBelongBoard(Board[] belongBoard) {
+        this.belongBoard = belongBoard;
+    }
 
     public String getName() {
         return name;
     }
 
-    public String getDegree() {
-        return degree;
-    }
-
-    public String getNameDegree() {
-        return nameDegree;
-    }
 
     public double getSalary() {
         return salary;
@@ -75,17 +76,36 @@ public class Lecture {
         this.belongDepartment = null;
     }
 
+
     public boolean checkIsValidManager() {
         if (((this.degree.equals("Dr")) || (this.degree.equals("Prof")))) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
+
     @Override
     public String toString() {
-        return name;
+        return "Name: " + name +
+                ", ID: " + id +
+                ", Degree: " + degree +
+                ", Salary: " + salary +
+                ", Boards: " + lectureBoardDetails();
     }
-
-}
+        public String lectureBoardDetails(){
+            if (belongBoard == null) {
+                return "None";
+            }
+            String details = "";
+            for (int i = 0; i < belongBoard.length; i++) {
+                if (belongBoard[i] != null) {
+                    details += belongBoard[i].getName() + " ";
+                }
+            }
+            if(details.equals("")) {
+                return "None";
+            }
+            return details;
+        }
+    }

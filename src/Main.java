@@ -44,6 +44,7 @@ public class Main {
                     }
                     break;
                 case "9":
+                    op1.lectureDetails();
                     break;
                 case "10":
                     op1.printAllBoards();
