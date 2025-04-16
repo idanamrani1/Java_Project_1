@@ -38,18 +38,6 @@ public class Board {
         System.out.println("lecture " + lecture.getName() + " added to the board.");
     }
 
-    private boolean isFullArray(){
-        for ( int i = 0 ; i < lectures.length ; i++){
-            if (lectures[i] == null){
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /* צריך לבדוק אם אנחנו צריכים את פעולת ההרחבה רק על מרצים או על עוד דברים, אם זה לא ספציפי, זה יותר מסובך...,
-      ניתן לעשות cast, כדי להחזיר לאובייקט מסוג Lecture[] */
-
     private void expandLecturesArray(){
         Lecture[] newArray = new Lecture[lectures.length*2];
         for ( int i = 0 ; i < lectures.length ; i++){

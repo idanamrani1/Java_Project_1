@@ -1,4 +1,5 @@
-import java.sql.SQLOutput;
+
+import javax.print.DocFlavor;
 import java.util.Scanner;
 
 public class OperatingSystem {
@@ -64,14 +65,6 @@ public class OperatingSystem {
         }
     }
 
-//    private boolean lectureIsFull() {
-//        for (Lecture lecture : arrLecture) {
-//            if (lecture == null) {
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
 
     private boolean existLecture(String id) {
         for (Lecture lecture : arrLecture) {
@@ -312,11 +305,10 @@ public class OperatingSystem {
 
     public Department findDepartment(String department) {
         for (int i = 0; i < arrDepartment.length; i++) {
-            if (arrDepartment[i].getDepName().equals(department)) {
+            if (arrDepartment[i] != null && arrDepartment[i].getDepName().equals(department)) {
                 return arrDepartment[i];
             }
         }
-        System.out.println("Department does not exist");
         return null;
     }
 
@@ -327,4 +319,35 @@ public class OperatingSystem {
             }
         }
     }
+
+    public void addDepartment(){
+        System.out.println("Enter department name:");
+        String depName = input.nextLine();
+
+        if(findDepartment(depName)!=null){
+            System.out.println("Department already exist");
+            return;
+        }
+
+        System.out.println("Enter numbers of students:");
+        int numStudents = input.nextInt();
+        input.nextLine();
+
+        Lecture[] lectures = new Lecture[1];
+        Department newDep = new Department(depName,numStudents,lectures);
+
+        if(OperationsOnArrays.isFullArray(arrDepartment)){
+            arrDepartment = extendDepartmentArray(arrDepartment);
+        }
+
+        for (int i =0;i<arrDepartment.length;i++){
+            if(arrDepartment[i] == null){
+                arrDepartment[i] = newDep;
+                break;
+            }
+        }
+        System.out.println("Department "+depName + " added successfully");
+    }
+
+
 }

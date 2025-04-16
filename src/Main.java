@@ -31,6 +31,7 @@ public class Main {
                     op1.removeFromBoard();
                     break;
                 case "6":
+                    op1.addDepartment();
                     break;
                 case "7":
                     System.out.println("The avg is: " +op1.getSalaryForAll(null));
