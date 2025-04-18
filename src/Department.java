@@ -23,6 +23,13 @@ public class Department {
             if (numOfLecture[i] == null) {
                 numOfLecture[i] = lecture;
                 lecture.setDepartment(this);
+                /*
+                this- הינה מתייחסת לאובייקט הנוכחי
+                אז אנחנו שולחים את המחלקה לאובייקט מרצה,
+                זאת אומר, אנחנו שייכים למחלקת לימוד מסויימת,
+                ואנחנו רוצים לעדכן שהמרצה (שהוא האובייקט) שהמחלקה שלו היא המחלקה הנתונהת
+                לכן רשום הthis בפנים.
+                 */
                 return true;
             }
         }
