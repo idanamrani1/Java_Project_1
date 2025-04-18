@@ -231,9 +231,11 @@ public class OperatingSystem {
         System.out.println("Enter the name you want to remove: ");
         String memberName = input.nextLine();
         if (findLectureByName(memberName) != null) {
+            Lecture lecture = findLectureByName(memberName);
             for (int i = 0; i < board.getLectures().length; i++) {
                 if (board.getLectures()[i] != null && board.getLectures()[i].getName().equals(memberName)) {
                     board.getLectures()[i] = null;
+                    lecture.setBelongBoard(null); // we need to check that this option works on +1 boards.
                 }
             }
             System.out.println(memberName + " deleted successfully");
