@@ -81,7 +81,7 @@ public class Board {
             this.managerBoard = managerBoard;
         }
         else{
-        System.out.println("An error occurred while updating the manager board");
+        System.out.println("The lecturer must be a Dr. or Prof. to be the board manager");
         }
     }
 

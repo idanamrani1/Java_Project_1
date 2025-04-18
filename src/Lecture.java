@@ -91,7 +91,9 @@ public class Lecture {
                 ", ID: " + id +
                 ", Degree: " + degree +
                 ", Salary: " + salary +
+                ", Departments: " + belongDepartment +
                 ", Boards: " + lectureBoardDetails();
+
     }
         public String lectureBoardDetails(){
             if (belongBoard == null) {

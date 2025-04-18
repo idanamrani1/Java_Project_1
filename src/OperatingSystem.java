@@ -1,5 +1,4 @@
 
-import javax.print.DocFlavor;
 import java.util.Scanner;
 
 public class OperatingSystem {
@@ -26,7 +25,7 @@ public class OperatingSystem {
             return;
         }
 
-        System.out.println("Enter Lecture degree: (Prof/Dr)");
+        System.out.println("Enter Lecture degree: (Prof/Dr/First/Second)");
         String degree = input.nextLine();
 
         System.out.println("Enter name of the degree: ");
@@ -42,18 +41,7 @@ public class OperatingSystem {
             arrLecture = extendLectureArray(arrLecture);
         }
         addLectureToArray(newLecture);
-
-        System.out.println("Enter Department name to assign this lecture: ");
-        String depName = input.nextLine();
-
-        Department dep = findOrCreateDepartment(depName);
-        boolean added = dep.addLecturer(newLecture);
-
-        if (added) {
-            System.out.println("Lecture successfully assigned to department.");
-        } else {
-            System.out.println("Failed to assign lecture to department.");
-        }
+        System.out.println( "Lecture " + name + " added successfully");
     }
 
     private void addLectureToArray(Lecture newLecture) {
@@ -64,7 +52,6 @@ public class OperatingSystem {
             }
         }
     }
-
 
     private boolean existLecture(String id) {
         for (Lecture lecture : arrLecture) {
@@ -308,6 +295,7 @@ public class OperatingSystem {
             if (arrDepartment[i] != null && arrDepartment[i].getDepName().equals(department)) {
                 return arrDepartment[i];
             }
+            System.out.println("Department does not exist");
         }
         return null;
     }
@@ -324,7 +312,7 @@ public class OperatingSystem {
         System.out.println("Enter department name:");
         String depName = input.nextLine();
 
-        if(findDepartment(depName)!=null){
+        if(findOrCreateDepartment(depName)!=null){
             System.out.println("Department already exist");
             return;
         }
@@ -349,7 +337,7 @@ public class OperatingSystem {
         System.out.println("Department "+depName + " added successfully");
     }
 
-    public void addLectureToDepartment(){
+    public void addLectureToDepartment() {
         System.out.println("Enter name of the lecture to be added: ");
         String lectureName = input.nextLine();
 
@@ -361,19 +349,12 @@ public class OperatingSystem {
         } else {
             System.out.println("Enter department name:");
             String depName = input.nextLine();
-            Department department = findDepartment(depName);
-            if (department == null) {
-            System.out.println("Department " + depName + " does not exist");
-            }
-            else{
-                boolean added = department.addLecturer(lecture);
-                if (!added) {
-                    System.out.println("Lecture " + "already assigned to department");
-
-                }
-                else {
-                    System.out.println("Lecture " + "added successfully to department " + depName);
-                }
+            Department department = findOrCreateDepartment(depName);
+            boolean added = department.addLecturer(lecture);
+            if (added) {
+                System.out.println("Lecture successfully assigned to department.");
+            } else {
+                System.out.println("Failed to assign lecture to department.");
             }
         }
     }

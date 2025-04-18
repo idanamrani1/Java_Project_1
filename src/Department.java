@@ -48,4 +48,8 @@ public class Department {
     public void setNumOfLecture(Lecture[] numOfLecture) {
         this.numOfLecture = numOfLecture;
     }
+
+    public String toString(){
+        return depName;
+    }
 }

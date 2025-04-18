@@ -27,6 +27,7 @@ public class Main {
                     break;
                 case "4":
                     op1.updateMan();
+                    break;
                 case "5":
                     op1.removeFromBoard();
                     break;
