@@ -70,35 +70,6 @@ public class OperatingSystem {
         return newArr;
     }
 
-    private Department findOrCreateDepartment(String name) {
-        for (Department dep : arrDepartment) {
-            if (dep != null && dep.getDepName().equals(name)) {
-                return dep;
-            }
-        }
-        Lecture[] newDepLectures = new Lecture[5];
-        Department newDep = new Department(name, 0, newDepLectures);
-
-        for (int i = 0; i < arrDepartment.length; i++) {
-            if (arrDepartment[i] == null) {
-                arrDepartment[i] = newDep;
-                return newDep;
-            }
-        }
-
-        arrDepartment = extendDepartmentArray(arrDepartment);
-        arrDepartment[arrDepartment.length / 2] = newDep;
-        return newDep;
-    }
-
-    private Department[] extendDepartmentArray(Department[] oldArr) {
-        Department[] newArr = new Department[oldArr.length * 2];
-        for (int i = 0; i < oldArr.length; i++) {
-            newArr[i] = oldArr[i];
-        }
-        return newArr;
-    }
-
     public void insertBoard() {
         System.out.println("Enter board name: ");
         String boardName = input.nextLine();
@@ -311,12 +282,12 @@ public class OperatingSystem {
     }
 
     public void addDepartment(){
-        System.out.println("Enter department name:");
+        System.out.println("Enter Department name: ");
         String depName = input.nextLine();
-
-        if(findOrCreateDepartment(depName)!=null){
-            System.out.println("Department already exist");
-            return;
+        Department dep = findDepartment(depName);
+        while (dep != null) {
+            System.out.println("Department already exist. Please enter another name: ");
+            depName = input.nextLine();
         }
 
         System.out.println("Enter numbers of students:");
@@ -326,18 +297,31 @@ public class OperatingSystem {
         Lecture[] lectures = new Lecture[1];
         Department newDep = new Department(depName,numStudents,lectures);
 
-        if(OperationsOnArrays.isFullArray(arrDepartment)){
-            arrDepartment = extendDepartmentArray(arrDepartment);
-        }
-
-        for (int i =0;i<arrDepartment.length;i++){
-            if(arrDepartment[i] == null){
-                arrDepartment[i] = newDep;
-                break;
-            }
-        }
+        addDepartmentToArray(newDep);
         System.out.println("Department "+depName + " added successfully");
     }
+
+
+    private void addDepartmentToArray(Department newDep) {
+        if (OperationsOnArrays.isFullArray(arrDepartment)) {
+            extendDepartmentArray();
+        }
+        for (int i = 0; i < arrDepartment.length; i++) {
+            if (arrDepartment[i] == null) {
+                arrDepartment[i] = newDep;
+                return;
+            }
+        }
+    }
+
+    private void extendDepartmentArray() {
+        Department[] newArr = new Department[arrDepartment.length * 2];
+        for (int i = 0; i < arrDepartment.length; i++) {
+            newArr[i] = arrDepartment[i];
+        }
+        arrDepartment = newArr;
+    }
+
 
     public void addLectureToDepartment() {
         System.out.println("Enter name of the lecture to be added: ");
@@ -346,18 +330,29 @@ public class OperatingSystem {
         Lecture lecture = findLectureByName(lectureName);
         if (lecture == null) {
             System.out.println("Lecture " + lectureName + " does not exist.");
-        } else if (lecture.isAssignedToDepartment()) {
-            System.out.println("Lecture is already assigned to a department.");
+            return;
+        }
+        boolean some = lecture.isAssignedToDepartment();
+        System.out.println("Checking if lecture is assigned to a department: " + lecture.isAssignedToDepartment());
+
+        if (lecture.isAssignedToDepartment()) {
+            System.out.println("Lecture " + lectureName + " is already assigned to a department.");
+            return;
+        }
+
+        System.out.println("Enter department name:");
+        String depName = input.nextLine();
+        Department department = findDepartment(depName);
+        if (department == null) {
+            System.out.println("Department " + depName + " does not exist.");
+            return;
+        }
+
+        boolean added = department.addLecturer(lecture);
+        if (added) {
+            System.out.println("Lecture: " + lectureName+  " successfully assigned to department.");
         } else {
-            System.out.println("Enter department name:");
-            String depName = input.nextLine();
-            Department department = findOrCreateDepartment(depName);
-            boolean added = department.addLecturer(lecture);
-            if (added) {
-                System.out.println("Lecture successfully assigned to department.");
-            } else {
-                System.out.println("Failed to assign lecture to department.");
-            }
+            System.out.println("Failed to assign lecture to department.");
         }
     }
 }

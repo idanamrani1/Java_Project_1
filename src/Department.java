@@ -9,11 +9,16 @@ public class Department {
         setNumOfStudents(numOfStudents);
     }
 
-    public boolean addLecturer(Lecture lecture){
-        if(lecture.isAssignedToDepartment()){
-            System.out.println("already assigned to department");
+    public boolean addLecturer(Lecture lecture) {
+        if (lecture.isAssignedToDepartment()) {
+            System.out.println("Lecture is already assigned to a department.");
             return false;
         }
+
+        if (OperationsOnArrays.isFullArray(numOfLecture)) {
+            expandLecturerArray();
+        }
+
         for (int i = 0; i < numOfLecture.length; i++) {
             if (numOfLecture[i] == null) {
                 numOfLecture[i] = lecture;
@@ -21,8 +26,18 @@ public class Department {
                 return true;
             }
         }
-        System.out.println("department is full");
+
+        System.out.println("Failed to add lecturer.");
         return false;
+    }
+
+    private void expandLecturerArray() {
+        Lecture[] bigger = new Lecture[numOfLecture.length * 2];
+        for (int i = 0; i < numOfLecture.length; i++) {
+            bigger[i] = numOfLecture[i];
+        }
+        numOfLecture = bigger;
+        System.out.println("Lecturer array expanded to size: " + numOfLecture.length);
     }
 
     public String getDepName() {
