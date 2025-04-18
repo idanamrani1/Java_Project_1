@@ -80,7 +80,7 @@ public class Lecture {
 
 
     public boolean checkIsValidManager() {
-        if (((this.degree.equals("Dr")) || (this.degree.equals("Prof")))) {
+        if (((this.degree.equalsIgnoreCase("Dr")) || (this.degree.equalsIgnoreCase("Prof")))) {
             return true;
         } else {
             return false;
