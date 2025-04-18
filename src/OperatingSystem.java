@@ -349,5 +349,32 @@ public class OperatingSystem {
         System.out.println("Department "+depName + " added successfully");
     }
 
+    public void addLectureToDepartment(){
+        System.out.println("Enter name of the lecture to be added: ");
+        String lectureName = input.nextLine();
 
+        Lecture lecture = findLectureByName(lectureName);
+        if (lecture == null) {
+            System.out.println("Lecture " + lectureName + " does not exist.");
+        } else if (lecture.isAssignedToDepartment()) {
+            System.out.println("Lecture is already assigned to a department.");
+        } else {
+            System.out.println("Enter department name:");
+            String depName = input.nextLine();
+            Department department = findDepartment(depName);
+            if (department == null) {
+            System.out.println("Department " + depName + " does not exist");
+            }
+            else{
+                boolean added = department.addLecturer(lecture);
+                if (!added) {
+                    System.out.println("Lecture " + "already assigned to department");
+
+                }
+                else {
+                    System.out.println("Lecture " + "added successfully to department " + depName);
+                }
+            }
+        }
+    }
 }

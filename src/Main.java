@@ -50,6 +50,9 @@ public class Main {
                 case "10":
                     op1.printAllBoards();
                     break;
+                case "11":
+                    op1.addLectureToDepartment();
+                    break;
                 default:
                     System.out.println("Wrong input");
             }
@@ -68,6 +71,7 @@ public class Main {
         System.out.println("8 - Avg salary per department");
         System.out.println("9 - Show details about Lectures");
         System.out.println("10 - Show details about boards");
+        System.out.println("11 - Add Lecture to Department");
     }
 
 }
