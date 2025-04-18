@@ -229,17 +229,19 @@ public class OperatingSystem {
     public void printAllBoards() {
         for (Board board : arrBoard) {
             if (board != null) {
-                System.out.println("Board name: " + board.getName());
-
-                System.out.println("Name of the Manager: " + board.getManagerBoard().getName());
-
-                System.out.print("Members: ");
-                for (Lecture member : board.getLectures()) {
-                    if (member != null && !member.getName().equals(board.getManagerBoard().getName())) {
-                        System.out.print(String.join(" , ", member.getName()) + " ");
-                    }
-                }
-                System.out.println();
+                board.printBoardDetails();
+                // שמתי את ההדפסה בתוך המחלקה של הועדות
+//                System.out.println("Board name: " + board.getName());
+//
+//                System.out.println("Name of the Manager: " + board.getManagerBoard().getName());
+//
+//                System.out.print("Members: ");
+//                for (Lecture member : board.getLectures()) {
+//                    if (member != null && !member.getName().equals(board.getManagerBoard().getName())) {
+//                        System.out.print(String.join(" , ", member.getName()) + " ");
+//                    }
+//                }
+//                System.out.println();
             }
         }
 

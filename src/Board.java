@@ -55,6 +55,25 @@ public class Board {
         }
     }
 
+    public void printBoardDetails(){
+        System.out.println("Board name: " + this.name);
+
+        if (managerBoard != null) {
+            System.out.println("Name of the Manager: " + managerBoard.getName());
+        } else {
+            System.out.println("No Manager assigned");
+        }
+
+        System.out.print("Members: ");
+        for (Lecture member : lectures) {
+            if (member != null && !member.getName().equals(managerBoard.getName())) {
+                System.out.print(member.getName() + " , ");
+            }
+        }
+        System.out.println();
+    }
+
+
     public String getName() {
         return name;
     }
