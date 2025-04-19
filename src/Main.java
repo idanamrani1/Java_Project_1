@@ -41,9 +41,7 @@ public class Main {
                     System.out.println("Enter name of department:");
                     String name = input.nextLine();
                     Department department = op1.findDepartment(name);
-                    if(department!= null){
-                        System.out.println("The avg is: " +op1.getSalaryForAll(department));
-                    }
+                    if(department!= null) { System.out.println("The avg is: " +op1.getSalaryForAll(department)); }
                     break;
                 case "9":
                     op1.lectureDetails();

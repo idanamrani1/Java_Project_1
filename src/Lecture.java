@@ -6,8 +6,9 @@ public class Lecture {
     private String degree;
     private String nameDegree;
     private double salary;
-    private Department belongDepartment;
     private Board[] belongBoard;
+    private Department belongDepartment;
+
 
     public void setDepartment(Department department) {
         if (this.belongDepartment != null) {
@@ -28,6 +29,7 @@ public class Lecture {
         setNameDegree(nameDegree);
         setSalary(salary);
         setBelongDep(belongDepartment);
+        this.belongBoard = null;
     }
 
     public Board[] getBelongBoard() {
@@ -78,7 +80,7 @@ public class Lecture {
 
 
     public boolean checkIsValidManager() {
-        if (((this.degree.equals("Dr")) || (this.degree.equals("Prof")))) {
+        if (((this.degree.equalsIgnoreCase("Dr")) || (this.degree.equalsIgnoreCase("Prof")))) {
             return true;
         } else {
             return false;
