@@ -85,6 +85,10 @@ public class Lecture {
             return false;
         }
     }
+    public Department getBelongDepartment() {
+        return this.belongDepartment;
+    }
+
 
     @Override
     public String toString() {

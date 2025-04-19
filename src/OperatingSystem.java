@@ -344,22 +344,38 @@ public class OperatingSystem {
         Lecture lecture = findLectureByName(lectureName);
         if (lecture == null) {
             System.out.println("Lecture " + lectureName + " does not exist.");
-        } else if (lecture.isAssignedToDepartment()) {
-            System.out.println("Lecture is already assigned to a department.");
-        } else {
-            System.out.println("Enter department name:");
-            String depName = input.nextLine();
-            Department department = findDepartment(depName);
-            if (department == null) {
-                System.out.println("Department does not exist.");
-                return;
-            }
-            boolean added = department.addLecturer(lecture);
-            if (added) {
-                System.out.println("Lecture successfully assigned to department.");
-            } else {
-                System.out.println("Failed to assign lecture to department.");
+            return;
+        }
+
+        if (lecture.isAssignedToDepartment()) {
+            Department oldDepartment = lecture.getBelongDepartment();
+            if (oldDepartment != null) {
+                Lecture[] lecturers = oldDepartment.getNumOfLecture();
+                for (int i = 0; i < lecturers.length; i++) {
+                    if (lecturers[i] != null && lecturers[i].getId().equals(lecture.getId())) {
+                        lecturers[i] = null;
+                        break;
+                    }
+                }
+                lecture.setBelongDep(null);
+                System.out.println("Lecture was removed from previous department: " + oldDepartment.getDepName());
             }
         }
+        System.out.println("Enter department name:");
+        String depName = input.nextLine();
+
+        Department department = findDepartment(depName);
+        if (department == null) {
+            System.out.println("Department does not exist.");
+            return;
+        }
+
+        boolean added = department.addLecturer(lecture);
+        if (added) {
+            System.out.println("Lecture successfully assigned to department: " + depName);
+        } else {
+            System.out.println("Failed to assign lecture to department.");
+        }
     }
+
 }
