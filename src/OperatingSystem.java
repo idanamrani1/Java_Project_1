@@ -221,6 +221,8 @@ public class OperatingSystem {
 
         if (toUpdateManager == null) {
             System.out.println("Lecture " + lectureName + " does not exist.");
+        } else if (board.getManagerBoard().getName().equals(lectureName)) {
+            System.out.println(lectureName + " is already the manager of this board.");
         } else {
             board.setManagerBoard(toUpdateManager);
         }
@@ -231,12 +233,16 @@ public class OperatingSystem {
             if (board != null) {
                 System.out.println("Board name: " + board.getName());
 
-                System.out.println("Name of the Manager: " + board.getManagerBoard().getName());
+                if (board.getManagerBoard() != null) {
+                    System.out.println("Name of the Manager: " + board.getManagerBoard().getName());
+                } else {
+                    System.out.println("No manager assigned.");
+                }
 
                 System.out.print("Members: ");
                 for (Lecture member : board.getLectures()) {
                     if (member != null && !member.getName().equals(board.getManagerBoard().getName())) {
-                        System.out.print(String.join(" , ", member.getName()) + " ");
+                        System.out.print(member.getName() + " , ");
                     }
                 }
                 System.out.println();
@@ -257,15 +263,29 @@ public class OperatingSystem {
         }
         System.out.println("Enter the name you want to remove: ");
         String memberName = input.nextLine();
-        if (findLectureByName(memberName) != null) {
-            for (int i = 0; i < board.getLectures().length; i++) {
-                if (board.getLectures()[i] != null && board.getLectures()[i].getName().equals(memberName)) {
-                    board.getLectures()[i] = null;
+
+        boolean found = false;
+        for (int i = 0; i < board.getLectures().length; i++) {
+            Lecture lecture = board.getLectures()[i];
+            if (lecture != null && lecture.getName().equals(memberName)) {
+                board.getLectures()[i] = null;
+                Board[] boards = lecture.getBelongBoard();
+                if (boards != null) {
+                    for (int j = 0; j < boards.length; j++) {
+                        if (boards[j] != null && boards[j].getName().equals(board.getName())) {
+                            boards[j] = null;
+                            break;
+                        }
+                    }
                 }
+                found = true;
+                break;
             }
+        }
+        if (found) {
             System.out.println(memberName + " deleted successfully");
         } else {
-            System.out.println("Lecture " + memberName + " does not exist");
+            System.out.println("Lecture " + memberName + " is not found in the board");
         }
     }
 
@@ -281,12 +301,14 @@ public class OperatingSystem {
                 }
             }
         } else { // option 7
-            for (int i = 0; i < arrLecture.length; i++) {
-                sum += arrLecture[i].getSalary();
-                counter++;
+            for (Lecture lecture : arrLecture) {
+                if(lecture != null){
+                    sum += lecture.getSalary();
+                    counter++;
+                }
             }
         }
-        return sum / counter;
+        return counter > 0 ? sum / counter : 0;
     }
 
 
@@ -295,7 +317,6 @@ public class OperatingSystem {
             if (arrDepartment[i] != null && arrDepartment[i].getDepName().equals(department)) {
                 return arrDepartment[i];
             }
-            System.out.println("Department does not exist");
         }
         return null;
     }
@@ -312,7 +333,7 @@ public class OperatingSystem {
         System.out.println("Enter department name:");
         String depName = input.nextLine();
 
-        if(findOrCreateDepartment(depName)!=null){
+        if(findDepartment(depName)!=null){
             System.out.println("Department already exist");
             return;
         }
@@ -349,7 +370,11 @@ public class OperatingSystem {
         } else {
             System.out.println("Enter department name:");
             String depName = input.nextLine();
-            Department department = findOrCreateDepartment(depName);
+            Department department = findDepartment(depName);
+            if (department == null) {
+                System.out.println("Department does not exist.");
+                return;
+            }
             boolean added = department.addLecturer(lecture);
             if (added) {
                 System.out.println("Lecture successfully assigned to department.");

@@ -28,7 +28,6 @@ public class Lecture {
         setDegree(degree);
         setNameDegree(nameDegree);
         setSalary(salary);
-        setBelongDep(belongDepartment);
         this.belongBoard = null;
     }
 
@@ -75,7 +74,7 @@ public class Lecture {
     }
 
     public void setBelongDep(Department belongDepartment) {
-        this.belongDepartment = null;
+        this.belongDepartment = belongDepartment;
     }
 
 

@@ -44,7 +44,6 @@ public class Department {
             bigger[i] = numOfLecture[i];
         }
         numOfLecture = bigger;
-        System.out.println("Lecturer array expanded to size: " + numOfLecture.length);
     }
 
     public String getDepName() {

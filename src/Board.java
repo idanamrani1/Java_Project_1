@@ -13,28 +13,44 @@ public class Board {
         this.managerBoard = managerBoard;
     }
 
-    public void addLecture(Lecture lecture){
-        if (lecture.getName().equals(managerBoard.getName())) {
-            System.out.println("Can't add the lecture. He is the board manager");
-            return ;
+    public void addLecture(Lecture lecture) {
+        if (managerBoard != null && lecture.getId().equals(managerBoard.getId())) {
+            System.out.println("This lecture is already the manager of the board and cannot be added as a member.");
+            return;
         }
         for (int i = 0; i < lectures.length; i++) {
             if (lectures[i] != null && lectures[i].getName().equals(lecture.getName())) {
                 System.out.println("Lecture already exists.");
-                return ;
+                return;
             }
         }
-        if (OperationsOnArrays.isFullArray(lectures)){
+        if (OperationsOnArrays.isFullArray(lectures)) {
             expandLecturesArray();
         }
         addLectureToBoard(lecture);
         Board[] boards = lecture.getBelongBoard();
-        if(boards == null){
+        if (boards == null) {
             boards = new Board[1];
             boards[0] = this;
             lecture.setBelongBoard(boards);
+        } else {
+            boolean added = false;
+            for (int j = 0; j < boards.length; j++) {
+                if (boards[j] == null) {
+                    boards[j] = this;
+                    added = true;
+                    break;
+                }
+            }
+            if (!added) {
+                Board[] bigger = new Board[boards.length * 2];
+                for (int j = 0; j < boards.length; j++) {
+                    bigger[j] = boards[j];
+                }
+                bigger[boards.length] = this;
+                lecture.setBelongBoard(bigger);
+            }
         }
-
         System.out.println("lecture " + lecture.getName() + " added to the board.");
     }
 
@@ -116,5 +132,4 @@ public class Board {
     public int hashCode() {
         return Arrays.hashCode(lectures);
     }
-
 }
