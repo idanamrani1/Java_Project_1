@@ -70,27 +70,6 @@ public class OperatingSystem {
         return newArr;
     }
 
-    private Department findOrCreateDepartment(String name) {
-        for (Department dep : arrDepartment) {
-            if (dep != null && dep.getDepName().equals(name)) {
-                return dep;
-            }
-        }
-        Lecture[] newDepLectures = new Lecture[5];
-        Department newDep = new Department(name, 0, newDepLectures);
-
-        for (int i = 0; i < arrDepartment.length; i++) {
-            if (arrDepartment[i] == null) {
-                arrDepartment[i] = newDep;
-                return newDep;
-            }
-        }
-
-        arrDepartment = extendDepartmentArray(arrDepartment);
-        arrDepartment[arrDepartment.length / 2] = newDep;
-        return newDep;
-    }
-
     private Department[] extendDepartmentArray(Department[] oldArr) {
         Department[] newArr = new Department[oldArr.length * 2];
         for (int i = 0; i < oldArr.length; i++) {
