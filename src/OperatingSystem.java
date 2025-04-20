@@ -34,6 +34,7 @@ public class OperatingSystem {
         System.out.println("Enter Lecture salary: ");
         double salary = input.nextDouble();
         input.nextLine();
+
         if (salary < 0) {
             System.out.println("Salary cannot be negative.");
             return;
@@ -41,11 +42,33 @@ public class OperatingSystem {
 
         Lecture newLecture = new Lecture(name, id, degree, nameDegree, salary);
 
-        if ((OperationsOnArrays.isFullArray(arrLecture))) {
+        if (OperationsOnArrays.isFullArray(arrLecture)) {
             arrLecture = extendLectureArray(arrLecture);
         }
         addLectureToArray(newLecture);
-        System.out.println( "Lecture " + name + " added successfully");
+        System.out.println("Lecture " + name + " added successfully");
+
+        System.out.println("Do you want to assign this lecture to a department now? (yes/no)");
+        String choice = input.nextLine();
+
+        if (choice.equals("yes")) {
+            System.out.println("Enter department name:");
+            String depName = input.nextLine();
+
+            Department department = findDepartment(depName);
+            if (department == null) {
+                System.out.println("Department does not exist.");
+            } else {
+                boolean added = department.addLecturer(newLecture);
+                if (added) {
+                    System.out.println("Lecture successfully assigned to department: " + depName);
+                } else {
+                    System.out.println("Failed to assign lecture to department.");
+                }
+            }
+        } else {
+            System.out.println("Lecture remains without a department.");
+        }
     }
 
     private void addLectureToArray(Lecture newLecture) {
@@ -363,7 +386,6 @@ public class OperatingSystem {
         if (lecture.isAssignedToDepartment()) {
             Department currentDep = lecture.getBelongDepartment();
 
-            // ✅ כאן התיקון: בודקים אם הוא מנסה להירשם לאותה מחלקה
             if (currentDep != null && currentDep.getDepName().equals(department.getDepName())) {
                 System.out.println("Lecture is already assigned to this department.");
                 return;
@@ -387,5 +409,4 @@ public class OperatingSystem {
             System.out.println("Failed to assign lecture to department.");
         }
     }
-
 }
