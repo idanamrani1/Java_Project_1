@@ -34,6 +34,10 @@ public class OperatingSystem {
         System.out.println("Enter Lecture salary: ");
         double salary = input.nextDouble();
         input.nextLine();
+        if (salary < 0) {
+            System.out.println("Salary cannot be negative.");
+            return;
+        }
 
         Lecture newLecture = new Lecture(name, id, degree, nameDegree, salary);
 
@@ -347,20 +351,6 @@ public class OperatingSystem {
             return;
         }
 
-        if (lecture.isAssignedToDepartment()) {
-            Department oldDepartment = lecture.getBelongDepartment();
-            if (oldDepartment != null) {
-                Lecture[] lecturers = oldDepartment.getNumOfLecture();
-                for (int i = 0; i < lecturers.length; i++) {
-                    if (lecturers[i] != null && lecturers[i].getId().equals(lecture.getId())) {
-                        lecturers[i] = null;
-                        break;
-                    }
-                }
-                lecture.setBelongDep(null);
-                System.out.println("Lecture was removed from previous department: " + oldDepartment.getDepName());
-            }
-        }
         System.out.println("Enter department name:");
         String depName = input.nextLine();
 
@@ -368,6 +358,26 @@ public class OperatingSystem {
         if (department == null) {
             System.out.println("Department does not exist.");
             return;
+        }
+
+        if (lecture.isAssignedToDepartment()) {
+            Department currentDep = lecture.getBelongDepartment();
+
+            // ✅ כאן התיקון: בודקים אם הוא מנסה להירשם לאותה מחלקה
+            if (currentDep != null && currentDep.getDepName().equals(department.getDepName())) {
+                System.out.println("Lecture is already assigned to this department.");
+                return;
+            }
+
+            Lecture[] lecturers = currentDep != null ? currentDep.getNumOfLecture() : new Lecture[0];
+            for (int i = 0; i < lecturers.length; i++) {
+                if (lecturers[i] != null && lecturers[i].getId().equals(lecture.getId())) {
+                    lecturers[i] = null;
+                    break;
+                }
+            }
+            lecture.setBelongDep(null);
+            System.out.println("Lecture was removed from previous department: " + currentDep.getDepName());
         }
 
         boolean added = department.addLecturer(lecture);
