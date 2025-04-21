@@ -19,10 +19,9 @@ public class OperatingSystem {
 
         System.out.println("Enter Lecture ID: ");
         String id = input.nextLine();
-
-        if (existLecture(id)) {
-            System.out.println("Lecture with this ID already exists.");
-            return;
+        while(existLecture(id)){
+            System.out.println("Lecture with this ID already exists, please Enter another name: ");
+            id = input.nextLine();
         }
 
         System.out.println("Enter Lecture degree: (Prof/Dr/First/Second)");
