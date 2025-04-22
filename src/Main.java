@@ -17,6 +17,7 @@ public class Main {
                     isRunning = false;
                     break;
                 case "1":
+
                     System.out.println("Enter Lecture name: ");
                     String nameNewLecture = input.nextLine();
 
@@ -24,7 +25,7 @@ public class Main {
                     String id = input.nextLine();
                     if (op1.existLecture(id)) {
                         System.out.println("Lecture with this ID already exists.");
-                        return;
+                        break;
                     }
 
                     System.out.println("Enter Lecture degree (1-4):");
@@ -37,7 +38,7 @@ public class Main {
 
                     if (degree == null) {
                         System.out.println("Invalid degree choice.");
-                        return;
+                        break;
                     }
 
                     input.nextLine();
@@ -50,7 +51,7 @@ public class Main {
 
                     if (salary < 0) {
                         System.out.println("Salary cannot be negative.");
-                        return;
+                        break;
                     }
 
                     Lecture NewLecture = new Lecture(nameNewLecture, id, degree, nameDegree, salary);
@@ -78,12 +79,35 @@ public class Main {
                         System.out.println("Lecture remains without a department.");
                     }
                     break;
+
                 case "2":
                     op1.insertBoard();
                     break;
+
                 case "3":
-                    op1.addLectureToBoard();
+
+                    System.out.println("Enter name of the board: ");
+                    String boardName = input.nextLine();
+
+                    Board board = op1.findBoardByName(boardName);
+
+                    if (board == null) {
+                        System.out.println("Board " + boardName + " does not found.");
+                        break;
+                    }
+
+                    System.out.println("Enter name of the lecture to be added: ");
+                    String lectureName = input.nextLine();
+
+                    Lecture lecture = op1.findLectureByName(lectureName);
+
+                    if (lecture == null) {
+                        System.out.println("Lecture " + lectureName + " does not exist.");
+                        break;
+                    }
+                    board.addLecture(lecture);
                     break;
+
                 case "4":
                     op1.updateMan();
                     break;

@@ -125,7 +125,7 @@ public class OperatingSystem {
         arrBoard = newArr;
     }
 
-    private Lecture findLectureByName(String name) {
+    Lecture findLectureByName(String name) {
         for (Lecture lecture : arrLecture) {
             if (lecture != null && lecture.getName().equals(name)) {
                 return lecture;
@@ -134,34 +134,13 @@ public class OperatingSystem {
         return null;
     }
 
-    private Board findBoardByName(String boardName) {
+    Board findBoardByName(String boardName) {
         for (int i = 0; i < arrBoard.length; i++) {
             if (arrBoard[i] != null && arrBoard[i].getName().equals(boardName)) {
                 return arrBoard[i];
             }
         }
         return null;
-    }
-
-    public void addLectureToBoard() {
-        System.out.println("Enter name of the board: ");
-        String boardName = input.nextLine();
-
-        Board board = findBoardByName(boardName);
-        if (board == null) {
-            System.out.println("Board " + boardName + " does not found.");
-            return;
-        }
-
-        System.out.println("Enter name of the lecture to be added: ");
-        String lectureName = input.nextLine();
-
-        Lecture lecture = findLectureByName(lectureName);
-        if (lecture == null) {
-            System.out.println("Lecture " + lectureName + " does not exist.");
-            return;
-        }
-        board.addLecture(lecture);
     }
 
     public void updateMan() {
