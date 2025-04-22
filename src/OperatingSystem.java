@@ -364,12 +364,12 @@ public class OperatingSystem {
     }
 
     public void addLectureToDepartment() {
-        System.out.println("Enter ID of the lecture to be added: ");
-        String lectureId = input.nextLine();
+        System.out.println("Enter name of the lecture to be added: ");
+        String lectureName = input.nextLine();
 
-        Lecture lecture = findLectureByID(lectureId);
+        Lecture lecture = findLectureByName(lectureName);
         if (lecture == null) {
-            System.out.println("Lecture with ID: " + lectureId + " does not exist.");
+            System.out.println("Lecture: " + lectureName + " does not exist.");
             return;
         }
 
@@ -407,15 +407,5 @@ public class OperatingSystem {
         } else {
             System.out.println("Failed to assign lecture" + lecture.getName() + " to department.");
         }
-    }
-
-
-    public Lecture findLectureByID(String lectureId) {
-        for (int i = 0; i < arrLecture.length; i++) {
-            if (arrLecture[i] != null && arrLecture[i].getId().equals(lectureId)) {
-                return arrLecture[i];
-            }
-        }
-        return null;
     }
 }
