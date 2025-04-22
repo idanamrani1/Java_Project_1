@@ -109,8 +109,30 @@ public class Main {
                     break;
 
                 case "4":
-                    op1.updateMan();
+
+                    System.out.println("Enter name of the board: ");
+                    String boardName1 = input.nextLine();
+
+                    Board board1 = op1.findBoardByName(boardName1);
+
+                    if (board1 == null) {
+                        System.out.println("Board " + boardName1 + " does not exist.");
+                        break;
+                    }
+
+                    System.out.println("Enter name of the lecture to be updated: ");
+                    String lectureName1 = input.nextLine();
+                    Lecture toUpdateManager = op1.findLectureByName(lectureName1);
+
+                    if (toUpdateManager == null) {
+                        System.out.println("Lecture " + lectureName1 + " does not exist.");
+                    } else if (board1.getManagerBoard().getName().equals(lectureName1)) {
+                        System.out.println(lectureName1 + " is already the manager of this board.");
+                    } else {
+                        board1.setManagerBoard(toUpdateManager);
+                    }
                     break;
+
                 case "5":
                     op1.removeFromBoard();
                     break;

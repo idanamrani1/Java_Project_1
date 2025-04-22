@@ -143,29 +143,6 @@ public class OperatingSystem {
         return null;
     }
 
-    public void updateMan() {
-        System.out.println("Enter name of the board: ");
-        String boardName = input.nextLine();
-
-        Board board = findBoardByName(boardName);
-
-        if (board == null) {
-            System.out.println("Board " + boardName + " does not exist.");
-            return;
-        }
-
-        System.out.println("Enter name of the lecture to be updated: ");
-        String lectureName = input.nextLine();
-        Lecture toUpdateManager = findLectureByName(lectureName);
-
-        if (toUpdateManager == null) {
-            System.out.println("Lecture " + lectureName + " does not exist.");
-        } else if (board.getManagerBoard().getName().equals(lectureName)) {
-            System.out.println(lectureName + " is already the manager of this board.");
-        } else {
-            board.setManagerBoard(toUpdateManager);
-        }
-    }
 
     public void printAllBoards() {
         for (Board board : arrBoard) {
