@@ -134,8 +134,26 @@ public class Main {
                     break;
 
                 case "5":
-                    op1.removeFromBoard();
+                    System.out.println("Enter name of the board: ");
+                    String boardName2 = input.nextLine();
+
+                    Board board2 = op1.findBoardByName(boardName2);
+
+                    if (board2 == null) {
+                        System.out.println("Board " + boardName2 + " does not exist.");
+                        break;
+                    }
+                    System.out.println("Enter the name you want to remove: ");
+                    String memberName = input.nextLine();
+
+                    boolean found = op1.removeFromBoard(board2, memberName);
+                    if (found) {
+                        System.out.println(memberName + " deleted successfully");
+                    } else {
+                        System.out.println("Lecture " + memberName + " is not found in the board");
+                    }
                     break;
+
                 case "6":
                     op1.addDepartment();
                     break;

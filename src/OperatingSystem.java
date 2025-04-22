@@ -1,4 +1,3 @@
-
 import java.util.Scanner;
 
 public class OperatingSystem {
@@ -167,19 +166,7 @@ public class OperatingSystem {
 
     }
 
-    public void removeFromBoard() {
-        System.out.println("Enter name of the board: ");
-        String boardName = input.nextLine();
-
-        Board board = findBoardByName(boardName);
-
-        if (board == null) {
-            System.out.println("Board " + boardName + " does not exist.");
-            return;
-        }
-        System.out.println("Enter the name you want to remove: ");
-        String memberName = input.nextLine();
-
+    boolean removeFromBoard(Board board, String memberName) {
         boolean found = false;
         for (int i = 0; i < board.getLectures().length; i++) {
             Lecture lecture = board.getLectures()[i];
@@ -194,15 +181,10 @@ public class OperatingSystem {
                         }
                     }
                 }
-                found = true;
-                break;
+                return true;
             }
         }
-        if (found) {
-            System.out.println(memberName + " deleted successfully");
-        } else {
-            System.out.println("Lecture " + memberName + " is not found in the board");
-        }
+        return false;
     }
 
     public double getSalaryForAll(Department department) {
