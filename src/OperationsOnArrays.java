@@ -9,13 +9,4 @@ public class OperationsOnArrays {
         }
         return true;
     }
-
-    public static Object[] expandLecturesArray(Object[] Array){
-        Object[] newArray = new String[Array.length*2];
-        for ( int i = 0 ; i < Array.length ; i++){
-            newArray[i] = Array[i];
-        }
-        Array = newArray;
-        return Array;
-    }
 }

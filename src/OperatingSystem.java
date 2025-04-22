@@ -3,9 +3,12 @@ import java.util.Scanner;
 
 public class OperatingSystem {
     private Scanner input = new Scanner(System.in);
-    private Lecture[] arrLecture = new Lecture[1];
-    private Department[] arrDepartment = new Department[1];
-    private Board[] arrBoard = new Board[1];
+    private Lecture[] arrLecture = new Lecture[2];
+    private Department[] arrDepartment = new Department[2];
+    private Board[] arrBoard = new Board[2];
+    private int sizeArrayLecture = 0;
+    private int sizeArrayDepartment = 0;
+    private int sizeArrayBoard = 0;
 
     public void printWelcome() {
         System.out.println("Welcome to our system! 🎓");
