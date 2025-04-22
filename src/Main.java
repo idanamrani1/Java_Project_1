@@ -17,7 +17,66 @@ public class Main {
                     isRunning = false;
                     break;
                 case "1":
-                    op1.insertLectureDetails();
+                    System.out.println("Enter Lecture name: ");
+                    String nameNewLecture = input.nextLine();
+
+                    System.out.println("Enter Lecture ID: ");
+                    String id = input.nextLine();
+                    if (op1.existLecture(id)) {
+                        System.out.println("Lecture with this ID already exists.");
+                        return;
+                    }
+
+                    System.out.println("Enter Lecture degree (1-4):");
+                    for (Degree d: Degree.values()) {
+                        System.out.println(d.getNumber() + " - " + d);
+                    }
+
+                    int num = input.nextInt();
+                    Degree degree = Degree.fromNumber(num);
+
+                    if (degree == null) {
+                        System.out.println("Invalid degree choice.");
+                        return;
+                    }
+
+                    input.nextLine();
+                    System.out.println("Enter name of the degree: ");
+                    String nameDegree = input.nextLine();
+
+                    System.out.println("Enter Lecture salary: ");
+                    double salary = input.nextDouble();
+                    input.nextLine();
+
+                    if (salary < 0) {
+                        System.out.println("Salary cannot be negative.");
+                        return;
+                    }
+
+                    Lecture NewLecture = new Lecture(nameNewLecture, id, degree, nameDegree, salary);
+                    op1.addLecture(NewLecture);
+                    System.out.println("Lecture " + nameNewLecture + " added successfully");
+
+                    System.out.println("Do you want to assign this lecture to a department now? (yes/no)");
+                    String choiceDep = input.nextLine();
+                    if (choiceDep.equals("yes")) {
+                        System.out.println("Enter department name:");
+                        String depName = input.nextLine();
+
+                        Department department = op1.findDepartment(depName);
+                        if (department == null) {
+                            System.out.println("Department does not exist.");
+                        } else {
+                            boolean added = department.addLecturer(NewLecture);
+                            if (added) {
+                                System.out.println("Lecture successfully assigned to department: " + depName);
+                            } else {
+                                System.out.println("Failed to assign lecture to department.");
+                            }
+                        }
+                    } else {
+                        System.out.println("Lecture remains without a department.");
+                    }
                     break;
                 case "2":
                     op1.insertBoard();

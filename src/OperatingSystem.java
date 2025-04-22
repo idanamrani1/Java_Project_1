@@ -16,73 +16,13 @@ public class OperatingSystem {
         input.nextLine();
     }
 
-    public void insertLectureDetails() {
-        System.out.println("Enter Lecture name: ");
-        String name = input.nextLine();
-
-        System.out.println("Enter Lecture ID: ");
-        String id = input.nextLine();
-
-        if (existLecture(id)) {
-            System.out.println("Lecture with this ID already exists.");
-            return;
-        }
-
-        System.out.println("Enter Lecture degree (1-4):");
-        for (Degree d: Degree.values()) {
-            System.out.println(d.getNumber() + " - " + d);
-        }
-
-        int num = input.nextInt();
-        Degree degree = Degree.fromNumber(num);
-
-        if (degree == null) {
-            System.out.println("Invalid degree choice.");
-            return;
-        }
-
-        input.nextLine();
-        System.out.println("Enter name of the degree: ");
-        String nameDegree = input.nextLine();
-
-        System.out.println("Enter Lecture salary: ");
-        double salary = input.nextDouble();
-        input.nextLine();
-
-        if (salary < 0) {
-            System.out.println("Salary cannot be negative.");
-            return;
-        }
-
-        Lecture newLecture = new Lecture(name, id, degree, nameDegree, salary);
-
+    public boolean addLecture(Lecture newLecture) {
         if (OperationsOnArrays.isFullArray(arrLecture)) {
             arrLecture = extendLectureArray(arrLecture);
         }
+
         addLectureToArray(newLecture);
-        System.out.println("Lecture " + name + " added successfully");
-
-        System.out.println("Do you want to assign this lecture to a department now? (yes/no)");
-        String choice = input.nextLine();
-
-        if (choice.equals("yes")) {
-            System.out.println("Enter department name:");
-            String depName = input.nextLine();
-
-            Department department = findDepartment(depName);
-            if (department == null) {
-                System.out.println("Department does not exist.");
-            } else {
-                boolean added = department.addLecturer(newLecture);
-                if (added) {
-                    System.out.println("Lecture successfully assigned to department: " + depName);
-                } else {
-                    System.out.println("Failed to assign lecture to department.");
-                }
-            }
-        } else {
-            System.out.println("Lecture remains without a department.");
-        }
+        return true;
     }
 
     private void addLectureToArray(Lecture newLecture) {
@@ -94,7 +34,7 @@ public class OperatingSystem {
         }
     }
 
-    private boolean existLecture(String id) {
+    public boolean existLecture(String id) {
         for (Lecture lecture : arrLecture) {
             if (lecture != null && lecture.getId().equals(id)) {
                 return true;
