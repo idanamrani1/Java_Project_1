@@ -25,9 +25,20 @@ public class OperatingSystem {
             return;
         }
 
-        System.out.println("Enter Lecture degree: (Prof/Dr/First/Second)");
-        String degree = input.nextLine();
+        System.out.println("Enter Lecture degree (1-4):");
+        for (Degree d: Degree.values()) {
+            System.out.println(d.getNumber() + " - " + d);
+        }
 
+        int num = input.nextInt();
+        Degree degree = Degree.fromNumber(num);
+
+        if (degree == null) {
+            System.out.println("Invalid degree choice.");
+            return;
+        }
+
+        input.nextLine();
         System.out.println("Enter name of the degree: ");
         String nameDegree = input.nextLine();
 

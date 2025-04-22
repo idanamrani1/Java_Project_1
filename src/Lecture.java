@@ -3,7 +3,7 @@ import java.util.Objects;
 public class Lecture {
     private String name;
     private String id;
-    private String degree;
+    private Degree degree;
     private String nameDegree;
     private double salary;
     private Board[] belongBoard;
@@ -22,7 +22,7 @@ public class Lecture {
         return belongDepartment != null;
     }
 
-    public Lecture(String name, String id, String degree, String nameDegree, double salary) {
+    public Lecture(String name, String id, Degree degree, String nameDegree, double salary) {
         setName(name);
         setId(id);
         setDegree(degree);
@@ -61,7 +61,7 @@ public class Lecture {
         this.id = id;
     }
 
-    public void setDegree(String degree) {
+    public void setDegree(Degree degree) {
         this.degree = degree;
     }
 
@@ -79,11 +79,7 @@ public class Lecture {
 
 
     public boolean checkIsValidManager() {
-        if (((this.degree.equalsIgnoreCase("Dr")) || (this.degree.equalsIgnoreCase("Prof")))) {
-            return true;
-        } else {
-            return false;
-        }
+        return (this.degree == Degree.DR || this.degree == Degree.PROFESSOR);
     }
     public Department getBelongDepartment() {
         return this.belongDepartment;
