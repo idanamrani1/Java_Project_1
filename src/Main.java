@@ -16,13 +16,18 @@ public class Main {
                 case "0":
                     isRunning = false;
                     break;
+
                 case "1":
+//                    System.out.println("Enter Lecture name: ");
+//                    String nameNewLecture = input.nextLine();
 
-                    System.out.println("Enter Lecture name: ");
-                    String nameNewLecture = input.nextLine();
+                    String nameNewLecture = Inputs.getStrFromUser("Lecture name");
 
-                    System.out.println("Enter Lecture ID: ");
-                    String id = input.nextLine();
+//                    System.out.println("Enter Lecture ID: ");
+//                    String id = input.nextLine();
+
+                    String id = Inputs.getStrFromUser("Lecture ID");
+
                     if (op1.existLecture(id)) {
                         System.out.println("Lecture with this ID already exists.");
                         break;
@@ -42,11 +47,16 @@ public class Main {
                     }
 
                     input.nextLine();
-                    System.out.println("Enter name of the degree: ");
-                    String nameDegree = input.nextLine();
 
-                    System.out.println("Enter Lecture salary: ");
-                    double salary = input.nextDouble();
+//                    System.out.println("Enter name of the degree: ");
+//                    String nameDegree = input.nextLine();
+
+                    String nameDegree = Inputs.getStrFromUser("name of the degree");
+
+//                    System.out.println("Enter Lecture salary: ");
+//                    double salary = input.nextDouble();
+
+                    double salary = Inputs.getDoubleFromUser("Lecture salary");
                     input.nextLine();
 
                     if (salary < 0) {
@@ -58,45 +68,51 @@ public class Main {
                     op1.addLecture(NewLecture);
                     System.out.println("Lecture " + nameNewLecture + " added successfully");
 
-                    System.out.println("Do you want to assign this lecture to a department now? (yes/no)");
-                    String choiceDep = input.nextLine();
-                    if (choiceDep.equals("yes")) {
-                        System.out.println("Enter department name:");
-                        String depName = input.nextLine();
+//                    System.out.println("Do you want to assign this lecture to a department now? (yes/no)");
+//                    String choiceDep = input.nextLine();
+
+                    if (Inputs.getBoolFromUser("Do you want to assign this lecture to a department now? (yes/no)")) {
+//                        System.out.println("Enter department name:");
+//                        String depName = input.nextLine();
+
+                        String depName = Inputs.getStrFromUser("department name");
 
                         Department department = op1.findDepartment(depName);
                         if (department == null) {
-                            System.out.println("Department does not exist.");
+                            System.out.println("Department "+ depName + " does not exist.");
                         } else {
                             boolean added = department.addLecturer(NewLecture);
                             if (added) {
-                                System.out.println("Lecture successfully assigned to department: " + depName);
+                                System.out.println("Lecture " + NewLecture.getName() + " successfully assigned to department: " + depName);
                             } else {
                                 System.out.println("Failed to assign lecture to department.");
                             }
                         }
                     } else {
-                        System.out.println("Lecture remains without a department.");
+                        System.out.println("Lecture "+ NewLecture.getName() + " remains without a department.");
                     }
                     break;
 
                 case "2":
+//                    System.out.println("Enter board name: ");
+//                    String boardName = input.nextLine();
 
-                    System.out.println("Enter board name: ");
-                    String boardName = input.nextLine();
+                    String boardName = Inputs.getStrFromUser("board name");
 
                     if (op1.existBoard(boardName)) {
                         System.out.println("Board already exists.");
-                        return;
+                        break;
                     }
-                    System.out.println("Enter the name of the lecturer that will be the board manager:");
-                    String managerName = input.nextLine();
+
+//                    System.out.println("Enter the name of the lecturer that will be the board manager:");
+//                    String managerName = input.nextLine();
+                    String managerName = Inputs.getStrFromUser("the name of the lecturer that will be the board manager");
 
                     Lecture manager = op1.findLectureByName(managerName);
 
                     if (manager == null) {
                         System.out.println("That lecturer does not exist.");
-                        return;
+                        break;
                     }
                     if (manager.checkIsValidManager()) {
                         System.out.println(managerName + " is now the board manager");
@@ -110,9 +126,10 @@ public class Main {
                     break;
 
                 case "3":
+//                    System.out.println("Enter name of the board: ");
+//                    String boardName1 = input.nextLine();
 
-                    System.out.println("Enter name of the board: ");
-                    String boardName1 = input.nextLine();
+                    String boardName1 = Inputs.getStrFromUser("name of the board");
 
                     Board board = op1.findBoardByName(boardName1);
 
@@ -121,8 +138,10 @@ public class Main {
                         break;
                     }
 
-                    System.out.println("Enter name of the lecture to be added: ");
-                    String lectureName = input.nextLine();
+//                    System.out.println("Enter name of the lecture to be added: ");
+//                    String lectureName = input.nextLine();
+
+                    String lectureName = Inputs.getStrFromUser("name of the lecture to be added");
 
                     Lecture lecture = op1.findLectureByName(lectureName);
 
@@ -134,9 +153,10 @@ public class Main {
                     break;
 
                 case "4":
+//                    System.out.println("Enter name of the board: ");
+//                    String boardName2 = input.nextLine();
 
-                    System.out.println("Enter name of the board: ");
-                    String boardName2 = input.nextLine();
+                     String boardName2 =Inputs.getStrFromUser("name of the board");
 
                     Board board2 = op1.findBoardByName(boardName2);
 
@@ -145,8 +165,10 @@ public class Main {
                         break;
                     }
 
-                    System.out.println("Enter name of the lecture to be updated: ");
-                    String lectureName2 = input.nextLine();
+//                    System.out.println("Enter name of the lecture to be updated: ");
+//                    String lectureName2 = input.nextLine();
+
+                    String lectureName2 = Inputs.getStrFromUser("name of the lecture to be updated");
                     Lecture toUpdateManager = op1.findLectureByName(lectureName2);
 
                     if (toUpdateManager == null) {
@@ -159,8 +181,10 @@ public class Main {
                     break;
 
                 case "5":
-                    System.out.println("Enter name of the board: ");
-                    String boardName3 = input.nextLine();
+//                    System.out.println("Enter name of the board: ");
+//                    String boardName3 = input.nextLine();
+
+                    String boardName3 = Inputs.getStrFromUser("name of the board");
 
                     Board board3 = op1.findBoardByName(boardName3);
 
@@ -168,8 +192,11 @@ public class Main {
                         System.out.println("Board " + boardName3 + " does not exist.");
                         break;
                     }
-                    System.out.println("Enter the name you want to remove: ");
-                    String memberName = input.nextLine();
+
+//                    System.out.println("Enter the name you want to remove: ");
+//                    String memberName = input.nextLine();
+
+                    String memberName = Inputs.getStrFromUser("the name you want to remove");
 
                     boolean found = op1.removeFromBoard(board3, memberName);
                     if (found) {
@@ -186,8 +213,11 @@ public class Main {
                     System.out.println("The avg is: " +op1.getSalaryForAll(null));
                     break;
                 case "8":
-                    System.out.println("Enter name of department:");
-                    String name = input.nextLine();
+//                    System.out.println("Enter name of department:");
+//                    String name = input.nextLine();
+
+                    String name = Inputs.getStrFromUser("name of department");
+
                     Department department = op1.findDepartment(name);
                     if(department!= null) {
                         System.out.println("The avg is: " +op1.getSalaryForAll(department));
@@ -196,15 +226,19 @@ public class Main {
                         System.out.println("Department not found");
                     }
                     break;
+
                 case "9":
                     op1.lectureDetails();
                     break;
+
                 case "10":
                     op1.printAllBoards();
                     break;
+
                 case "11":
                     op1.addLectureToDepartment();
                     break;
+
                 default:
                     System.out.println("Wrong input");
             }
