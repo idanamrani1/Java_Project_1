@@ -201,6 +201,7 @@ public class Main {
                     boolean found = op1.removeFromBoard(board3, memberName);
                     if (found) {
                         System.out.println(memberName + " deleted successfully");
+                        //System.out.println(board3.getLogicalSize());
                     } else {
                         System.out.println("Lecture " + memberName + " is not found in the board");
                     }

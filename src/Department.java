@@ -2,11 +2,13 @@ public class Department {
     private String depName;
     private int numOfStudents;
     private Lecture[] numOfLecture;
+    private int logicalSize;
 
     public Department(String depName,int numOfStudents,Lecture[] numOfLecture) {
         setDepName(depName);
         setNumOfLecture(numOfLecture);
         setNumOfStudents(numOfStudents);
+        logicalSize = 0;
     }
 
     public boolean addLecturer(Lecture lecture) {
@@ -15,14 +17,14 @@ public class Department {
             return false;
         }
 
-        if (OperationsOnArrays.isFullArray(numOfLecture)) {
+
+        if (OperationsOnArrays.isFullArray(numOfLecture,logicalSize)) {
             expandLecturerArray();
         }
 
-        for (int i = 0; i < numOfLecture.length; i++) {
-            if (numOfLecture[i] == null) {
-                numOfLecture[i] = lecture;
-                lecture.setDepartment(this);
+        numOfLecture[logicalSize] = lecture;
+        lecture.setDepartment(this);
+        logicalSize++;
                 /*
                 this- הינה מתייחסת לאובייקט הנוכחי
                 אז אנחנו שולחים את המחלקה לאובייקט מרצה,
@@ -30,12 +32,7 @@ public class Department {
                 ואנחנו רוצים לעדכן שהמרצה (שהוא האובייקט) שהמחלקה שלו היא המחלקה הנתונהת
                 לכן רשום הthis בפנים.
                  */
-                return true;
-            }
-        }
-
-        System.out.println("Failed to add lecturer.");
-        return false;
+        return true;
     }
 
     private void expandLecturerArray() {
@@ -45,6 +42,24 @@ public class Department {
         }
         numOfLecture = bigger;
     }
+
+    public int getLogicalSize() {
+        return logicalSize;
+    }
+
+    public void setLogicalSize(int logicalSize) {
+        this.logicalSize = logicalSize;
+    }
+
+    public void shiftLeftFromIndexDepartment(int index){
+        for (int i = index; i < logicalSize - 1; i++) {
+            numOfLecture[i] = numOfLecture[i+1];
+        }
+        numOfLecture[logicalSize-1] = null;
+        logicalSize--;
+        System.out.println(numOfStudents);
+    }
+
 
     public String getDepName() {
         return depName;

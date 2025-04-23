@@ -15,8 +15,11 @@ public class Inputs {
     }
 
     public static boolean getBoolFromUser(String type) {
+        if (scan.hasNextLine()) {
+            scan.nextLine();
+        }
         System.out.print(type + ": ");
-        return scan.nextLine().equals("yes");
+        return scan.nextLine().equalsIgnoreCase("yes");
     }
 
     public static double getDoubleFromUser(String type) {

@@ -86,6 +86,8 @@ public class Lecture {
     }
 
 
+
+
     @Override
     public String toString() {
         return "Name: " + name +
