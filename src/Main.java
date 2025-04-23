@@ -81,18 +81,43 @@ public class Main {
                     break;
 
                 case "2":
-                    op1.insertBoard();
+
+                    System.out.println("Enter board name: ");
+                    String boardName = input.nextLine();
+
+                    if (op1.existBoard(boardName)) {
+                        System.out.println("Board already exists.");
+                        return;
+                    }
+                    System.out.println("Enter the name of the lecturer that will be the board manager:");
+                    String managerName = input.nextLine();
+
+                    Lecture manager = op1.findLectureByName(managerName);
+
+                    if (manager == null) {
+                        System.out.println("That lecturer does not exist.");
+                        return;
+                    }
+                    if (manager.checkIsValidManager()) {
+                        System.out.println(managerName + " is now the board manager");
+
+                        Board newBoard = new Board(boardName, new Lecture[1], manager);
+                        op1.addBoardToArray(newBoard);
+                        System.out.println("Board " + boardName + " added successfully.");
+                    } else {
+                        System.out.println("The lecturer must be a Dr. or Prof. to be the board manager");
+                    }
                     break;
 
                 case "3":
 
                     System.out.println("Enter name of the board: ");
-                    String boardName = input.nextLine();
+                    String boardName1 = input.nextLine();
 
-                    Board board = op1.findBoardByName(boardName);
+                    Board board = op1.findBoardByName(boardName1);
 
                     if (board == null) {
-                        System.out.println("Board " + boardName + " does not found.");
+                        System.out.println("Board " + boardName1 + " does not found.");
                         break;
                     }
 
@@ -111,30 +136,6 @@ public class Main {
                 case "4":
 
                     System.out.println("Enter name of the board: ");
-                    String boardName1 = input.nextLine();
-
-                    Board board1 = op1.findBoardByName(boardName1);
-
-                    if (board1 == null) {
-                        System.out.println("Board " + boardName1 + " does not exist.");
-                        break;
-                    }
-
-                    System.out.println("Enter name of the lecture to be updated: ");
-                    String lectureName1 = input.nextLine();
-                    Lecture toUpdateManager = op1.findLectureByName(lectureName1);
-
-                    if (toUpdateManager == null) {
-                        System.out.println("Lecture " + lectureName1 + " does not exist.");
-                    } else if (board1.getManagerBoard().getName().equals(lectureName1)) {
-                        System.out.println(lectureName1 + " is already the manager of this board.");
-                    } else {
-                        board1.setManagerBoard(toUpdateManager);
-                    }
-                    break;
-
-                case "5":
-                    System.out.println("Enter name of the board: ");
                     String boardName2 = input.nextLine();
 
                     Board board2 = op1.findBoardByName(boardName2);
@@ -143,10 +144,34 @@ public class Main {
                         System.out.println("Board " + boardName2 + " does not exist.");
                         break;
                     }
+
+                    System.out.println("Enter name of the lecture to be updated: ");
+                    String lectureName2 = input.nextLine();
+                    Lecture toUpdateManager = op1.findLectureByName(lectureName2);
+
+                    if (toUpdateManager == null) {
+                        System.out.println("Lecture " + lectureName2 + " does not exist.");
+                    } else if (board2.getManagerBoard().getName().equals(lectureName2)) {
+                        System.out.println(lectureName2 + " is already the manager of this board.");
+                    } else {
+                        board2.setManagerBoard(toUpdateManager);
+                    }
+                    break;
+
+                case "5":
+                    System.out.println("Enter name of the board: ");
+                    String boardName3 = input.nextLine();
+
+                    Board board3 = op1.findBoardByName(boardName3);
+
+                    if (board3 == null) {
+                        System.out.println("Board " + boardName3 + " does not exist.");
+                        break;
+                    }
                     System.out.println("Enter the name you want to remove: ");
                     String memberName = input.nextLine();
 
-                    boolean found = op1.removeFromBoard(board2, memberName);
+                    boolean found = op1.removeFromBoard(board3, memberName);
                     if (found) {
                         System.out.println(memberName + " deleted successfully");
                     } else {
@@ -202,5 +227,3 @@ public class Main {
     }
 
 }
-
-

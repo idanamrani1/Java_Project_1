@@ -58,35 +58,8 @@ public class OperatingSystem {
         return newArr;
     }
 
-    public void insertBoard() {
-        System.out.println("Enter board name: ");
-        String boardName = input.nextLine();
 
-        if (existBoard(boardName)) {
-            System.out.println("Board already exists.");
-            return;
-        }
-        System.out.println("Enter the name of the lecturer that will be the board manager:");
-        String managerName = input.nextLine();
-
-        Lecture manager = findLectureByName(managerName);
-
-        if (manager == null) {
-            System.out.println("That lecturer does not exist.");
-            return;
-        }
-        if (manager.checkIsValidManager()) {
-            System.out.println(managerName + " is now the board manager");
-
-            Board newBoard = new Board(boardName, new Lecture[1], manager);
-            addBoardToArray(newBoard);
-            System.out.println("Board " + boardName + " added successfully.");
-        } else {
-            System.out.println("The lecturer must be a Dr. or Prof. to be the board manager");
-        }
-    }
-
-    private boolean existBoard(String boardName) {
+    boolean existBoard(String boardName) {
         for (int i = 0; i < arrBoard.length; i++) {
             if (arrBoard[i] != null && arrBoard[i].getName().equals(boardName)) {
                 return true;
@@ -104,7 +77,7 @@ public class OperatingSystem {
         return true;
     }
 
-    private void addBoardToArray(Board newBoard) {
+    void addBoardToArray(Board newBoard) {
         if (isBoardArrayFull()) {
             extendBoardsArray();
         }
