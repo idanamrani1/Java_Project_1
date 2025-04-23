@@ -5,6 +5,7 @@ public class Board {
     private String name;
     private Lecture[] lectures;
     private Lecture managerBoard;
+    private int logicalSize;
 
 
     public Board(String name,Lecture[] lectures,Lecture managerBoard) {
@@ -89,6 +90,21 @@ public class Board {
         System.out.println();
     }
 
+    public int getLogicalSize() {
+        return this.logicalSize;
+    }
+
+    public void setLogicalSize(int logicalSize) {
+        this.logicalSize = logicalSize;
+    }
+
+    public void shiftLeftFromIndexBoard(int index){
+        for (int i = index; i < logicalSize - 1; i++) {
+            lectures[i] = lectures[i+1];
+        }
+        lectures[logicalSize-1] = null;
+        logicalSize--;
+    }
 
     public String getName() {
         return name;

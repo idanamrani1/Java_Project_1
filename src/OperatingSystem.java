@@ -5,9 +5,7 @@ public class OperatingSystem {
     private Lecture[] arrLecture = new Lecture[2];
     private Department[] arrDepartment = new Department[2];
     private Board[] arrBoard = new Board[2];
-    private int sizeArrayLecture = 0;
-    private int sizeArrayDepartment = 0;
-    private int sizeArrayBoard = 0;
+    private int logicalSizeArrLecture = 0;
 
     public void printWelcome() {
         System.out.println("Welcome to our system! 🎓");
@@ -138,7 +136,6 @@ public class OperatingSystem {
         }
 
     }
-
     boolean removeFromBoard(Board board, String memberName) {
         boolean found = false;
         for (int i = 0; i < board.getLectures().length; i++) {
@@ -260,6 +257,7 @@ public class OperatingSystem {
             for (int i = 0; i < lecturers.length; i++) {
                 if (lecturers[i] != null && lecturers[i].getId().equals(lecture.getId())) {
                     lecturers[i] = null;
+//                    shiftLeftFromIndexDepartment(i);
                     break;
                 }
             }
@@ -273,5 +271,15 @@ public class OperatingSystem {
         } else {
             System.out.println("Failed to assign lecture to department.");
         }
+
     }
+
+//    public void shiftLeftFromIndexDepartment(int index){
+//        for (int i = index; i < logicalSizeArrDep - 1; i++) {
+//            arrDepartment[i] = arrDepartment[i+1];
+//        }
+//        arrDepartment[logicalSizeArrDep-1] = null;
+//        logicalSizeArrDep--;
+//    }
+
 }
