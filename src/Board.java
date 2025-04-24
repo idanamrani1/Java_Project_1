@@ -12,6 +12,7 @@ public class Board {
         setName(name);
         setLectures(lectures);
         this.managerBoard = managerBoard;
+        logicalSize = 0;
     }
 
 
@@ -26,7 +27,7 @@ public class Board {
             }
         }
 
-        if (isFullArray(lectures)) {
+        if (OperatingSystem.isFullArray(lectures, logicalSize)) {
             expandLecturesArray();
         }
         addLectureToBoard(lecture);
@@ -68,13 +69,10 @@ public class Board {
     }
 
     private void addLectureToBoard(Lecture lecture){
-        for ( int i = 0 ; i < lectures.length ; i++){
-            if (lectures[i] == null){
-                lectures[i] = lecture;
-                break;
-            }
-        }
+        lectures[logicalSize] = lecture;
+        this.logicalSize++;
     }
+
     private boolean isFullArray(Object[] array) {
         for (Object obj : array) {
             if (obj == null) return false;
@@ -95,8 +93,8 @@ public class Board {
             lectures[i] = lectures[i+1];
         }
         lectures[logicalSize-1] = null;
-        logicalSize--;
     }
+
 
     public String getName() {
         return name;

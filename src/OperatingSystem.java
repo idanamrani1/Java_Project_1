@@ -6,33 +6,25 @@ public class OperatingSystem {
     private Department[] arrDepartment = new Department[2];
     private Board[] arrBoard = new Board[2];
     private int logicalSizeArrLecture = 0;
+    private int logicalSizeArrDepartment = 0;
 
 
 
     public boolean addLecture(Lecture newLecture) {
-        if (isFullArray(arrLecture)) {
+        if (isFullArray(arrLecture,logicalSizeArrLecture)) {
             arrLecture = extendLectureArray(arrLecture);
         }
         addLectureToArray(newLecture);
         return true;
     }
 
-    public boolean isFullArray(Object[] array){
-        for ( int i = 0 ; i < array.length ; i++){
-            if (array[i] == null){
-                return false;
-            }
-        }
-        return true;
+    public static boolean isFullArray(Object[] Array,int logicalSize) {
+        return logicalSize == Array.length;
     }
 
     private void addLectureToArray(Lecture newLecture) {
-        for (int i = 0; i < arrLecture.length; i++) {
-            if (arrLecture[i] == null) {
-                arrLecture[i] = newLecture;
-                return;
-            }
-        }
+        arrLecture[logicalSizeArrLecture] = newLecture;
+        logicalSizeArrLecture++;
     }
 
     public boolean existLecture(String name) {
@@ -122,10 +114,19 @@ public class OperatingSystem {
     }
 
     public String removeFromBoard(Board board, String memberName) {
-        for (int i = 0; i < board.getLectures().length; i++) {
-            Lecture lecture = board.getLectures()[i];
+
+        Lecture[] lectures = board.getLectures();
+        int logicalSize = board.getLogicalSize();
+
+        boolean found = false;
+        for (int i = 0; i < logicalSize; i++) {
+            Lecture lecture = lectures[i];
             if (lecture != null && lecture.getName().equals(memberName)) {
-                board.getLectures()[i] = null;
+                found = true;
+
+                board.shiftLeftFromIndexBoard(i);
+                board.setLogicalSize(logicalSize - 1);
+
                 Board[] boards = lecture.getBelongBoard();
                 if (boards != null) {
                     for (int j = 0; j < boards.length; j++) {
@@ -135,10 +136,16 @@ public class OperatingSystem {
                         }
                     }
                 }
-                return memberName + " deleted successfully";
+
+                break;
             }
         }
-        return "Lecture " + memberName + " is not found in the board";
+
+        if (!found) {
+            return "Lecture " + memberName + " is not found in the board";
+        }
+
+        return memberName + " deleted successfully";
     }
 
 
@@ -187,18 +194,13 @@ public class OperatingSystem {
         Lecture[] lectures = new Lecture[1];
         Department newDep = new Department(depName, numStudents, lectures);
 
-        if (isFullArray(arrDepartment)) {
+        if (isFullArray(arrDepartment,logicalSizeArrDepartment)) {
             arrDepartment = extendDepartmentArray(arrDepartment);
         }
 
-        for (int i = 0; i < arrDepartment.length; i++) {
-            if (arrDepartment[i] == null) {
-                arrDepartment[i] = newDep;
-                return "Department " + depName + " added successfully";
-            }
-        }
-
-        return "Failed to add department.";
+        arrDepartment[logicalSizeArrDepartment] = newDep;
+        logicalSizeArrDepartment++;
+        return "Department "+depName + " added successfully";
     }
 
 
