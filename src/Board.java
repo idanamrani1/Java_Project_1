@@ -14,21 +14,23 @@ public class Board {
         this.managerBoard = managerBoard;
     }
 
-    public void addLecture(Lecture lecture) {
-        if (managerBoard != null && lecture.getId().equals(managerBoard.getId())) {
-            System.out.println("This lecture is already the manager of the board and cannot be added as a member.");
-            return;
+
+    public String addLecture(Lecture lecture) {
+        if (managerBoard != null && lecture.getName().equals(managerBoard.getName())) {
+            return "This lecture is already the manager of the board and cannot be added as a member.";
         }
+
         for (int i = 0; i < lectures.length; i++) {
             if (lectures[i] != null && lectures[i].getName().equals(lecture.getName())) {
-                System.out.println("Lecture already exists.");
-                return;
+                return "Lecture already exists in the board.";
             }
         }
-        if (OperationsOnArrays.isFullArray(lectures)) {
+
+        if (isFullArray(lectures)) {
             expandLecturesArray();
         }
         addLectureToBoard(lecture);
+
         Board[] boards = lecture.getBelongBoard();
         if (boards == null) {
             boards = new Board[1];
@@ -52,8 +54,10 @@ public class Board {
                 lecture.setBelongBoard(bigger);
             }
         }
-        System.out.println("lecture " + lecture.getName() + " added to the board.");
+
+        return "Lecture " + lecture.getName() + " added to the board.";
     }
+
 
     private void expandLecturesArray(){
         Lecture[] newArray = new Lecture[lectures.length*2];
@@ -71,23 +75,11 @@ public class Board {
             }
         }
     }
-
-    public void printBoardDetails(){
-        System.out.println("Board name: " + this.name);
-
-        if (managerBoard != null) {
-            System.out.println("Name of the Manager: " + managerBoard.getName());
-        } else {
-            System.out.println("No Manager assigned");
+    private boolean isFullArray(Object[] array) {
+        for (Object obj : array) {
+            if (obj == null) return false;
         }
-
-        System.out.print("Members: ");
-        for (Lecture member : lectures) {
-            if (member != null && !member.getName().equals(managerBoard.getName())) {
-                System.out.print(member.getName() + " , ");
-            }
-        }
-        System.out.println();
+        return true;
     }
 
     public int getLogicalSize() {
@@ -127,13 +119,7 @@ public class Board {
     }
 
     public void setManagerBoard(Lecture managerBoard) {
-        if ((managerBoard.checkIsValidManager())) {
-            System.out.println(managerBoard.getName() + " updated to be the manager board");
-            this.managerBoard = managerBoard;
-        }
-        else{
-        System.out.println("The lecturer must be a Dr. or Prof. to be the board manager");
-        }
+        this.managerBoard = managerBoard;
     }
 
 

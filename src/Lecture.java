@@ -10,11 +10,12 @@ public class Lecture {
     private Department belongDepartment;
 
 
-    public void setDepartment(Department department) {
+    public String setDepartment(Department department) {
         if (this.belongDepartment != null) {
-            System.out.println("Lecture is already assigned to a department!");
+            return "Lecture is already assigned to a department!";
         } else {
             this.belongDepartment = department;
+            return "Lecture assigned to department successfully.";
         }
     }
 
@@ -96,19 +97,19 @@ public class Lecture {
                 ", Boards: " + lectureBoardDetails();
 
     }
-        public String lectureBoardDetails(){
-            if (belongBoard == null) {
-                return "None";
-            }
-            String details = "";
-            for (int i = 0; i < belongBoard.length; i++) {
-                if (belongBoard[i] != null) {
-                    details += belongBoard[i].getName() + " ";
-                }
-            }
-            if(details.equals("")) {
-                return "None";
-            }
-            return details;
+    public String lectureBoardDetails(){
+        if (belongBoard == null) {
+            return "None";
         }
+        String details = "";
+        for (int i = 0; i < belongBoard.length; i++) {
+            if (belongBoard[i] != null) {
+                details += belongBoard[i].getName() + " ";
+            }
+        }
+        if(details.equals("")) {
+            return "None";
+        }
+        return details;
     }
+}

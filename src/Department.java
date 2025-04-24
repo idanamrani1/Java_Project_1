@@ -9,13 +9,20 @@ public class Department {
         setNumOfStudents(numOfStudents);
     }
 
-    public boolean addLecturer(Lecture lecture) {
+    private boolean isFullArray(Object[] array) {
+        for (Object obj : array) {
+            if (obj == null) return false;
+        }
+        return true;
+    }
+
+
+    public String addLecturer(Lecture lecture) {
         if (lecture.isAssignedToDepartment()) {
-            System.out.println("Lecture is already assigned to a department.");
-            return false;
+            return "Lecture is already assigned to a department.";
         }
 
-        if (OperationsOnArrays.isFullArray(numOfLecture)) {
+        if (isFullArray(numOfLecture)) {
             expandLecturerArray();
         }
 
@@ -23,19 +30,9 @@ public class Department {
             if (numOfLecture[i] == null) {
                 numOfLecture[i] = lecture;
                 lecture.setDepartment(this);
-                /*
-                this- הינה מתייחסת לאובייקט הנוכחי
-                אז אנחנו שולחים את המחלקה לאובייקט מרצה,
-                זאת אומר, אנחנו שייכים למחלקת לימוד מסויימת,
-                ואנחנו רוצים לעדכן שהמרצה (שהוא האובייקט) שהמחלקה שלו היא המחלקה הנתונהת
-                לכן רשום הthis בפנים.
-                 */
-                return true;
-            }
+                return "Lecture added successfully to department " + depName;            }
         }
-
-        System.out.println("Failed to add lecturer.");
-        return false;
+        return "Failed to add lecturer.";
     }
 
     private void expandLecturerArray() {
