@@ -21,7 +21,7 @@ public class Department {
 
     public String addLecturer(Lecture lecture) {
         if (lecture.isAssignedToDepartment()) {
-            return "Lecture is already assigned to a department.";
+            return "Lecture " + lecture.getName() + " is already assigned to a department.";
         }
 
         if (OperatingSystem.isFullArray(numOfLecture,logicalSize)) {
@@ -29,8 +29,8 @@ public class Department {
         }
         numOfLecture[logicalSize] = lecture;
         lecture.setDepartment(this);
-        logicalSize++;
-        return "Lecture added successfully to department " + depName;
+        this.logicalSize++;
+        return "Lecture " + lecture.getName() +" added successfully to department " + depName;
     }
 
     private void expandLecturerArray() {
@@ -76,7 +76,7 @@ public class Department {
             numOfLecture[i] = numOfLecture[i+1];
         }
         numOfLecture[logicalSize-1] = null;
-        logicalSize--;
+        this.logicalSize--;
         System.out.println(numOfStudents);
     }
 

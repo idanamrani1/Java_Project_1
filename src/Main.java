@@ -213,6 +213,8 @@ public class Main {
                     break;
 
                 case "9":
+                    System.out.println("Details of the lecturers at the college:");
+                    System.out.println("-----------------------------------------");
                     Lecture[] lectures = op1.getLectures();
                     for (Lecture lectur : lectures) {
                         if (lectur != null) {
@@ -222,6 +224,8 @@ public class Main {
                     break;
 
                 case "10":
+                    System.out.println("    Boards details:");
+                    System.out.println("------------------------");
                     Board[] boards = op1.getBoards();
                     for (Board boardDets : boards) {
                         if (boardDets != null) {
@@ -263,6 +267,7 @@ public class Main {
     }
 
     public static void printMenu() {
+        System.out.println("\n----Menu----");
         System.out.println("0 - Exit");
         System.out.println("1 - Add Lecture");
         System.out.println("2 - Add board to College");

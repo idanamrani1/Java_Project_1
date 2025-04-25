@@ -24,7 +24,7 @@ public class OperatingSystem {
 
     private void addLectureToArray(Lecture newLecture) {
         arrLecture[logicalSizeArrLecture] = newLecture;
-        logicalSizeArrLecture++;
+        this.logicalSizeArrLecture++;
     }
 
     public boolean existLecture(String name) {
@@ -199,7 +199,7 @@ public class OperatingSystem {
         }
 
         arrDepartment[logicalSizeArrDepartment] = newDep;
-        logicalSizeArrDepartment++;
+        this.logicalSizeArrDepartment++;
         return "Department "+depName + " added successfully";
     }
 
@@ -224,7 +224,8 @@ public class OperatingSystem {
             Lecture[] lecturers = currentDep != null ? currentDep.getNumOfLecture() : new Lecture[0];
             for (int i = 0; i < lecturers.length; i++) {
                 if (lecturers[i] != null && lecturers[i].getId().equals(lecture.getId())) {
-                    lecturers[i] = null;
+                    // shift left
+                    currentDep.shiftLeftFromIndexDepartment(i);
                     break;
                 }
             }
@@ -233,14 +234,4 @@ public class OperatingSystem {
 
         return department.addLecturer(lecture);
     }
-
-
-//    public void shiftLeftFromIndexDepartment(int index){
-//        for (int i = index; i < logicalSizeArrDep - 1; i++) {
-//            arrDepartment[i] = arrDepartment[i+1];
-//        }
-//        arrDepartment[logicalSizeArrDep-1] = null;
-//        logicalSizeArrDep--;
-//    }
-
 }
