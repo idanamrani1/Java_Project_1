@@ -23,7 +23,7 @@ public class Main {
                 case "1":
                     System.out.print("Enter Lecture name: ");
                     String nameNewLecture = mainObj.getStrFromUser();
-                    while(op1.existLecture(nameNewLecture)){
+                    while (op1.existLecture(nameNewLecture)) {
                         System.out.println("Lecture with this name already exists.");
                         System.out.println("Enter different name:");
                         nameNewLecture = mainObj.getStrFromUser();
@@ -227,23 +227,41 @@ public class Main {
                     System.out.println("    Boards details:");
                     System.out.println("------------------------");
                     Board[] boards = op1.getBoards();
+                    int count = 1;
+
                     for (Board boardDets : boards) {
                         if (boardDets != null) {
-                            System.out.println("Board name: " + boardDets.getName());
+                            System.out.println(count + ". Board name: " + boardDets.getName());
 
-                            if (boardDets.getManagerBoard() != null) {
-                                System.out.println("Name of the Manager: " + boardDets.getManagerBoard().getName());
+                            Lecture managerr = boardDets.getManagerBoard();
+                            if (managerr != null) {
+                                System.out.println("   Name of the Manager: " + managerr.getName());
                             } else {
-                                System.out.println("No Manager assigned");
+                                System.out.println("   No Manager assigned");
                             }
 
-                            System.out.print("Members: ");
-                            for (Lecture member : boardDets.getLectures()) {
-                                if (member != null && !member.getName().equals(boardDets.getManagerBoard().getName())) {
-                                    System.out.print(member.getName() + " , ");
+                            Lecture[] members = boardDets.getLectures();
+                            boolean noMember = true;
+
+                            System.out.print("   Members: ");
+                            for (Lecture member : members) {
+                                if (member != null && managerr != null && !member.getId().equals(managerr.getId())) {
+                                    if (!noMember) {
+                                        System.out.print(", ");
+                                    }
+                                    System.out.print(member.getName());
+                                    noMember = false;
                                 }
                             }
-                            System.out.println("\n");
+                            if (noMember) {
+                                System.out.print("No members");
+                            }
+
+                            System.out.println();
+                            System.out.println("   Number of Members: " + boardDets.getLogicalSize());
+                            System.out.println();
+
+                            count++;
                         }
                     }
                     break;
