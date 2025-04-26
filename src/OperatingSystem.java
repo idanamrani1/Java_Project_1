@@ -1,10 +1,9 @@
-import java.util.Scanner;
+
 
 public class OperatingSystem {
-    private Scanner input = new Scanner(System.in);
-    private Lecture[] arrLecture = new Lecture[2];
-    private Department[] arrDepartment = new Department[2];
-    private Board[] arrBoard = new Board[2];
+    private Lecture[] arrLecture = new Lecture[1];
+    private Department[] arrDepartment = new Department[1];
+    private Board[] arrBoard = new Board[1];
     private int logicalSizeArrLecture = 0;
     private int logicalSizeArrDepartment = 0;
 
@@ -223,15 +222,14 @@ public class OperatingSystem {
 
             Lecture[] lecturers = currentDep != null ? currentDep.getNumOfLecture() : new Lecture[0];
             for (int i = 0; i < lecturers.length; i++) {
-                if (lecturers[i] != null && lecturers[i].getId().equals(lecture.getId())) {
-                    // shift left
+                if (lecturers[i] != null && lecturers[i].getName().equals(lecture.getName())) {
                     currentDep.shiftLeftFromIndexDepartment(i);
                     break;
                 }
             }
             lecture.setBelongDep(null);
+            return "Lecture has removed from previous department: " + currentDep.getDepName() +"\nand joined to: " + depName ;
         }
-
         return department.addLecturer(lecture);
     }
 }

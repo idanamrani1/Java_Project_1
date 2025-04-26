@@ -100,7 +100,7 @@ public class Lecture {
 
     }
     public String lectureBoardDetails(){
-        if (belongBoard == null) {
+        if (belongBoard == null || belongBoard.length == 0) {
             return "None";
         }
         String details = "";

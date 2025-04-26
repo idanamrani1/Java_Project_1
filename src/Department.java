@@ -11,14 +11,6 @@ public class Department {
         logicalSize = 0;
     }
 
-    private boolean isFullArray(Object[] array) {
-        for (Object obj : array) {
-            if (obj == null) return false;
-        }
-        return true;
-    }
-
-
     public String addLecturer(Lecture lecture) {
         if (lecture.isAssignedToDepartment()) {
             return "Lecture " + lecture.getName() + " is already assigned to a department.";
@@ -77,7 +69,6 @@ public class Department {
         }
         numOfLecture[logicalSize-1] = null;
         this.logicalSize--;
-        System.out.println(numOfStudents);
     }
 
     public String toString(){

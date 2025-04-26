@@ -73,12 +73,6 @@ public class Board {
         this.logicalSize++;
     }
 
-    private boolean isFullArray(Object[] array) {
-        for (Object obj : array) {
-            if (obj == null) return false;
-        }
-        return true;
-    }
 
     public int getLogicalSize() {
         return this.logicalSize;

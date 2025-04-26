@@ -254,7 +254,6 @@ public class Main {
 
                     System.out.print("Enter department name: ");
                     String departmentName = mainObj.getStrFromUser();
-
                     String res = op1.addLectureToDepartment(lecName, departmentName);
                     System.out.println(res);
 
