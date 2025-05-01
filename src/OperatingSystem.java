@@ -1,5 +1,4 @@
 
-
 public class OperatingSystem {
     private Lecture[] arrLecture = new Lecture[1];
     private Department[] arrDepartment = new Department[1];
@@ -8,16 +7,15 @@ public class OperatingSystem {
     private int logicalSizeArrDepartment = 0;
 
 
-
     public boolean addLecture(Lecture newLecture) {
-        if (isFullArray(arrLecture,logicalSizeArrLecture)) {
+        if (isFullArray(arrLecture, logicalSizeArrLecture)) {
             arrLecture = extendLectureArray(arrLecture);
         }
         addLectureToArray(newLecture);
         return true;
     }
 
-    public static boolean isFullArray(Object[] Array,int logicalSize) {
+    public static boolean isFullArray(Object[] Array, int logicalSize) {
         return logicalSize == Array.length;
     }
 
@@ -161,7 +159,7 @@ public class OperatingSystem {
             }
         } else { // option 7
             for (Lecture lecture : arrLecture) {
-                if(lecture != null){
+                if (lecture != null) {
                     sum += lecture.getSalary();
                     counter++;
                 }
@@ -193,13 +191,13 @@ public class OperatingSystem {
         Lecture[] lectures = new Lecture[1];
         Department newDep = new Department(depName, numStudents, lectures);
 
-        if (isFullArray(arrDepartment,logicalSizeArrDepartment)) {
+        if (isFullArray(arrDepartment, logicalSizeArrDepartment)) {
             arrDepartment = extendDepartmentArray(arrDepartment);
         }
 
         arrDepartment[logicalSizeArrDepartment] = newDep;
         this.logicalSizeArrDepartment++;
-        return "Department "+depName + " added successfully";
+        return "Department " + depName + " added successfully";
     }
 
 
@@ -227,8 +225,10 @@ public class OperatingSystem {
                     break;
                 }
             }
+
             lecture.setBelongDep(null);
-            return "Lecture has removed from previous department: " + currentDep.getDepName() +"\nand joined to: " + depName ;
+            department.addLecturer(lecture);
+            return "Lecture has been moved from " + currentDep.getDepName() + " to " + depName + ".\n";
         }
         return department.addLecturer(lecture);
     }

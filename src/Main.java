@@ -298,6 +298,7 @@ public class Main {
         System.out.println("10 - Show details about boards");
         System.out.println("11 - Add Lecture to Department");
     }
+
     public void printWelcome() {
         System.out.println("Welcome to our system! 🎓");
         System.out.print("To get started, please enter the name of your college: ");
