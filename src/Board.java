@@ -1,7 +1,10 @@
+import Exceptions.AlreadyManagerException;
+import Exceptions.AlreadyMemberException;
+
 import java.util.Arrays;
 import java.util.Objects;
 
-public class Board {
+public class Board implements expandArray {
     private String name;
     private Lecture[] lectures;
     private Lecture managerBoard;
@@ -16,19 +19,19 @@ public class Board {
     }
 
 
-    public String addLecture(Lecture lecture) {
+    public void addLecture(Lecture lecture) throws AlreadyMemberException, AlreadyManagerException {
         if (managerBoard != null && lecture.getName().equals(managerBoard.getName())) {
-            return "This lecture is already the manager of the board and cannot be added as a member.";
+            throw new AlreadyManagerException("This lecture is already the manager of the board and cannot be added as a member.");
         }
 
         for (int i = 0; i < lectures.length; i++) {
             if (lectures[i] != null && lectures[i].getName().equals(lecture.getName())) {
-                return "Lecture already exists in the board.";
+                throw new AlreadyMemberException("Lecture already exists in the board.");
             }
         }
 
         if (OperatingSystem.isFullArray(lectures, logicalSize)) {
-            expandLecturesArray();
+            expandable();
         }
         addLectureToBoard(lecture);
 
@@ -56,17 +59,18 @@ public class Board {
             }
         }
 
-        return "Lecture " + lecture.getName() + " added to the board.";
     }
 
 
-    private void expandLecturesArray(){
+    @Override
+    public void expandable() {
         Lecture[] newArray = new Lecture[lectures.length*2];
         for ( int i = 0 ; i < lectures.length ; i++){
             newArray[i] = lectures[i];
         }
         lectures = newArray;
     }
+
 
     private void addLectureToBoard(Lecture lecture){
         lectures[logicalSize] = lecture;

@@ -1,4 +1,4 @@
-public class Department {
+public class Department implements expandArray {
     private String depName;
     private int numOfStudents;
     private Lecture[] numOfLecture;
@@ -17,7 +17,7 @@ public class Department {
         }
 
         if (OperatingSystem.isFullArray(numOfLecture,logicalSize)) {
-            expandLecturerArray();
+            expandable();
         }
         numOfLecture[logicalSize] = lecture;
         lecture.setDepartment(this);
@@ -25,7 +25,8 @@ public class Department {
         return "Lecture " + lecture.getName() +" added successfully to department " + depName;
     }
 
-    private void expandLecturerArray() {
+    @Override
+    public void expandable() {
         Lecture[] bigger = new Lecture[numOfLecture.length * 2];
         for (int i = 0; i < numOfLecture.length; i++) {
             bigger[i] = numOfLecture[i];

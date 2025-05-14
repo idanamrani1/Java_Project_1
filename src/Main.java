@@ -1,4 +1,9 @@
 // students name: idan amrani and shaked hakim
+// students ID: 322205808, 325117653
+
+import Exceptions.AlreadyManagerException;
+import Exceptions.AlreadyMemberException;
+import Exceptions.LectureNotFoundException;
 
 import java.util.Scanner;
 
@@ -128,8 +133,13 @@ public class Main {
                         break;
                     }
 
-                    String result = board.addLecture(lecture);
-                    System.out.println(result);
+                    try {
+                        board.addLecture(lecture);
+                        System.out.println("Lecture " + lecture.getName() + " added to the board.");
+                    } catch (AlreadyManagerException | AlreadyMemberException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
+
                     break;
 
                 case "4":
@@ -178,10 +188,14 @@ public class Main {
 
                     System.out.print("Enter the name you want to remove: ");
                     String memberName = mainObj.getStrFromUser();
-                    String result2 = op1.removeFromBoard(board3, memberName);
-
-                    System.out.println(result2);
+                    try {
+                        op1.removeFromBoard(board3, memberName);
+                        System.out.println(memberName + " deleted successfully.");
+                    } catch (LectureNotFoundException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
                     break;
+
 
                 case "6":
                     System.out.print("Enter department name: ");
