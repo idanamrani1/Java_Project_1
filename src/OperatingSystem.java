@@ -1,4 +1,4 @@
-import Exceptions.LectureNotFoundException;
+import Exceptions.ObjectNotFoundException;
 
 public class OperatingSystem {
     private Lecture[] arrLecture = new Lecture[1];
@@ -111,7 +111,7 @@ public class OperatingSystem {
         return arrBoard;
     }
 
-    public void removeFromBoard(Board board, String memberName) throws LectureNotFoundException {
+    public void removeFromBoard(Board board, String memberName) throws ObjectNotFoundException {
         Lecture[] lectures = board.getLectures();
         int logicalSize = board.getLogicalSize();
 
@@ -139,7 +139,7 @@ public class OperatingSystem {
         }
 
         if (!found) {
-            throw new LectureNotFoundException("Lecture " + memberName + " is not found in the board");
+            throw new ObjectNotFoundException("Lecture " + memberName + " is not found in the board");
         }
     }
 

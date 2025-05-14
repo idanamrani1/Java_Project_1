@@ -1,9 +1,7 @@
 // students name: idan amrani and shaked hakim
 // students ID: 322205808, 325117653
 
-import Exceptions.AlreadyManagerException;
-import Exceptions.AlreadyMemberException;
-import Exceptions.LectureNotFoundException;
+import Exceptions.*;
 
 import java.util.Scanner;
 
@@ -26,60 +24,68 @@ public class Main {
                     break;
 
                 case "1":
-                    System.out.print("Enter Lecture name: ");
-                    String nameNewLecture = mainObj.getStrFromUser();
-                    while (op1.existLecture(nameNewLecture)) {
-                        System.out.println("Lecture with this name already exists.");
-                        System.out.println("Enter different name:");
-                        nameNewLecture = mainObj.getStrFromUser();
-                    }
+                    try {
+                        System.out.print("Enter Lecture name: ");
+                        String nameNewLecture = mainObj.getStrFromUser();
 
-                    System.out.print("Enter Lecture ID: ");
-                    String id = mainObj.getStrFromUser();
-
-                    System.out.println("Enter Lecture degree (1-4):");
-                    for (Degree d : Degree.values()) {
-                        System.out.println(d.getNumber() + " - " + d);
-                    }
-                    int num = mainObj.getIntFromUser();
-                    Degree degree = Degree.fromNumber(num);
-
-                    if (degree == null) {
-                        System.out.println("Invalid degree choice.");
-                        break;
-                    }
-                    mainObj.input.nextLine();
-
-                    System.out.print("Enter name of the degree: ");
-                    String nameDegree = mainObj.getStrFromUser();
-
-                    System.out.print("Enter Lecture salary: ");
-                    double salary = mainObj.getDoubleFromUser();
-                    mainObj.input.nextLine();
-
-                    if (salary < 0) {
-                        System.out.println("Salary cannot be negative.");
-                        break;
-                    }
-
-                    Lecture NewLecture = new Lecture(nameNewLecture, id, degree, nameDegree, salary);
-                    op1.addLecture(NewLecture);
-                    System.out.println("Lecture " + nameNewLecture + " added successfully");
-
-                    System.out.print("Do you want to assign this lecture to a department now? (yes/no): ");
-                    if (mainObj.getBoolFromUser()) {
-                        System.out.print("Enter department name: ");
-                        String depName = mainObj.getStrFromUser();
-
-                        Department department = op1.findDepartment(depName);
-                        if (department == null) {
-                            System.out.println("Department " + depName + " does not exist.");
-                        } else {
-                            String result = department.addLecturer(NewLecture);
-                            System.out.println(result);
+                        while (op1.existLecture(nameNewLecture)) {
+                            System.out.println("Lecture with this name already exists. Please enter a new name.");
+                            System.out.print("Enter Lecture name: ");
+                            nameNewLecture = mainObj.getStrFromUser();
                         }
+
+                        System.out.print("Enter Lecture ID: ");
+                        String id = mainObj.getStrFromUser();
+
+                        System.out.println("Enter Lecture degree (1-4):");
+                        for (Degree d : Degree.values()) {
+                            System.out.println(d.getNumber() + " - " + d);
+                        }
+                        int num = mainObj.getIntFromUser();
+                        Degree degree = Degree.fromNumber(num);
+
+                        if (degree == null) {
+                            throw new InvalidDegreeException("Invalid degree choice.");
+                        }
+                        mainObj.input.nextLine();
+
+                        System.out.print("Enter name of the degree: ");
+                        String nameDegree = mainObj.getStrFromUser();
+
+                        System.out.print("Enter Lecture salary: ");
+                        double salary = mainObj.getDoubleFromUser();
+                        mainObj.input.nextLine();
+
+                        if (salary < 0) {
+                            throw new InvalidSalaryException("Error: Salary cannot be negative.");
+                        }
+
+                        Lecture NewLecture = new Lecture(nameNewLecture, id, degree, nameDegree, salary);
+                        op1.addLecture(NewLecture);
+                        System.out.println("Lecture " + nameNewLecture + " added successfully");
+
+                        System.out.print("Do you want to assign this lecture to a department now? (yes/no): ");
+                        if (mainObj.getBoolFromUser()) {
+                            System.out.print("Enter department name: ");
+                            String depName = mainObj.getStrFromUser();
+
+                            Department department = op1.findDepartment(depName);
+                            if (department == null) {
+                                throw new ObjectNotFoundException("Error: Department " + depName + " does not exist.");
+                            } else {
+                                String result = department.addLecturer(NewLecture);
+                                System.out.println(result);
+                            }
+                        }
+                        else {
+                            System.out.println("The lecture " + NewLecture.getName() + " don't add to department.");
+                        }
+
+                    } catch (ObjectNotFoundException | InvalidDegreeException | InvalidSalaryException e) {
+                        System.err.println(e.getMessage());
                     }
                     break;
+
                 case "2":
                     System.out.print("Enter board name: ");
                     String boardName = mainObj.getStrFromUser();
@@ -135,9 +141,9 @@ public class Main {
 
                     try {
                         board.addLecture(lecture);
-                        System.out.println("Lecture " + lecture.getName() + " added to the board.");
+                        System.err.println("Lecture " + lecture.getName() + " added to the board.");
                     } catch (AlreadyManagerException | AlreadyMemberException e) {
-                        System.out.println("Error: " + e.getMessage());
+                        System.err.println("Error: " + e.getMessage());
                     }
 
                     break;
@@ -190,9 +196,9 @@ public class Main {
                     String memberName = mainObj.getStrFromUser();
                     try {
                         op1.removeFromBoard(board3, memberName);
-                        System.out.println(memberName + " deleted successfully.");
-                    } catch (LectureNotFoundException e) {
-                        System.out.println("Error: " + e.getMessage());
+                        System.err.println(memberName + " deleted successfully.");
+                    } catch (ObjectNotFoundException e) {
+                        System.err.println("Error: " + e.getMessage());
                     }
                     break;
 
