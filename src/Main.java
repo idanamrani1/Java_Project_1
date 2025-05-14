@@ -149,38 +149,39 @@ public class Main {
                     break;
 
                 case "4":
-                    System.out.print("Enter name of the board: ");
-                    String boardName1 = mainObj.getStrFromUser();
-                    Board boardd = op1.findBoardByName(boardName1);
+                    try {
+                        System.out.print("Enter name of the board: ");
+                        String boardName1 = mainObj.getStrFromUser();
+                        Board boardd = op1.findBoardByName(boardName1);
 
-                    if (boardd == null) {
-                        System.out.println("Board " + boardName1 + " does not exist.");
-                        break;
+                        if (boardd == null) {
+                            throw new ObjectNotFoundException("Board " + boardName1 + " does not exist.");
+                        }
+
+                        System.out.print("Enter name of the lecture to be set as manager: ");
+                        String lec = mainObj.getStrFromUser();
+                        Lecture lect = op1.findLectureByName(lec);
+
+                        if (lect == null) {
+                            throw new ObjectNotFoundException("Lecture " + lec + " does not exist.");
+                        }
+
+                        if (!lect.checkIsValidManager()) {
+                            throw new InvalidManagerException("Only a Dr. or Professor can be assigned as board manager.");
+                        }
+
+                        if (boardd.getManagerBoard() != null &&
+                                boardd.getManagerBoard().getName().equals(lect.getName())) {
+                            throw new AlreadyNameExistsException(lec + " is already the manager of this board.");
+                        }
+
+                        boardd.setManagerBoard(lect);
+                        System.out.println("Board manager updated successfully to " + lect.getName());
+                    } catch (ObjectNotFoundException | AlreadyNameExistsException | InvalidManagerException e) {
+                        System.err.println(e.getMessage());
                     }
-
-                    System.out.print("Enter name of the lecture to be set as manager: ");
-                    String lec = mainObj.getStrFromUser();
-                    Lecture lect = op1.findLectureByName(lec);
-
-                    if (lect == null) {
-                        System.out.println("Lecture " + lec + " does not exist.");
-                        break;
-                    }
-
-                    if (!lect.checkIsValidManager()) {
-                        System.out.println("Only a Dr. or Professor can be assigned as board manager.");
-                        break;
-                    }
-
-                    if (boardd.getManagerBoard() != null &&
-                            boardd.getManagerBoard().getName().equals(lect.getName())) {
-                        System.out.println(lec + " is already the manager of this board.");
-                        break;
-                    }
-
-                    boardd.setManagerBoard(lect);
-                    System.out.println("Board manager updated successfully to " + lect.getName());
                     break;
+
 
                 case "5":
                     System.out.print("Enter name of the board: ");
@@ -225,10 +226,14 @@ public class Main {
                     String name = mainObj.getStrFromUser();
                     Department department = op1.findDepartment(name);
 
-                    if (department != null) {
-                        System.out.println("The avg is: " + op1.getSalaryForAll(department));
-                    } else {
-                        System.out.println("Department not found");
+                    try {
+                        if (department != null) {
+                            System.out.println("The avg is: " + op1.getSalaryForAll(department));
+                        } else {
+                            throw new ObjectNotFoundException("Department not found");
+                        }
+                    } catch (ObjectNotFoundException e) {
+                        System.err.println(e.getMessage());
                     }
                     break;
 
@@ -297,6 +302,18 @@ public class Main {
 
                     break;
 
+                case "12":
+                    break;
+
+                case "13":
+                    break;
+
+                case "14":
+                    break;
+
+                case "15":
+                    break;
+
                 default:
                     System.out.println("Wrong input");
             }
@@ -317,6 +334,11 @@ public class Main {
         System.out.println("9 - Show details about Lectures");
         System.out.println("10 - Show details about boards");
         System.out.println("11 - Add Lecture to Department");
+        System.out.println("12 - Comparison between a Dr. and a Prof. based on the number of their articles ");
+        System.out.println("13 - Comparison between departments according to 2 criteria: according to the number of faculty members assigned to them or according to the total number of articles written by committee members");
+        System.out.println("14 - Duplicate values of Board");
+        System.out.println("15 - Remove member from board");
+
     }
 
     public void printWelcome() {
