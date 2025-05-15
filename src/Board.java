@@ -58,7 +58,6 @@ public class Board implements expandArray {
                 lecture.setBelongBoard(bigger);
             }
         }
-
     }
 
 

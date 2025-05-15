@@ -1,3 +1,5 @@
+import Exceptions.InvalidManagerException;
+
 import java.util.Objects;
 
 public class Lecture {
@@ -79,8 +81,10 @@ public class Lecture {
     }
 
 
-    public boolean checkIsValidManager() {
-        return (this.degree == Degree.DR || this.degree == Degree.PROFESSOR);
+    public void checkIsValidManager() throws InvalidManagerException {
+        if (!(this.degree == Degree.DR || this.degree == Degree.PROFESSOR)) {
+            throw new InvalidManagerException("The lecturer must be a Dr. or Prof. to be the board manager.");
+        }
     }
     public Department getBelongDepartment() {
         return this.belongDepartment;
