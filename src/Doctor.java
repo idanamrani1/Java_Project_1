@@ -1,4 +1,4 @@
-public class Doctor extends Lecture implements Researcher, expandArray, IsFullArray {
+public class Doctor extends Lecture implements Researcher, expandArray, IsFullArray, CountArticles {
     private String[] articles; // array of the articles
     private int numberOfArticles; // the number of articles
 

@@ -143,6 +143,31 @@ public class OperatingSystem {
         }
     }
 
+    public void removeFromDepartment(Department department, String lectureName) throws ObjectNotFoundException {
+        Lecture[] lectures = department.getNumOfLecture();
+        int logicalSize = department.getLogicalSize();
+
+        boolean found = false;
+
+        for (int i = 0; i < logicalSize; i++) {
+            Lecture lecture = lectures[i];
+            if (lecture != null && lecture.getName().equals(lectureName)) {
+                found = true;
+
+                department.shiftLeftFromIndexDepartment(i);
+                department.setLogicalSize(logicalSize - 1);
+                lecture.setDepartment(null);
+
+                break;
+            }
+        }
+
+        if (!found) {
+            throw new ObjectNotFoundException("Lecture " + lectureName + " is not found in the department");
+        }
+    }
+
+
 
     public double getSalaryForAll(Department department) {
         // option 8

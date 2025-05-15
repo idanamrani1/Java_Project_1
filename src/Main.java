@@ -115,7 +115,7 @@ public class Main {
                     try {
                         board = op1.findBoardByName(boardName);
                     } catch (ObjectNotFoundException e) {
-                        System.out.println(e.getMessage());
+                        System.err.println(e.getMessage());
                         break;
                     }
 
@@ -125,7 +125,7 @@ public class Main {
                     try {
                         lecture = op1.findLectureByName(lectureName);
                     } catch (ObjectNotFoundException e) {
-                        System.out.println(e.getMessage());
+                        System.err.println(e.getMessage());
                         break;
                     }
 
@@ -136,7 +136,7 @@ public class Main {
 
                     try {
                         board.addLecture(lecture);
-                        System.err.println("Lecture " + lecture.getName() + " added to the board.");
+                        System.out.println("Lecture " + lecture.getName() + " added to the board.");
                     } catch (AlreadyManagerException | AlreadyMemberException e) {
                         System.err.println("Error: " + e.getMessage());
                     }
@@ -303,6 +303,54 @@ public class Main {
                     break;
 
                 case "12":
+                    try {
+                        System.out.println("Enter name of lecture (Doctoral degree or higher): ");
+                        String lecName1 = mainObj.getStrFromUser();
+                        Lecture lec1 = op1.findLectureByName(lecName1);
+
+                        if (!(lec1 instanceof Doctor && lec1 instanceof Professor)) {
+                            throw new InvalidDegreeException("Error: Lecturer is not a Doctor or Professor.");
+                        }
+                        System.out.println("Enter name of lecture (Doctoral degree or higher): ");
+                        String lecName2 = mainObj.getStrFromUser();
+                        Lecture lec2 = op1.findLectureByName(lecName2);
+
+                        if (!(lec2 instanceof Doctor && lec2 instanceof Professor)) {
+                            throw new InvalidDegreeException("Error: Lecturer is not a Doctor or Professor.");
+                        }
+
+                        int numOfArticlesLec1 = 0;
+                        int numOfArticlesLec2 = 0;
+
+                        if (lec1 instanceof Doctor) {
+                            numOfArticlesLec1 = ((Doctor) lec1).getNumberOfArticles();
+                        }
+                        else if (lec1 instanceof Professor) {
+                            numOfArticlesLec1 = ((Professor) lec1).getNumberOfArticles();
+                        }
+
+                        if (lec2 instanceof Doctor) {
+                            numOfArticlesLec2 = ((Doctor) lec2).getNumberOfArticles();
+                        }
+                        else if (lec2 instanceof Professor) {
+                            numOfArticlesLec2 = ((Professor) lec2).getNumberOfArticles();
+                        }
+
+                        if (numOfArticlesLec1 == 0 && numOfArticlesLec2 == 0) {
+                            throw new NoArticlesException("Both lecturers have zero articles.");
+                        }
+
+
+
+
+
+
+
+
+
+                    } catch (ObjectNotFoundException | InvalidDegreeException e) {
+                        throw new RuntimeException(e);
+                    }
                     break;
 
                 case "13":
@@ -312,10 +360,29 @@ public class Main {
                     break;
 
                 case "15":
+                    try {
+                        System.out.print("Enter the lecture name you want to remove from department: ");
+                        String lectureNamee = mainObj.getStrFromUser();
+
+                        Lecture lectureToRemoveFromDep = op1.findLectureByName(lectureNamee);
+
+                        Department dept = lectureToRemoveFromDep.getBelongDepartment();
+                        if (dept == null) {
+                            System.out.println("Lecture does not belong to any department.");
+                            break;
+                        }
+
+                        op1.removeFromDepartment(dept, lectureNamee);
+                        System.out.println(lectureNamee + " deleted successfully from department.");
+
+                    } catch (ObjectNotFoundException e) {
+                        System.err.println("Error: " + e.getMessage());
+                    }
                     break;
 
+
                 default:
-                    System.out.println("Wrong input");
+                    System.err.println("Wrong input");
             }
         }
     }
@@ -334,11 +401,12 @@ public class Main {
         System.out.println("9 - Show details about Lectures");
         System.out.println("10 - Show details about boards");
         System.out.println("11 - Add Lecture to Department");
-        System.out.println("12 - Comparison between a Dr. and a Prof. based on the number of their articles ");
-        System.out.println("13 - Comparison between departments according to 2 criteria: according to the number of faculty members assigned to them or according to the total number of articles written by committee members");
+        System.out.println("12 - Comparison between a Dr. or/ and a Prof. based on the number of their articles ");
+        System.out.println("13 - Comparison between departments according to 2 criteria:" +
+                "\n     according to the number of faculty members assigned to them or according to the total number" +
+                "\n     of articles written by committee members");
         System.out.println("14 - Duplicate values of Board");
-        System.out.println("15 - Remove member from board");
-
+        System.out.println("15 - remove from department");
     }
 
     public void printWelcome() {
