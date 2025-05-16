@@ -4,7 +4,7 @@ import Exceptions.AlreadyMemberException;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class Board implements expandArray {
+public class Board implements expandArray, Cloneable {
     private String name;
     private Lecture[] lectures;
     private Lecture managerBoard;
@@ -128,5 +128,25 @@ public class Board implements expandArray {
     @Override
     public int hashCode() {
         return Arrays.hashCode(lectures);
+    }
+
+    @Override
+    public Board clone() throws CloneNotSupportedException {
+        try {
+            Board copy = (Board) super.clone();
+            copy.name = this.name + "-new";
+            copy.managerBoard = this.managerBoard;
+
+            if (this.lectures != null) {
+                copy.lectures = new Lecture[this.lectures.length];
+                for (int i=0;i<this.lectures.length;i++){
+                    copy.lectures[i] = this.lectures[i];
+                }
+            }
+            return copy;
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException("Clone failed");
+        }
+
     }
 }

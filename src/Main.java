@@ -66,11 +66,10 @@ public class Main {
                         if (degree == Degree.DR || degree == Degree.PROFESSOR) {
                             System.out.println("Enter number of published articles: ");
                             int numArticles = mainObj.getIntFromUser();
-                            mainObj.input.nextLine();
 
                             String[] articles = new String[numArticles];
                             for (int i = 0; i < numArticles; i++) {
-                                System.out.println("Enter name of article **" + (i + 1) + ": ");
+                                System.out.println("Enter name of article number " + (i + 1) + ": ");
                                 articles[i] = mainObj.getStrFromUser();
                             }
 
@@ -391,6 +390,19 @@ public class Main {
                     break;
 
                 case "14":
+                    System.out.println("Enter the name of the board you want to copy: ");
+                    String nameBoardToCopy = mainObj.getStrFromUser();
+
+                    try{
+                        Board originalBoard = op1.findBoardByName(nameBoardToCopy);
+                        Board copyBoard = originalBoard.clone();
+
+                        op1.addBoardToArray(copyBoard);
+
+                        System.out.println("Board " + nameBoardToCopy+ " duplicated successfully");
+                    } catch (ObjectNotFoundException | CloneNotSupportedException e){
+                        System.err.println("Error: " + e.getMessage());
+                    }
                     break;
 
                 case "15":
@@ -439,7 +451,7 @@ public class Main {
         System.out.println("13 - Comparison between departments according to 2 criteria:" +
                 "\n     according to the number of faculty members assigned to them or according to the total number" +
                 "\n     of articles written by committee members");
-        System.out.println("14 - Duplicate values of Board");
+        System.out.println("14 - Duplicate Board");
         System.out.println("15 - remove from department");
     }
 

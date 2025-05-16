@@ -42,8 +42,19 @@ public class Doctor extends Lecture implements Researcher, expandArray, IsFullAr
 
     @Override
     public String toString() {
-        return super.toString() + ", Number of Articles: " + numberOfArticles;
-
+        String base = super.toString();
+        String articlesStr = "Articles: ";
+        if (numberOfArticles == 0) {
+            articlesStr += "None";
+        } else {
+            for (int i = 0; i < numberOfArticles; i++) {
+                articlesStr += articles[i];
+                if (i < numberOfArticles - 1) {
+                    articlesStr += ", ";
+                }
+            }
+        }
+        return base + ", " + articlesStr;
     }
 
 }
