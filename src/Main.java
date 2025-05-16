@@ -23,6 +23,7 @@ public class Main {
                     isRunning = false;
                     break;
 
+
                 case "1":
                     try {
                         System.out.print("Enter Lecture name: ");
@@ -60,22 +61,55 @@ public class Main {
                             throw new InvalidSalaryException("Error: Salary cannot be negative.");
                         }
 
-                        Lecture NewLecture = new Lecture(nameNewLecture, id, degree, nameDegree, salary);
-                        op1.addLecture(NewLecture);
-                        System.out.println("Lecture " + nameNewLecture + " added successfully");
+                        Lecture lectureToAdd = null; // we will change it
+
+                        if (degree == Degree.DR || degree == Degree.PROFESSOR) {
+                            System.out.println("Enter number of published articles: ");
+                            int numArticles = mainObj.getIntFromUser();
+                            mainObj.input.nextLine();
+
+                            String[] articles = new String[numArticles];
+                            for (int i = 0; i < numArticles; i++) {
+                                System.out.println("Enter name of article **" + (i + 1) + ": ");
+                                articles[i] = mainObj.getStrFromUser();
+                            }
+
+                            if (degree == Degree.DR) {
+                                Doctor newDr = new Doctor(nameNewLecture, id, degree, nameDegree, salary);
+                                for (int i = 0; i < numArticles; i++) {
+                                    newDr.addArticle(articles[i]);
+                                }
+                                lectureToAdd = newDr;
+
+                            } else {  // degree == Degree.PROFESSOR
+                                System.out.print("Enter the organization that granted the professorship: ");
+                                String organization = mainObj.getStrFromUser();
+
+                                Professor newProf = new Professor(nameNewLecture, id, degree, nameDegree, salary, organization);
+                                for (int i = 0; i < numArticles; i++) {
+                                    newProf.addArticle(articles[i]);
+                                }
+                                lectureToAdd = newProf;
+                            }
+
+                        } else {
+                            lectureToAdd = new Lecture(nameNewLecture, id, degree, nameDegree, salary);
+                        }
+
+                        op1.addLecture(lectureToAdd);
+
+                        System.out.println(lectureToAdd.getClass().getSimpleName() + " " + nameNewLecture + " added successfully");
 
                         System.out.print("Do you want to assign this lecture to a department now? (yes/no): ");
                         if (mainObj.getBoolFromUser()) {
                             System.out.print("Enter department name: ");
                             String depName = mainObj.getStrFromUser();
 
-                            // if we dont have dep -> Exception
                             Department department = op1.findDepartment(depName);
-                            String result = department.addLecturer(NewLecture);
+                            String result = department.addLecturer(lectureToAdd);
                             System.out.println(result);
-                        }
-                        else {
-                            System.out.println("The lecture " + NewLecture.getName() + " was not added to any department.");
+                        } else {
+                            System.out.println("The lecture was not assigned to any department.");
                         }
 
                     } catch (ObjectNotFoundException | InvalidDegreeException | InvalidSalaryException e) {

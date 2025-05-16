@@ -2,8 +2,8 @@ public class Doctor extends Lecture implements Researcher, expandArray, IsFullAr
     private String[] articles; // array of the articles
     private int numberOfArticles; // the number of articles
 
-    public Doctor(String name, String id, Degree degree, String nameDegree, double salary, Board[] belongBoard, Department belongDepartment) {
-        super( name,  id,  degree,  nameDegree, salary) ;
+    public Doctor(String name, String id, Degree degree, String nameDegree, double salary) {
+        super(name, id, degree, nameDegree, salary);
         this.articles = new String[2];
         this.numberOfArticles = 0;
     }
@@ -40,5 +40,10 @@ public class Doctor extends Lecture implements Researcher, expandArray, IsFullAr
         return numberOfArticles == articles.length;
     }
 
+    @Override
+    public String toString() {
+        return super.toString() + ", Number of Articles: " + numberOfArticles;
+
+    }
 
 }
