@@ -76,6 +76,10 @@ public class Lecture {
         this.salary = salary;
     }
 
+    public Degree getDegree() {
+        return degree;
+    }
+
     public void setBelongDep(Department belongDepartment) {
         this.belongDepartment = belongDepartment;
     }
@@ -86,11 +90,10 @@ public class Lecture {
             throw new InvalidManagerException("The lecturer must be a Dr. or Prof. to be the board manager.");
         }
     }
+
     public Department getBelongDepartment() {
         return this.belongDepartment;
     }
-
-
 
 
     @Override
@@ -103,7 +106,8 @@ public class Lecture {
                 ", Boards: " + lectureBoardDetails();
 
     }
-    public String lectureBoardDetails(){
+
+    public String lectureBoardDetails() {
         if (belongBoard == null || belongBoard.length == 0) {
             return "None";
         }
@@ -113,7 +117,7 @@ public class Lecture {
                 details += belongBoard[i].getName() + " ";
             }
         }
-        if(details.equals("")) {
+        if (details.equals("")) {
             return "None";
         }
         return details;

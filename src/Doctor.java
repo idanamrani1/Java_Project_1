@@ -1,4 +1,4 @@
-public class Doctor extends Lecture implements Researcher, expandArray, IsFullArray, CountArticles {
+public class Doctor extends Lecture implements Researcher, expandArray, Comparable<Doctor> {
     private String[] articles; // array of the articles
     private int numberOfArticles; // the number of articles
 
@@ -8,12 +8,16 @@ public class Doctor extends Lecture implements Researcher, expandArray, IsFullAr
         this.numberOfArticles = 0;
     }
 
+    @Override
+    public int compareTo(Doctor other) {
+        return this.numberOfArticles - other.getNumberOfArticles();
+    }
+
     public boolean addArticle(String article) {
         if (isFullArray()) {
             expandable();
         }
-        articles[numberOfArticles] = article;
-        numberOfArticles++;
+        articles[numberOfArticles++] = article;
         return true;
     }
 
@@ -22,39 +26,37 @@ public class Doctor extends Lecture implements Researcher, expandArray, IsFullAr
         return numberOfArticles;
     }
 
-    public String[] getArticles() {
-        return articles;
-    }
-
-    @Override
-    public void expandable(){
-        String[] newArticles = new String[numberOfArticles * 2];
-        for (int i = 0; i < numberOfArticles; i++) {
-            newArticles[i] = articles[i];
-        }
-        articles = newArticles;
-    }
-
-    @Override
     public boolean isFullArray() {
         return numberOfArticles == articles.length;
     }
 
     @Override
+    public void expandable() {
+        String[] newArticles = new String[articles.length * 2];
+        for (int i = 0; i < articles.length; i++) {
+            newArticles[i] = articles[i];
+        }
+        articles = newArticles;
+    }
+
+    public String[] getArticles() {
+        return articles;
+    }
+
+    @Override
     public String toString() {
-        String base = super.toString();
-        String articlesStr = "Articles: ";
+        StringBuilder articlesStr = new StringBuilder("Articles: ");
         if (numberOfArticles == 0) {
-            articlesStr += "None";
+            articlesStr.append("None");
         } else {
             for (int i = 0; i < numberOfArticles; i++) {
-                articlesStr += articles[i];
+                articlesStr.append(articles[i]);
                 if (i < numberOfArticles - 1) {
-                    articlesStr += ", ";
+                    articlesStr.append(", ");
                 }
             }
         }
-        return base + ", " + articlesStr;
-    }
 
+        return super.toString() + ", " + articlesStr;
+    }
 }

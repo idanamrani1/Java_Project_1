@@ -1,3 +1,3 @@
 public interface Researcher {
-    public int getNumberOfArticles();
+    int getNumberOfArticles();
 }

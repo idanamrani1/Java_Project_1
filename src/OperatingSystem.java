@@ -1,5 +1,3 @@
-import Exceptions.AlreadyNameExistsException;
-import Exceptions.ObjectNotFoundException;
 
 public class OperatingSystem {
     private Lecture[] arrLecture = new Lecture[1];
@@ -52,12 +50,13 @@ public class OperatingSystem {
     }
 
 
-    public void existBoard(String boardName) throws AlreadyNameExistsException {
+    boolean existBoard(String boardName) {
         for (int i = 0; i < arrBoard.length; i++) {
             if (arrBoard[i] != null && arrBoard[i].getName().equals(boardName)) {
-                throw new AlreadyNameExistsException("Board " + boardName + " already exists.");
+                return true;
             }
         }
+        return false;
     }
 
     private boolean isBoardArrayFull() {
@@ -89,29 +88,30 @@ public class OperatingSystem {
         arrBoard = newArr;
     }
 
-    public Lecture findLectureByName(String lectureName) throws ObjectNotFoundException {
-        for (int i = 0; i < arrLecture.length; i++) {
-            if (arrLecture[i] != null && arrLecture[i].getName().equals(lectureName)) {
-                return arrLecture[i];
+    Lecture findLectureByName(String name) {
+        for (Lecture lecture : arrLecture) {
+            if (lecture != null && lecture.getName().equals(name)) {
+                return lecture;
             }
         }
-        throw new ObjectNotFoundException("Lecture " + lectureName + " does not exist.");
+        return null;
     }
 
-    Board findBoardByName(String boardName) throws ObjectNotFoundException {
+    Board findBoardByName(String boardName) {
         for (int i = 0; i < arrBoard.length; i++) {
             if (arrBoard[i] != null && arrBoard[i].getName().equals(boardName)) {
                 return arrBoard[i];
             }
         }
-        throw new ObjectNotFoundException("Board " + boardName + " does not exist.");
+        return null;
     }
 
     public Board[] getBoards() {
         return arrBoard;
     }
 
-    public void removeFromBoard(Board board, String memberName) throws ObjectNotFoundException {
+    public String removeFromBoard(Board board, String memberName) {
+
         Lecture[] lectures = board.getLectures();
         int logicalSize = board.getLogicalSize();
 
@@ -139,34 +139,11 @@ public class OperatingSystem {
         }
 
         if (!found) {
-            throw new ObjectNotFoundException("Lecture " + memberName + " is not found in the board");
+            return "Lecture " + memberName + " is not found in the board";
         }
+
+        return memberName + " deleted successfully";
     }
-
-    public void removeFromDepartment(Department department, String lectureName) throws ObjectNotFoundException {
-        Lecture[] lectures = department.getNumOfLecture();
-        int logicalSize = department.getLogicalSize();
-
-        boolean found = false;
-
-        for (int i = 0; i < logicalSize; i++) {
-            Lecture lecture = lectures[i];
-            if (lecture != null && lecture.getName().equals(lectureName)) {
-                found = true;
-
-                department.shiftLeftFromIndexDepartment(i);
-                department.setLogicalSize(logicalSize - 1);
-                lecture.setDepartment(null);
-
-                break;
-            }
-        }
-
-        if (!found) {
-            throw new ObjectNotFoundException("Lecture " + lectureName + " is not found in the department");
-        }
-    }
-
 
 
     public double getSalaryForAll(Department department) {
@@ -192,13 +169,13 @@ public class OperatingSystem {
     }
 
 
-    public Department findDepartment(String department) throws ObjectNotFoundException {
+    public Department findDepartment(String department) {
         for (int i = 0; i < arrDepartment.length; i++) {
             if (arrDepartment[i] != null && arrDepartment[i].getDepName().equals(department)) {
                 return arrDepartment[i];
             }
         }
-        throw new ObjectNotFoundException("Error: Department " + department + " does not exist.");
+        return null;
     }
 
     public Lecture[] getLectures() {
@@ -206,11 +183,9 @@ public class OperatingSystem {
     }
 
 
-    public String addDepartment(String depName, int numStudents) throws AlreadyNameExistsException {
-        for (int i = 0; i < arrDepartment.length; i++) {
-            if (arrDepartment[i] != null && arrDepartment[i].getDepName().equals(depName)) {
-                throw new AlreadyNameExistsException("Department with name " + depName + " already exists.");
-            }
+    public String addDepartment(String depName, int numStudents) {
+        if (findDepartment(depName) != null) {
+            return "Department already exists.";
         }
 
         Lecture[] lectures = new Lecture[1];
@@ -226,7 +201,7 @@ public class OperatingSystem {
     }
 
 
-    public String addLectureToDepartment(String lectureName, String depName) throws ObjectNotFoundException {
+    public String addLectureToDepartment(String lectureName, String depName) {
         Lecture lecture = findLectureByName(lectureName);
         if (lecture == null) {
             return "Lecture " + lectureName + " does not exist.";
@@ -257,4 +232,29 @@ public class OperatingSystem {
         }
         return department.addLecturer(lecture);
     }
+
+    public String compareBoardByArticles(String b1, String b2) {
+        Board board1 = findBoardByName(b1);
+        Board board2 = findBoardByName(b2);
+        int res = new CompareByArticles().compare(board1, board2);
+
+        if (res == 0) {
+            return "Both boards have the same number of articles.";
+        }
+        return res > 0 ? b1 : b2;
+    }
+
+
+    public String compareBoardByLec(String boName1, String boName2) {
+        Board board1 = findBoardByName(boName1);
+        Board board2 = findBoardByName(boName2);
+        int res = board1.getLogicalSize() - board2.getLogicalSize();
+
+        if (res == 0) {
+            return "Both boards have the same number of lectures.";
+        }
+        return res > 0 ? boName1 : boName2;
+    }
+
+
 }

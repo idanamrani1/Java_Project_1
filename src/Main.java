@@ -1,8 +1,3 @@
-// students name: idan amrani and shaked hakim
-// students ID: 322205808, 325117653
-
-import Exceptions.*;
-
 import java.util.Scanner;
 
 public class Main {
@@ -16,13 +11,12 @@ public class Main {
         boolean isRunning = true;
         while (isRunning) {
             printMenu();
-            String choice = mainObj.input.nextLine();
+            String choice = mainObj.getStrFromUser();
 
             switch (choice) {
                 case "0":
                     isRunning = false;
                     break;
-
 
                 case "1":
                     try {
@@ -31,7 +25,6 @@ public class Main {
 
                         while (op1.existLecture(nameNewLecture)) {
                             System.out.println("Lecture with this name already exists. Please enter a new name.");
-                            System.out.print("Enter Lecture name: ");
                             nameNewLecture = mainObj.getStrFromUser();
                         }
 
@@ -46,191 +39,178 @@ public class Main {
                         Degree degree = Degree.fromNumber(num);
 
                         if (degree == null) {
-                            throw new InvalidDegreeException("Invalid degree choice.");
+                            System.out.println("Invalid degree choice.");
+                            break;
                         }
-                        mainObj.input.nextLine();
 
                         System.out.print("Enter name of the degree: ");
                         String nameDegree = mainObj.getStrFromUser();
 
                         System.out.print("Enter Lecture salary: ");
                         double salary = mainObj.getDoubleFromUser();
-                        mainObj.input.nextLine();
 
                         if (salary < 0) {
-                            throw new InvalidSalaryException("Error: Salary cannot be negative.");
+                            System.out.println("Error: Salary cannot be negative.");
+                            break;
                         }
 
-                        Lecture lectureToAdd = null; // we will change it
+                        Lecture lectureToAdd;
 
                         if (degree == Degree.DR || degree == Degree.PROFESSOR) {
-                            System.out.println("Enter number of published articles: ");
+                            System.out.print("Enter number of published articles: ");
                             int numArticles = mainObj.getIntFromUser();
 
                             String[] articles = new String[numArticles];
                             for (int i = 0; i < numArticles; i++) {
-                                System.out.println("Enter name of article number " + (i + 1) + ": ");
+                                System.out.print("Enter name of article number " + (i + 1) + ": ");
                                 articles[i] = mainObj.getStrFromUser();
                             }
 
                             if (degree == Degree.DR) {
                                 Doctor newDr = new Doctor(nameNewLecture, id, degree, nameDegree, salary);
-                                for (int i = 0; i < numArticles; i++) {
-                                    newDr.addArticle(articles[i]);
+                                for (String article : articles) {
+                                    newDr.addArticle(article);
                                 }
                                 lectureToAdd = newDr;
-
-                            } else {  // degree == Degree.PROFESSOR
+                            } else {
                                 System.out.print("Enter the organization that granted the professorship: ");
                                 String organization = mainObj.getStrFromUser();
-
                                 Professor newProf = new Professor(nameNewLecture, id, degree, nameDegree, salary, organization);
-                                for (int i = 0; i < numArticles; i++) {
-                                    newProf.addArticle(articles[i]);
+                                for (String article : articles) {
+                                    newProf.addArticle(article);
                                 }
                                 lectureToAdd = newProf;
                             }
-
                         } else {
                             lectureToAdd = new Lecture(nameNewLecture, id, degree, nameDegree, salary);
                         }
 
                         op1.addLecture(lectureToAdd);
-
                         System.out.println(lectureToAdd.getClass().getSimpleName() + " " + nameNewLecture + " added successfully");
 
                         System.out.print("Do you want to assign this lecture to a department now? (yes/no): ");
                         if (mainObj.getBoolFromUser()) {
                             System.out.print("Enter department name: ");
                             String depName = mainObj.getStrFromUser();
-
                             Department department = op1.findDepartment(depName);
-                            String result = department.addLecturer(lectureToAdd);
-                            System.out.println(result);
+                            if (department != null) {
+                                String result = department.addLecturer(lectureToAdd);
+                                System.out.println(result);
+                            } else {
+                                System.out.println("Department not found.");
+                            }
                         } else {
                             System.out.println("The lecture was not assigned to any department.");
                         }
-
-                    } catch (ObjectNotFoundException | InvalidDegreeException | InvalidSalaryException e) {
-                        System.err.println(e.getMessage());
+                    } catch (Exception e) {
+                        System.out.println("Error: " + e.getMessage());
                     }
                     break;
-
 
                 case "2":
                     try {
                         System.out.print("Enter board name: ");
                         String boardName = mainObj.getStrFromUser();
 
-                        op1.existBoard(boardName);
-
                         System.out.print("Enter the name of the lecturer that will be the board manager: ");
                         String managerName = mainObj.getStrFromUser();
 
                         Lecture manager = op1.findLectureByName(managerName);
+                        if (manager == null) {
+                            System.out.println("Manager not found.");
+                            break;
+                        }
 
                         manager.checkIsValidManager();
-
                         Board newBoard = new Board(boardName, new Lecture[1], manager);
                         op1.addBoardToArray(newBoard);
                         System.out.println("Board " + boardName + " added successfully with manager " + manager.getName());
-
-                    } catch (AlreadyNameExistsException | ObjectNotFoundException | InvalidManagerException e) {
-                        System.err.println(e.getMessage());
+                    } catch (Exception e) {
+                        System.out.println("Error: " + e.getMessage());
                     }
                     break;
-
 
                 case "3":
-                    System.out.print("Enter name of the board: ");
-                    String boardName = mainObj.getStrFromUser();
-                    Board board = null;
                     try {
-                        board = op1.findBoardByName(boardName);
-                    } catch (ObjectNotFoundException e) {
-                        System.err.println(e.getMessage());
-                        break;
-                    }
+                        System.out.print("Enter board name: ");
+                        String boardName = mainObj.getStrFromUser();
+                        Board board = op1.findBoardByName(boardName);
+                        if (board == null) {
+                            System.out.println("Board not found.");
+                            break;
+                        }
 
-                    System.out.print("Enter name of the lecture to be added: ");
-                    String lectureName = mainObj.getStrFromUser();
-                    Lecture lecture = null;
-                    try {
-                        lecture = op1.findLectureByName(lectureName);
-                    } catch (ObjectNotFoundException e) {
-                        System.err.println(e.getMessage());
-                        break;
-                    }
+                        System.out.print("Enter name of the lecture to be added: ");
+                        String lectureName = mainObj.getStrFromUser();
+                        Lecture lecture = op1.findLectureByName(lectureName);
+                        if (lecture == null) {
+                            System.out.println("Lecture not found.");
+                            break;
+                        }
 
-                    if (board.getManagerBoard() != null && board.getManagerBoard().getName().equals(lecture.getName())) {
-                        System.out.println("This lecture is the board manager and cannot be added as a regular member.");
-                        break;
-                    }
+                        if (board.getManagerBoard() != null && board.getManagerBoard().getName().equals(lecture.getName())) {
+                            System.out.println("This lecture is the board manager and cannot be added as a regular member.");
+                            break;
+                        }
 
-                    try {
                         board.addLecture(lecture);
                         System.out.println("Lecture " + lecture.getName() + " added to the board.");
-                    } catch (AlreadyManagerException | AlreadyMemberException e) {
-                        System.err.println("Error: " + e.getMessage());
+                    } catch (Exception e) {
+                        System.out.println("Error: " + e.getMessage());
                     }
                     break;
-
 
                 case "4":
                     try {
-                        System.out.print("Enter name of the board: ");
+                        System.out.print("Enter board name: ");
                         String boardName1 = mainObj.getStrFromUser();
                         Board boardd = op1.findBoardByName(boardName1);
-
                         if (boardd == null) {
-                            throw new ObjectNotFoundException("Board " + boardName1 + " does not exist.");
+                            System.out.println("Board not found.");
+                            break;
                         }
 
                         System.out.print("Enter name of the lecture to be set as manager: ");
                         String lec = mainObj.getStrFromUser();
                         Lecture lect = op1.findLectureByName(lec);
-
                         if (lect == null) {
-                            throw new ObjectNotFoundException("Lecture " + lec + " does not exist.");
+                            System.out.println("Lecture not found.");
+                            break;
                         }
 
                         lect.checkIsValidManager();
 
-                        if (boardd.getManagerBoard() != null &&
-                                boardd.getManagerBoard().getName().equals(lect.getName())) {
-                            throw new AlreadyNameExistsException(lec + " is already the manager of this board.");
+                        if (boardd.getManagerBoard() != null && boardd.getManagerBoard().getName().equals(lect.getName())) {
+                            System.out.println("This lecture is already the manager.");
+                            break;
                         }
 
                         boardd.setManagerBoard(lect);
                         System.out.println("Board manager updated successfully to " + lect.getName());
-
-                    } catch (ObjectNotFoundException | AlreadyNameExistsException | InvalidManagerException e) {
-                        System.err.println(e.getMessage());
+                    } catch (Exception e) {
+                        System.out.println("Error: " + e.getMessage());
                     }
                     break;
 
-
                 case "5":
                     try {
-                        System.out.print("Enter name of the board: ");
+                        System.out.print("Enter board name: ");
                         String boardName3 = mainObj.getStrFromUser();
                         Board board3 = op1.findBoardByName(boardName3);
-
                         if (board3 == null) {
-                            throw new ObjectNotFoundException("Board " + boardName3 + " does not exist.");
+                            System.out.println("Board not found.");
+                            break;
                         }
 
                         System.out.print("Enter the name you want to remove: ");
                         String memberName = mainObj.getStrFromUser();
 
-                        op1.removeFromBoard(board3, memberName);
-                        System.out.println(memberName + " deleted successfully.");
-
-                    } catch (ObjectNotFoundException e) {
-                        System.err.println("Error: " + e.getMessage());
+                        String res = op1.removeFromBoard(board3, memberName);
+                        System.out.println(res);
+                    } catch (Exception e) {
+                        System.out.println("Error: " + e.getMessage());
                     }
                     break;
-
 
                 case "6":
                     try {
@@ -239,16 +219,13 @@ public class Main {
 
                         System.out.print("Enter number of students: ");
                         int numStudents = mainObj.getIntFromUser();
-                        mainObj.input.nextLine();
 
                         String deptResult = op1.addDepartment(depName, numStudents);
                         System.out.println(deptResult);
-
-                    } catch (AlreadyNameExistsException e) {
-                        System.err.println("Error: " + e.getMessage());
+                    } catch (Exception e) {
+                        System.out.println("Error: " + e.getMessage());
                     }
                     break;
-
 
                 case "7":
                     System.out.println("The avg is: " + op1.getSalaryForAll(null));
@@ -259,18 +236,20 @@ public class Main {
                         System.out.print("Enter name of department: ");
                         String name = mainObj.getStrFromUser();
                         Department department = op1.findDepartment(name);
-
-                        System.out.println("The avg is: " + op1.getSalaryForAll(department));
-                    } catch (ObjectNotFoundException e) {
-                        System.err.println(e.getMessage());
+                        if (department != null) {
+                            System.out.println("The avg is: " + op1.getSalaryForAll(department));
+                        } else {
+                            System.out.println("Department not found.");
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Error: " + e.getMessage());
                     }
                     break;
 
                 case "9":
                     System.out.println("Details of the lecturers at the college:");
                     System.out.println("-----------------------------------------");
-                    Lecture[] lectures = op1.getLectures();
-                    for (Lecture lectur : lectures) {
+                    for (Lecture lectur : op1.getLectures()) {
                         if (lectur != null) {
                             System.out.println(lectur);
                         }
@@ -278,36 +257,33 @@ public class Main {
                     break;
 
                 case "10":
-                    System.out.println("    Boards details:");
+                    System.out.println("Boards details:");
                     System.out.println("------------------------");
-                    Board[] boards = op1.getBoards();
                     int count = 1;
 
-                    for (Board boardDets : boards) {
+                    for (Board boardDets : op1.getBoards()) {
                         if (boardDets != null) {
                             System.out.println(count + ". Board name: " + boardDets.getName());
 
                             Lecture managerr = boardDets.getManagerBoard();
-                            if (managerr != null) {
-                                System.out.println("   Name of the Manager: " + managerr.getName());
-                            } else {
-                                System.out.println("   No Manager assigned");
-                            }
-
-                            Lecture[] members = boardDets.getLectures();
-                            boolean noMember = true;
+                            System.out.println("   Name of the Manager: " + (managerr != null ? managerr.getName() : "None"));
 
                             System.out.print("   Members: ");
-                            for (Lecture member : members) {
-                                if (member != null && managerr != null && !member.getId().equals(managerr.getId())) {
-                                    if (!noMember) {
+                            boolean hasMembers = false;
+
+                            Lecture[] membersArray = boardDets.getLectures();
+                            for (int i = 0; i < boardDets.getLogicalSize(); i++) {
+                                Lecture member = membersArray[i];
+                                if (member != null && (managerr == null || !member.getId().equals(managerr.getId()))) {
+                                    if (hasMembers) {
                                         System.out.print(", ");
                                     }
                                     System.out.print(member.getName());
-                                    noMember = false;
+                                    hasMembers = true;
                                 }
                             }
-                            if (noMember) {
+
+                            if (!hasMembers) {
                                 System.out.print("No members");
                             }
 
@@ -320,6 +296,7 @@ public class Main {
                     }
                     break;
 
+
                 case "11":
                     try {
                         System.out.print("Enter name of the lecture to be added: ");
@@ -330,102 +307,154 @@ public class Main {
 
                         String res = op1.addLectureToDepartment(lecName, departmentName);
                         System.out.println(res);
-                    } catch (ObjectNotFoundException e) {
-                        System.err.println("Error: " + e.getMessage());
+                    } catch (Exception e) {
+                        System.out.println("Error: " + e.getMessage());
                     }
                     break;
 
                 case "12":
                     try {
-                        System.out.println("Enter name of lecture (Doctoral degree or higher): ");
+                        System.out.println("Enter name of first lecturer (Doctoral degree or higher): ");
                         String lecName1 = mainObj.getStrFromUser();
                         Lecture lec1 = op1.findLectureByName(lecName1);
-
-                        if (!(lec1 instanceof Doctor && lec1 instanceof Professor)) {
-                            throw new InvalidDegreeException("Error: Lecturer is not a Doctor or Professor.");
+                        if (lec1 == null || !(lec1 instanceof Doctor)) {
+                            System.out.println("Error: First lecturer is not a Doctor or Professor.");
+                            break;
                         }
-                        System.out.println("Enter name of lecture (Doctoral degree or higher): ");
+
+                        System.out.println("Enter name of second lecturer (Doctoral degree or higher): ");
                         String lecName2 = mainObj.getStrFromUser();
                         Lecture lec2 = op1.findLectureByName(lecName2);
-
-                        if (!(lec2 instanceof Doctor && lec2 instanceof Professor)) {
-                            throw new InvalidDegreeException("Error: Lecturer is not a Doctor or Professor.");
+                        if (lec2 == null || !(lec2 instanceof Doctor)) {
+                            System.out.println("Error: Second lecturer is not a Doctor or Professor.");
+                            break;
                         }
 
-                        int numOfArticlesLec1 = 0;
-                        int numOfArticlesLec2 = 0;
-
-                        if (lec1 instanceof Doctor) {
-                            numOfArticlesLec1 = ((Doctor) lec1).getNumberOfArticles();
+                        int compareResult = ((Doctor) lec1).compareTo((Doctor) lec2);
+                        if (compareResult > 0) {
+                            System.out.println(lec1.getName() + " has more articles.");
+                        } else if (compareResult < 0) {
+                            System.out.println(lec2.getName() + " has more articles.");
+                        } else {
+                            System.out.println("Both have the same number of articles.");
                         }
-                        else if (lec1 instanceof Professor) {
-                            numOfArticlesLec1 = ((Professor) lec1).getNumberOfArticles();
-                        }
-
-                        if (lec2 instanceof Doctor) {
-                            numOfArticlesLec2 = ((Doctor) lec2).getNumberOfArticles();
-                        }
-                        else if (lec2 instanceof Professor) {
-                            numOfArticlesLec2 = ((Professor) lec2).getNumberOfArticles();
-                        }
-
-                        if (numOfArticlesLec1 == 0 && numOfArticlesLec2 == 0) {
-                            throw new NoArticlesException("Both lecturers have zero articles.");
-                        }
-
-
-
-
-
-
-
-
-
-                    } catch (ObjectNotFoundException | InvalidDegreeException e) {
-                        throw new RuntimeException(e);
+                    } catch (Exception e) {
+                        System.out.println("Error: " + e.getMessage());
                     }
                     break;
 
                 case "13":
+                    try {
+                        while (true) {
+                            System.out.println("Enter the name of the first board: ");
+                            String b1 = mainObj.getStrFromUser();
+                            if (b1.equals("back"))
+                                break;
+
+                            Board board1 = op1.findBoardByName(b1);
+                            if (board1 == null) {
+                                System.out.println("First board not found.");
+                                continue;
+                            }
+
+                            System.out.println("Enter the name of the second board: ");
+                            String b2 = mainObj.getStrFromUser();
+                            if (b2.equals("back"))
+                                break;
+
+                            Board board2 = op1.findBoardByName(b2);
+                            if (board2 == null) {
+                                System.out.println("Second board not found.");
+                                continue;
+                            }
+
+                            System.out.println("Choose type of compare option:");
+                            System.out.println("[1] Compare by number of Articles");
+                            System.out.println("[2] Compare by number of Lectures");
+                            System.out.println("[3] Back to main menu");
+
+                            String option = mainObj.getStrFromUser();
+
+                            if (option.equals("3"))
+                                break;
+
+                            switch (option) {
+                                case "1":
+                                    String resultArticles = op1.compareBoardByArticles(b1, b2);
+                                    if (resultArticles.startsWith("Both boards")) {
+                                        System.out.println(resultArticles);
+                                    } else {
+                                        System.out.println(resultArticles + " has more articles.");
+                                    }
+                                    break;
+                                case "2":
+                                    String resultLectures = op1.compareBoardByLec(b1, b2);
+                                    if (resultLectures.startsWith("Both boards")) {
+                                        System.out.println(resultLectures);
+                                    } else {
+                                        System.out.println(resultLectures + " has more lectures.");
+                                    }
+                                    break;
+                                default:
+                                    System.out.println("Invalid option.");
+                            }
+
+                            break;
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
                     break;
 
                 case "14":
-                    System.out.println("Enter the name of the board you want to copy: ");
-                    String nameBoardToCopy = mainObj.getStrFromUser();
-
-                    try{
+                    try {
+                        System.out.println("Enter the name of the board you want to copy: ");
+                        String nameBoardToCopy = mainObj.getStrFromUser();
                         Board originalBoard = op1.findBoardByName(nameBoardToCopy);
+                        if (originalBoard == null) {
+                            System.out.println("Board not found.");
+                            break;
+                        }
                         Board copyBoard = originalBoard.clone();
-
                         op1.addBoardToArray(copyBoard);
-
-                        System.out.println("Board " + nameBoardToCopy+ " duplicated successfully");
-                    } catch (ObjectNotFoundException | CloneNotSupportedException e){
-                        System.err.println("Error: " + e.getMessage());
+                        System.out.println("Board " + nameBoardToCopy + " duplicated successfully");
+                    } catch (Exception e) {
+                        System.out.println("Error: " + e.getMessage());
                     }
                     break;
 
                 case "15":
                     try {
-                        System.out.print("Enter the lecture name you want to remove from department: ");
+                        System.out.print("Enter the lecture name you want to remove from the Board:: ");
                         String lectureNamee = mainObj.getStrFromUser();
 
-                        Lecture lectureToRemoveFromDep = op1.findLectureByName(lectureNamee);
-
-                        Department dept = lectureToRemoveFromDep.getBelongDepartment();
-                        if (dept == null) {
-                            System.out.println("Lecture does not belong to any department.");
+                        Lecture lectureToRemoveFromBoard = op1.findLectureByName(lectureNamee);
+                        if (lectureToRemoveFromBoard == null) {
+                            System.out.println("Lecture not found.");
+                            break;
+                        }
+                        Board[] boards = lectureToRemoveFromBoard.getBelongBoard();
+                        if (boards == null || boards.length == 0) {
+                            System.out.println("Lecture does not belong to any board.");
                             break;
                         }
 
-                        op1.removeFromDepartment(dept, lectureNamee);
-                        System.out.println(lectureNamee + " deleted successfully from department.");
+                        System.out.println("Enter the name of the board to remove the lecture from:");
+                        String boardName = mainObj.getStrFromUser();
 
-                    } catch (ObjectNotFoundException e) {
-                        System.err.println("Error: " + e.getMessage());
+                        Board br = op1.findBoardByName(boardName);
+                        if (br == null) {
+                            System.out.println("Board not found.");
+                            break;
+                        }
+
+                        op1.removeFromBoard(br, lectureNamee);
+                        System.out.println(lectureNamee + " deleted successfully from the Board " + boardName + ".");
+
+                    } catch (Exception e) {
+                        System.out.println("Error: " + e.getMessage());
                     }
                     break;
-
 
                 default:
                     System.err.println("Wrong input");
@@ -447,12 +476,10 @@ public class Main {
         System.out.println("9 - Show details about Lectures");
         System.out.println("10 - Show details about boards");
         System.out.println("11 - Add Lecture to Department");
-        System.out.println("12 - Comparison between a Dr. or/ and a Prof. based on the number of their articles ");
-        System.out.println("13 - Comparison between departments according to 2 criteria:" +
-                "\n     according to the number of faculty members assigned to them or according to the total number" +
-                "\n     of articles written by committee members");
+        System.out.println("12 - Compare two Dr./Prof. by articles");
+        System.out.println("13 - Compare between Boards");
         System.out.println("14 - Duplicate Board");
-        System.out.println("15 - remove from department");
+        System.out.println("15 - Remove from Board");
     }
 
     public void printWelcome() {
@@ -467,14 +494,26 @@ public class Main {
 
     public boolean getBoolFromUser() {
         String answer = input.nextLine();
-        return answer.equals("yes");
+        return answer.equalsIgnoreCase("yes");
     }
 
     public double getDoubleFromUser() {
-        return input.nextDouble();
+        while (!input.hasNextDouble()) {
+            System.out.println("Please enter a valid number.");
+            input.next();
+        }
+        double value = input.nextDouble();
+        input.nextLine();
+        return value;
     }
 
     public int getIntFromUser() {
-        return input.nextInt();
+        while (!input.hasNextInt()) {
+            System.out.println("Please enter a valid integer.");
+            input.next();
+        }
+        int value = input.nextInt();
+        input.nextLine();
+        return value;
     }
 }

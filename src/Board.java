@@ -11,11 +11,21 @@ public class Board implements expandArray, Cloneable {
     private int logicalSize;
 
 
-    public Board(String name,Lecture[] lectures,Lecture managerBoard) {
+    public Board(String name, Lecture[] lectures, Lecture managerBoard) {
         setName(name);
         setLectures(lectures);
         this.managerBoard = managerBoard;
         logicalSize = 0;
+    }
+
+    public int getNumOfArticles() {
+        int sumOfArticles = 0;
+        for (int i = 0; i < lectures.length; i++) {
+            if (lectures[i] != null && lectures[i].getDegree().equals(Degree.DR) || lectures[i] != null && lectures[i].getDegree().equals(Degree.PROFESSOR)) {
+                sumOfArticles += ((Doctor) lectures[i]).getNumberOfArticles();
+            }
+        }
+        return sumOfArticles;
     }
 
 
@@ -61,17 +71,18 @@ public class Board implements expandArray, Cloneable {
     }
 
 
+
     @Override
     public void expandable() {
-        Lecture[] newArray = new Lecture[lectures.length*2];
-        for ( int i = 0 ; i < lectures.length ; i++){
+        Lecture[] newArray = new Lecture[lectures.length * 2];
+        for (int i = 0; i < lectures.length; i++) {
             newArray[i] = lectures[i];
         }
         lectures = newArray;
     }
 
 
-    private void addLectureToBoard(Lecture lecture){
+    private void addLectureToBoard(Lecture lecture) {
         lectures[logicalSize] = lecture;
         this.logicalSize++;
     }
@@ -85,11 +96,11 @@ public class Board implements expandArray, Cloneable {
         this.logicalSize = logicalSize;
     }
 
-    public void shiftLeftFromIndexBoard(int index){
+    public void shiftLeftFromIndexBoard(int index) {
         for (int i = index; i < logicalSize - 1; i++) {
-            lectures[i] = lectures[i+1];
+            lectures[i] = lectures[i + 1];
         }
-        lectures[logicalSize-1] = null;
+        lectures[logicalSize - 1] = null;
     }
 
 
@@ -139,14 +150,15 @@ public class Board implements expandArray, Cloneable {
 
             if (this.lectures != null) {
                 copy.lectures = new Lecture[this.lectures.length];
-                for (int i=0;i<this.lectures.length;i++){
+                for (int i = 0; i < this.lectures.length; i++) {
                     copy.lectures[i] = this.lectures[i];
                 }
             }
+            copy.logicalSize = this.logicalSize;
+
             return copy;
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException("Clone failed");
         }
-
     }
 }
