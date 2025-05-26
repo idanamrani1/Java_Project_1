@@ -296,7 +296,6 @@ public class Main {
                     }
                     break;
 
-
                 case "11":
                     try {
                         System.out.print("Enter name of the lecture to be added: ");
@@ -387,6 +386,7 @@ public class Main {
                                         System.out.println(resultArticles + " has more articles.");
                                     }
                                     break;
+
                                 case "2":
                                     String resultLectures = op1.compareBoardByLec(b1, b2);
                                     if (resultLectures.startsWith("Both boards")) {
@@ -398,7 +398,6 @@ public class Main {
                                 default:
                                     System.out.println("Invalid option.");
                             }
-
                             break;
                         }
                     } catch (Exception e) {
@@ -423,38 +422,38 @@ public class Main {
                     }
                     break;
 
-                case "15":
-                    try {
-                        System.out.print("Enter the lecture name you want to remove from the Board:: ");
-                        String lectureNamee = mainObj.getStrFromUser();
-
-                        Lecture lectureToRemoveFromBoard = op1.findLectureByName(lectureNamee);
-                        if (lectureToRemoveFromBoard == null) {
-                            System.out.println("Lecture not found.");
-                            break;
-                        }
-                        Board[] boards = lectureToRemoveFromBoard.getBelongBoard();
-                        if (boards == null || boards.length == 0) {
-                            System.out.println("Lecture does not belong to any board.");
-                            break;
-                        }
-
-                        System.out.println("Enter the name of the board to remove the lecture from:");
-                        String boardName = mainObj.getStrFromUser();
-
-                        Board br = op1.findBoardByName(boardName);
-                        if (br == null) {
-                            System.out.println("Board not found.");
-                            break;
-                        }
-
-                        op1.removeFromBoard(br, lectureNamee);
-                        System.out.println(lectureNamee + " deleted successfully from the Board " + boardName + ".");
-
-                    } catch (Exception e) {
-                        System.out.println("Error: " + e.getMessage());
-                    }
-                    break;
+//                case "15":
+//                    try {
+//                        System.out.print("Enter the lecture name you want to remove from the Board:: ");
+//                        String lectureNamee = mainObj.getStrFromUser();
+//
+//                        Lecture lectureToRemoveFromBoard = op1.findLectureByName(lectureNamee);
+//                        if (lectureToRemoveFromBoard == null) {
+//                            System.out.println("Lecture not found.");
+//                            break;
+//                        }
+//                        Board[] boards = lectureToRemoveFromBoard.getBelongBoard();
+//                        if (boards == null || boards.length == 0) {
+//                            System.out.println("Lecture does not belong to any board.");
+//                            break;
+//                        }
+//
+//                        System.out.println("Enter the name of the board to remove the lecture from:");
+//                        String boardName = mainObj.getStrFromUser();
+//
+//                        Board br = op1.findBoardByName(boardName);
+//                        if (br == null) {
+//                            System.out.println("Board not found.");
+//                            break;
+//                        }
+//
+//                        op1.removeFromBoard(br, lectureNamee);
+//                        System.out.println(lectureNamee + " deleted successfully from the Board " + boardName + ".");
+//
+//                    } catch (Exception e) {
+//                        System.out.println("Error: " + e.getMessage());
+//                    }
+//                    break;
 
                 default:
                     System.err.println("Wrong input");
@@ -479,7 +478,7 @@ public class Main {
         System.out.println("12 - Compare two Dr./Prof. by articles");
         System.out.println("13 - Compare between Boards");
         System.out.println("14 - Duplicate Board");
-        System.out.println("15 - Remove from Board");
+//        System.out.println("15 - Remove from Board");
     }
 
     public void printWelcome() {

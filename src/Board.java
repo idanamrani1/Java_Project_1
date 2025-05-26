@@ -145,7 +145,7 @@ public class Board implements expandArray, Cloneable {
     public Board clone() throws CloneNotSupportedException {
         try {
             Board copy = (Board) super.clone();
-            copy.name = this.name + "-new";
+            copy.name = this.name + " -new";
             copy.managerBoard = this.managerBoard;
 
             if (this.lectures != null) {
