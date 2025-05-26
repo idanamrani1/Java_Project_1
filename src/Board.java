@@ -161,4 +161,9 @@ public class Board implements expandArray, Cloneable {
             throw new RuntimeException("Clone failed");
         }
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

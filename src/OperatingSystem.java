@@ -142,7 +142,7 @@ public class OperatingSystem {
             return "Lecture " + memberName + " is not found in the board";
         }
 
-        return memberName + " deleted successfully";
+        return memberName + " deleted successfully from the Board: " + board;
     }
 
 
