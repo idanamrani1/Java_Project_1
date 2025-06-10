@@ -1,62 +1,35 @@
-public class Doctor extends Lecture implements Researcher, expandArray, Comparable<Doctor> {
-    private String[] articles; // array of the articles
-    private int numberOfArticles; // the number of articles
+import java.util.ArrayList;
+
+public class Doctor extends Lecture implements Researcher, Comparable<Doctor> {
+    private ArrayList<String> articles;
 
     public Doctor(String name, String id, Degree degree, String nameDegree, double salary) {
         super(name, id, degree, nameDegree, salary);
-        this.articles = new String[2];
-        this.numberOfArticles = 0;
+        this.articles = new ArrayList<>();
     }
 
-    @Override
-    public int compareTo(Doctor other) {
-        return this.numberOfArticles - other.getNumberOfArticles();
-    }
-
-    public boolean addArticle(String article) {
-        if (isFullArray()) {
-            expandable();
+    public void addArticle(String article) {
+        if (article != null && !article.isEmpty()) {
+            articles.add(article);
         }
-        articles[numberOfArticles++] = article;
-        return true;
     }
 
-    @Override
-    public int getNumberOfArticles() {
-        return numberOfArticles;
-    }
-
-    public boolean isFullArray() {
-        return numberOfArticles == articles.length;
-    }
-
-    @Override
-    public void expandable() {
-        String[] newArticles = new String[articles.length * 2];
-        for (int i = 0; i < articles.length; i++) {
-            newArticles[i] = articles[i];
-        }
-        articles = newArticles;
-    }
-
-    public String[] getArticles() {
+    public ArrayList<String> getArticles() {
         return articles;
     }
 
     @Override
-    public String toString() {
-        StringBuilder articlesStr = new StringBuilder("Articles: ");
-        if (numberOfArticles == 0) {
-            articlesStr.append("None");
-        } else {
-            for (int i = 0; i < numberOfArticles; i++) {
-                articlesStr.append(articles[i]);
-                if (i < numberOfArticles - 1) {
-                    articlesStr.append(", ");
-                }
-            }
-        }
+    public int getNumberOfArticles() {
+        return articles.size();
+    }
 
-        return super.toString() + ", " + articlesStr;
+    @Override
+    public int compareTo(Doctor other) {
+        return Integer.compare(this.getNumberOfArticles(), other.getNumberOfArticles());
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + ", Articles: " + articles.size();
     }
 }

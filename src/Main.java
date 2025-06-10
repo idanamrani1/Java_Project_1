@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -122,13 +123,44 @@ public class Main {
                         }
 
                         manager.checkIsValidManager();
-                        Board newBoard = new Board(boardName, new Lecture[1], manager);
+
+                        System.out.println("Select the degree for this board:");
+                        for (Degree d : Degree.values()) {
+                            System.out.println(d.getNumber() + " - " + d);
+                        }
+
+                        int degreeNum = mainObj.getIntFromUser();
+                        Degree degree = Degree.fromNumber(degreeNum);
+
+                        if (degree == null) {
+                            System.out.println("Invalid degree choice.");
+                            break;
+                        }
+
+                        Board<? extends Lecture> newBoard;
+
+                        if (degree == Degree.BA || degree == Degree.MA) {
+                            newBoard = new Board<>(boardName, manager, degree);
+                        } else if (degree == Degree.DR || degree == Degree.PROFESSOR) {
+                            if (!(manager instanceof Doctor)) {
+                                System.out.println("Manager must be Doctor or Professor for this board.");
+                                break;
+                            }
+                            newBoard = new Board<Doctor>(boardName, manager, degree);
+                        } else {
+                            System.out.println("Unsupported degree type.");
+                            break;
+                        }
+
                         op1.addBoardToArray(newBoard);
                         System.out.println("Board " + boardName + " added successfully with manager " + manager.getName());
+
                     } catch (Exception e) {
                         System.out.println("Error: " + e.getMessage());
                     }
+
                     break;
+
 
                 case "3":
                     try {
@@ -271,9 +303,9 @@ public class Main {
                             System.out.print("   Members: ");
                             boolean hasMembers = false;
 
-                            Lecture[] membersArray = boardDets.getLectures();
+                            ArrayList<Lecture> membersArray = boardDets.getLectures();
                             for (int i = 0; i < boardDets.getLogicalSize(); i++) {
-                                Lecture member = membersArray[i];
+                                Lecture member = membersArray.get(i);
                                 if (member != null && (managerr == null || !member.getId().equals(managerr.getId()))) {
                                     if (hasMembers) {
                                         System.out.print(", ");
@@ -422,38 +454,6 @@ public class Main {
                     }
                     break;
 
-//                case "15":
-//                    try {
-//                        System.out.print("Enter the lecture name you want to remove from the Board:: ");
-//                        String lectureNamee = mainObj.getStrFromUser();
-//
-//                        Lecture lectureToRemoveFromBoard = op1.findLectureByName(lectureNamee);
-//                        if (lectureToRemoveFromBoard == null) {
-//                            System.out.println("Lecture not found.");
-//                            break;
-//                        }
-//                        Board[] boards = lectureToRemoveFromBoard.getBelongBoard();
-//                        if (boards == null || boards.length == 0) {
-//                            System.out.println("Lecture does not belong to any board.");
-//                            break;
-//                        }
-//
-//                        System.out.println("Enter the name of the board to remove the lecture from:");
-//                        String boardName = mainObj.getStrFromUser();
-//
-//                        Board br = op1.findBoardByName(boardName);
-//                        if (br == null) {
-//                            System.out.println("Board not found.");
-//                            break;
-//                        }
-//
-//                        op1.removeFromBoard(br, lectureNamee);
-//                        System.out.println(lectureNamee + " deleted successfully from the Board " + boardName + ".");
-//
-//                    } catch (Exception e) {
-//                        System.out.println("Error: " + e.getMessage());
-//                    }
-//                    break;
 
                 default:
                     System.err.println("Wrong input");
@@ -478,7 +478,6 @@ public class Main {
         System.out.println("12 - Compare two Dr./Prof. by articles");
         System.out.println("13 - Compare between Boards");
         System.out.println("14 - Duplicate Board");
-//        System.out.println("15 - Remove from Board");
     }
 
     public void printWelcome() {

@@ -5,9 +5,11 @@ public class Professor extends Doctor {
         super(name, id, degree, nameDegree, salary);
         this.organization = organization;
     }
+
     public String getOrganization() {
         return organization;
     }
+
     public void setOrganization(String organization) {
         this.organization = organization;
     }
@@ -16,5 +18,4 @@ public class Professor extends Doctor {
     public String toString() {
         return super.toString() + ", Organization: " + organization;
     }
-
-    }
+}

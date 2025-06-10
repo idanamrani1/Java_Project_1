@@ -1,49 +1,48 @@
 import Exceptions.AlreadyManagerException;
 import Exceptions.AlreadyMemberException;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Objects;
 
-public class Board implements expandArray, Cloneable {
+public class Board<T extends Lecture> implements Cloneable {
     private String name;
-    private Lecture[] lectures;
+    private ArrayList<T> lectures;
     private Lecture managerBoard;
-    private int logicalSize;
+    private Degree committeeDegree;
 
-
-    public Board(String name, Lecture[] lectures, Lecture managerBoard) {
-        setName(name);
-        setLectures(lectures);
+    public Board(String name, Lecture managerBoard, Degree degree) {
+        this.name = name;
         this.managerBoard = managerBoard;
-        logicalSize = 0;
+        this.committeeDegree = degree;
+        this.lectures = new ArrayList<>();
     }
 
     public int getNumOfArticles() {
-        int sumOfArticles = 0;
-        for (int i = 0; i < lectures.length; i++) {
-            if (lectures[i] != null && lectures[i].getDegree().equals(Degree.DR) || lectures[i] != null && lectures[i].getDegree().equals(Degree.PROFESSOR)) {
-                sumOfArticles += ((Doctor) lectures[i]).getNumberOfArticles();
+        int sum = 0;
+        for (T lecture : lectures) {
+            if (lecture != null && (lecture.getDegree() == Degree.DR || lecture.getDegree() == Degree.PROFESSOR)) {
+                sum += ((Doctor) lecture).getNumberOfArticles();
             }
         }
-        return sumOfArticles;
+        return sum;
     }
 
+    public void addLecture(T lecture) throws AlreadyMemberException, AlreadyManagerException {
+        if (!lecture.getDegree().equals(committeeDegree)) {
+            throw new IllegalArgumentException("Lecture degree does not match the committee's degree.");
+        }
 
-    public void addLecture(Lecture lecture) throws AlreadyMemberException, AlreadyManagerException {
         if (managerBoard != null && lecture.getName().equals(managerBoard.getName())) {
             throw new AlreadyManagerException("This lecture is already the manager of the board and cannot be added as a member.");
         }
 
-        for (int i = 0; i < lectures.length; i++) {
-            if (lectures[i] != null && lectures[i].getName().equals(lecture.getName())) {
+        for (T l : lectures) {
+            if (l.getName().equals(lecture.getName())) {
                 throw new AlreadyMemberException("Lecture already exists in the board.");
             }
         }
 
-        if (OperatingSystem.isFullArray(lectures, logicalSize)) {
-            expandable();
-        }
-        addLectureToBoard(lecture);
+        lectures.add(lecture);
 
         Board[] boards = lecture.getBelongBoard();
         if (boards == null) {
@@ -61,54 +60,18 @@ public class Board implements expandArray, Cloneable {
             }
             if (!added) {
                 Board[] bigger = new Board[boards.length * 2];
-                for (int j = 0; j < boards.length; j++) {
-                    bigger[j] = boards[j];
-                }
+                System.arraycopy(boards, 0, bigger, 0, boards.length);
                 bigger[boards.length] = this;
                 lecture.setBelongBoard(bigger);
             }
         }
     }
 
-
-
-    @Override
-    public void expandable() {
-        Lecture[] newArray = new Lecture[lectures.length * 2];
-        for (int i = 0; i < lectures.length; i++) {
-            newArray[i] = lectures[i];
-        }
-        lectures = newArray;
-    }
-
-
-    private void addLectureToBoard(Lecture lecture) {
-        lectures[logicalSize] = lecture;
-        this.logicalSize++;
-    }
-
-
-    public int getLogicalSize() {
-        return this.logicalSize;
-    }
-
-    public void setLogicalSize(int logicalSize) {
-        this.logicalSize = logicalSize;
-    }
-
-    public void shiftLeftFromIndexBoard(int index) {
-        for (int i = index; i < logicalSize - 1; i++) {
-            lectures[i] = lectures[i + 1];
-        }
-        lectures[logicalSize - 1] = null;
-    }
-
-
     public String getName() {
         return name;
     }
 
-    public Lecture[] getLectures() {
+    public ArrayList<T> getLectures() {
         return lectures;
     }
 
@@ -116,50 +79,30 @@ public class Board implements expandArray, Cloneable {
         return managerBoard;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public Degree getCommitteeDegree() {
+        return committeeDegree;
     }
 
-    public void setLectures(Lecture[] lectures) {
-        this.lectures = lectures;
+    public int getLogicalSize() {
+        return lectures.size();
     }
 
-    public void setManagerBoard(Lecture managerBoard) {
+    public void setManagerBoard(T managerBoard) {
         this.managerBoard = managerBoard;
     }
-
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Board board = (Board) o;
-        return Objects.deepEquals(lectures, board.lectures);
+        Board<?> board = (Board<?>) o;
+        return Objects.equals(lectures, board.lectures);
     }
 
     @Override
-    public int hashCode() {
-        return Arrays.hashCode(lectures);
-    }
-
-    @Override
-    public Board clone() throws CloneNotSupportedException {
-        try {
-            Board copy = (Board) super.clone();
-            copy.name = this.name + " -new";
-            copy.managerBoard = this.managerBoard;
-
-            if (this.lectures != null) {
-                copy.lectures = new Lecture[this.lectures.length];
-                for (int i = 0; i < this.lectures.length; i++) {
-                    copy.lectures[i] = this.lectures[i];
-                }
-            }
-            copy.logicalSize = this.logicalSize;
-
-            return copy;
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException("Clone failed");
-        }
+    public Board<T> clone() {
+        Board<T> copy = new Board<>(this.name + " -copy", this.managerBoard, this.committeeDegree);
+        copy.lectures = new ArrayList<>(this.lectures);
+        return copy;
     }
 
     @Override
