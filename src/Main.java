@@ -7,9 +7,9 @@ public class Main {
 
     public static void main(String[] args) {
         Main mainObj = new Main();
-        OperatingSystem op1 = new OperatingSystem();
         System.out.println("Enter file name to load/save system data:");
         String fileName = mainObj.getStrFromUser();
+        OperatingSystem op1;
 
         File file = new File(fileName);
         if(file.exists()){

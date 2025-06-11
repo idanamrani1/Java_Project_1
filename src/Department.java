@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Department  {
+public class Department implements Serializable {
     private String depName;
     private int numOfStudents;
     private ArrayList<Lecture> numOfLecture;

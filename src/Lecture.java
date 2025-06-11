@@ -1,7 +1,9 @@
 import Exceptions.InvalidManagerException;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Lecture {
+public class Lecture implements Serializable {
     private String name;
     private String id;
     private Degree degree;

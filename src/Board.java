@@ -1,10 +1,11 @@
 import Exceptions.AlreadyManagerException;
 import Exceptions.AlreadyMemberException;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class Board<T extends Lecture> implements Cloneable {
+public class Board<T extends Lecture> implements Cloneable, Serializable {
     private String name;
     private ArrayList<T> lectures;
     private Lecture managerBoard;

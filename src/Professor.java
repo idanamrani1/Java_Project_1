@@ -1,4 +1,6 @@
-public class Professor extends Doctor {
+import java.io.Serializable;
+
+public class Professor extends Doctor implements Serializable {
     private String organization;
 
     public Professor(String name, String id, Degree degree, String nameDegree, double salary, String organization) {

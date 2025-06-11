@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.ArrayList;
 
-public class OperatingSystem {
+public class OperatingSystem implements Serializable {
     private ArrayList<Lecture> lectures = new ArrayList<>();
     private ArrayList<Department> departments = new ArrayList<>();
     private ArrayList<Board<?>> boards = new ArrayList<>();

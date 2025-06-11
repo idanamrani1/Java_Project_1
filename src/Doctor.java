@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Doctor extends Lecture implements Researcher, Comparable<Doctor> {
+public class Doctor extends Lecture implements Researcher, Serializable, Comparable<Doctor> {
     private ArrayList<String> articles;
 
     public Doctor(String name, String id, Degree degree, String nameDegree, double salary) {
