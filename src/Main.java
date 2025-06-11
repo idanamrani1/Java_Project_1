@@ -1,3 +1,4 @@
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -7,6 +8,19 @@ public class Main {
     public static void main(String[] args) {
         Main mainObj = new Main();
         OperatingSystem op1 = new OperatingSystem();
+        System.out.println("Enter file name to load/save system data:");
+        String fileName = mainObj.getStrFromUser();
+
+        File file = new File(fileName);
+        if(file.exists()){
+            op1 = OperatingSystem.loadSystemFile(fileName);
+            System.out.println("System loaded from file: " + fileName);
+        }
+        else {
+            op1 = new OperatingSystem();
+            System.out.println("No existing file found. Starting with empty system.");
+        }
+
         mainObj.printWelcome();
 
         boolean isRunning = true;
@@ -16,6 +30,12 @@ public class Main {
 
             switch (choice) {
                 case "0":
+                    if(op1.saveSystemToFile(fileName)){
+                        System.out.println("System saved successfully to: " + fileName);
+                    }
+                    else {
+                        System.out.println("Failed to save system.");
+                    }
                     isRunning = false;
                     break;
 

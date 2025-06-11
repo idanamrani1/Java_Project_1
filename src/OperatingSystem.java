@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.ArrayList;
 
 public class OperatingSystem {
@@ -169,4 +170,22 @@ public class OperatingSystem {
         }
         return res > 0 ? b1 : b2;
     }
-}
+
+    public boolean saveSystemToFile(String filename) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
+            oos.writeObject(this);
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+        public static OperatingSystem loadSystemFile(String fileName){
+            try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName))){
+                return  (OperatingSystem) ois.readObject();
+            }
+            catch (IOException | ClassNotFoundException e){
+                return new OperatingSystem();
+            }
+
+        }
+    }
