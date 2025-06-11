@@ -1,6 +1,5 @@
 import Exceptions.InvalidManagerException;
-
-import java.util.Objects;
+import java.util.ArrayList;
 
 public class Lecture {
     private String name;
@@ -8,9 +7,17 @@ public class Lecture {
     private Degree degree;
     private String nameDegree;
     private double salary;
-    private Board[] belongBoard;
+    private ArrayList<Board<? extends Lecture>> belongBoards;
     private Department belongDepartment;
 
+    public Lecture(String name, String id, Degree degree, String nameDegree, double salary) {
+        setName(name);
+        setId(id);
+        setDegree(degree);
+        setNameDegree(nameDegree);
+        setSalary(salary);
+        this.belongBoards = new ArrayList<>();
+    }
 
     public String setDepartment(Department department) {
         if (this.belongDepartment != null) {
@@ -25,35 +32,35 @@ public class Lecture {
         return belongDepartment != null;
     }
 
-    public Lecture(String name, String id, Degree degree, String nameDegree, double salary) {
-        setName(name);
-        setId(id);
-        setDegree(degree);
-        setNameDegree(nameDegree);
-        setSalary(salary);
-        this.belongBoard = null;
+    public ArrayList<Board<? extends Lecture>> getBelongBoards() {
+        return belongBoards;
     }
 
-    public Board[] getBelongBoard() {
-        return belongBoard;
-    }
-
-    public void setBelongBoard(Board[] belongBoard) {
-        this.belongBoard = belongBoard;
+    public void addBoard(Board<? extends Lecture> board) {
+        if (board != null) {
+            for (int i = 0; i < belongBoards.size(); i++) {
+                if (belongBoards.get(i).getName().equals(board.getName())) {
+                    return;
+                }
+            }
+            belongBoards.add(board);
+        }
     }
 
     public String getName() {
         return name;
     }
 
-
     public double getSalary() {
         return salary;
     }
 
-
     public String getId() {
         return id;
+    }
+
+    public Degree getDegree() {
+        return degree;
     }
 
     public void setName(String name) {
@@ -76,14 +83,13 @@ public class Lecture {
         this.salary = salary;
     }
 
-    public Degree getDegree() {
-        return degree;
-    }
-
     public void setBelongDep(Department belongDepartment) {
         this.belongDepartment = belongDepartment;
     }
 
+    public Department getBelongDepartment() {
+        return this.belongDepartment;
+    }
 
     public void checkIsValidManager() throws InvalidManagerException {
         if (!(this.degree == Degree.DR || this.degree == Degree.PROFESSOR)) {
@@ -91,32 +97,32 @@ public class Lecture {
         }
     }
 
-    public Department getBelongDepartment() {
-        return this.belongDepartment;
-    }
-
-
     @Override
     public String toString() {
         return "Name: " + name +
                 ", ID: " + id +
                 ", Degree: " + degree +
                 ", Salary: " + salary +
-                ", Departments: " + belongDepartment +
+                ", Departments: " + (belongDepartment != null ? belongDepartment.getDepName() : "None") +
                 ", Boards: " + lectureBoardDetails();
-
     }
 
     public String lectureBoardDetails() {
-        if (belongBoard == null || belongBoard.length == 0) {
+        if (belongBoards == null || belongBoards.size() == 0) {
             return "None";
         }
+
         String details = "";
-        for (int i = 0; i < belongBoard.length; i++) {
-            if (belongBoard[i] != null) {
-                details += belongBoard[i].getName() + " ";
+        for (int i = 0; i < belongBoards.size(); i++) {
+            Board<? extends Lecture> board = belongBoards.get(i);
+            if (board != null) {
+                details += board.getName();
+                if (i < belongBoards.size() - 1) {
+                    details += " ";
+                }
             }
         }
+
         if (details.equals("")) {
             return "None";
         }

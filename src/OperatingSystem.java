@@ -61,11 +61,11 @@ public class OperatingSystem {
             if (lecture.getName().equals(memberName)) {
                 boardLectures.remove(i);
 
-                Board[] lectureBoards = lecture.getBelongBoard();
+                ArrayList<Board<? extends Lecture>> lectureBoards = lecture.getBelongBoards();
                 if (lectureBoards != null) {
-                    for (int j = 0; j < lectureBoards.length; j++) {
-                        if (lectureBoards[j] != null && lectureBoards[j].getName().equals(board.getName())) {
-                            lectureBoards[j] = null;
+                    for (int j = 0; j < lectureBoards.size(); j++) {
+                        if (lectureBoards.get(j) != null && lectureBoards.get(j).getName().equals(board.getName())) {
+                            lectureBoards.remove(j);
                             break;
                         }
                     }

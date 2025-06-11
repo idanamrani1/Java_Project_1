@@ -113,6 +113,11 @@ public class Main {
                         System.out.print("Enter board name: ");
                         String boardName = mainObj.getStrFromUser();
 
+                        if(op1.existBoard(boardName)){
+                            System.out.println("Board with this name already exist.");
+                            break;
+                        }
+
                         System.out.print("Enter the name of the lecturer that will be the board manager: ");
                         String managerName = mainObj.getStrFromUser();
 

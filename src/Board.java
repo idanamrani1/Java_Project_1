@@ -43,28 +43,8 @@ public class Board<T extends Lecture> implements Cloneable {
         }
 
         lectures.add(lecture);
+        lecture.addBoard(this);
 
-        Board[] boards = lecture.getBelongBoard();
-        if (boards == null) {
-            boards = new Board[1];
-            boards[0] = this;
-            lecture.setBelongBoard(boards);
-        } else {
-            boolean added = false;
-            for (int j = 0; j < boards.length; j++) {
-                if (boards[j] == null) {
-                    boards[j] = this;
-                    added = true;
-                    break;
-                }
-            }
-            if (!added) {
-                Board[] bigger = new Board[boards.length * 2];
-                System.arraycopy(boards, 0, bigger, 0, boards.length);
-                bigger[boards.length] = this;
-                lecture.setBelongBoard(bigger);
-            }
-        }
     }
 
     public String getName() {

@@ -14,10 +14,6 @@ public class Doctor extends Lecture implements Researcher, Comparable<Doctor> {
         }
     }
 
-    public ArrayList<String> getArticles() {
-        return articles;
-    }
-
     @Override
     public int getNumberOfArticles() {
         return articles.size();

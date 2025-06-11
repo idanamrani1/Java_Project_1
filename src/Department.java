@@ -33,10 +33,6 @@ public class Department  {
         return depName;
     }
 
-    public int getNumOfStudents() {
-        return numOfStudents;
-    }
-
     public ArrayList<Lecture> getNumOfLecture() {
         return numOfLecture;
     }
